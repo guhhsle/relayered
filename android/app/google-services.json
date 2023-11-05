@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "675281183231",
+    "project_id": "relayered-39",
+    "storage_bucket": "relayered-39.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675281183231:android:fced4c0d2e302e321f47ca",
+        "android_client_info": {
+          "package_name": "com.guhhsle.relayered"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNMIrMkbdJlyvvzyiN-6aR7KnpOYmk7nU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

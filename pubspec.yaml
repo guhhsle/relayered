@@ -1,0 +1,71 @@
+name: relayered
+description: A new Flutter project.
+
+publish_to: 'none'
+#version: 1.0.0+1
+version: 1.4.5
+
+environment:
+  sdk: ">=3.0.0 <=4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  #Services
+  awesome_notifications: any
+  intl: any
+  shared_preferences: ^2.2.0
+
+  #UI
+  flutter_quill: any
+  flutter_quill_extensions: any
+
+
+  #Firebase
+  encrypt: ^5.0.3
+  firebase_auth: ^4.7.2
+  cloud_firestore: ^4.8.4
+  firebase_core: ^2.15.0 
+
+dev_dependencies:
+  flutter_launcher_icons: ^0.11.0
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.1
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon.png"
+  #    flutter pub run flutter_launcher_icons:main
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/icon.png"
+  remove_alpha_ios: true
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: OpenSans
+      fonts:
+        - asset: fonts/OpenSans-Regular.ttf
+
+    - family: RobotoMono
+      fonts:
+        - asset: fonts/RobotoMono-Regular.ttf
+
+    - family: JetBrainsMono
+      fonts:
+        - asset: fonts/JetBrainsMono-Regular.ttf
+
+    - family: IBMPlexMono
+      fonts:
+        - asset: fonts/IBMPlexMono-Regular.ttf
+
+    - family: Pacifico
+      fonts:
+        - asset: fonts/Pacifico-Regular.ttf
+        
+  assets:
+    - assets/translations/
+

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A new Flutter project.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="relayered">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>relayered</title>
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    const serviceWorkerVersion = null;
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer></script>
+</head>
+<body>
+  <script>
+    window.addEventListener('load', function(ev) {
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function(engineInitializer) {
+          engineInitializer.initializeEngine().then(function(appRunner) {
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
+  <script type="module">
+	import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
+	import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-analytics.js";
+    import { getFirestore } from "firebase/firestore";
+	const firebaseConfig = {
+		apiKey: "AIzaSyDGpEQYTrJoxD7IKwGRYD3Eu_zGbvZvvWI",
+		authDomain: "relayered-39.firebaseapp.com",
+		projectId: "relayered-39",
+		storageBucket: "relayered-39.appspot.com",
+		messagingSenderId: "675281183231",
+		appId: "1:675281183231:web:c52713b2e93a705e1f47ca",
+		measurementId: "G-E9BWD4GDWF"
+	};
+	
+	const app = initializeApp(firebaseConfig);
+	const analytics = getAnalytics(app);
+	</script>
+</body>
+</html>
