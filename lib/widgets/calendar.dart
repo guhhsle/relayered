@@ -38,7 +38,7 @@ class _CalendarState extends State<Calendar> {
         calendarColors.keys.elementAt(DateTime.now().month): [
           Task.defaultNew(
             Folder.defaultNew(),
-            name: '',
+            name: '-----',
           )..due = DateTime.now(),
         ],
       };
@@ -46,21 +46,19 @@ class _CalendarState extends State<Calendar> {
         List<Task> sublist = tasks.values.elementAt(i).items;
         for (int j = 0; j < sublist.length; j++) {
           Task task = sublist[j];
-          bool hidden = task.path.name.contains('.');
           String? month;
           if (task.pinned && pf['showPinned']) {
             month = 'Pinned';
-          } else if (!pf['showDone'] && task.done) {
-            continue;
-          } else if (!pf['showPending'] && task.due == null) {
+          } else if (!pf['showPending'] && task.due == null || !pf['showDone'] && task.done) {
             continue;
           }
-          if (!hidden || (task.pinned && pf['showPinned'])) {
-            month ??= calendarColors.keys.elementAt(task.due?.month ?? 0);
+          if (!task.path.name.contains('.')) {
+            if (month == null && task.due == null) {
+              month = task.path.name.substring(1);
+            }
+            month ??= calendarColors.keys.elementAt(task.due!.month);
             if (list.containsKey(month)) {
-              if (!list[month]!.contains(task)) {
-                list[month]!.add(task);
-              }
+              if (!list[month]!.contains(task)) list[month]!.add(task);
             } else {
               list.addAll({
                 month: [task]
@@ -103,7 +101,7 @@ class _CalendarState extends State<Calendar> {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 shadowColor: Colors.transparent,
-                color: calendarColors[month]?.withOpacity(0.3),
+                color: (calendarColors[month] ?? calendarColors.values.first).withOpacity(0.3),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Column(

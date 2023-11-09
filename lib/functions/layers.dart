@@ -143,7 +143,7 @@ Layer openFolder(dynamic parent) {
       (p0) async {
         Navigator.of(p0).pop();
         String newParent = await getInput(parent, hintText: 'Rename folder');
-        (tasks[parent]!..name = newParent).update();
+        await (tasks[parent]!..name = newParent).update();
         showSheet(func: openFolder, param: newParent, scroll: true);
       },
     ),

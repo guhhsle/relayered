@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
         child: InkWell(
           onLongPress: () async {
             Task.defaultNew(
-              pf['defaultFolder'],
+              tasks[pf['defaultFolder']]!,
               name: await getInput(null, hintText: 'New task'),
             ).upload();
           },
