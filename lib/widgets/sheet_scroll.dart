@@ -42,13 +42,13 @@ class SheetScrollModelState extends State<SheetScrollModel> {
                   return Column(
                     children: [
                       Row(
-                        children: layer.leading +
+                        children: (layer.leading == null ? <Widget>[] : layer.leading!(context)) +
                             [
                               Expanded(
                                 child: CustomCard(layer.action),
                               ),
                             ] +
-                            layer.trailing,
+                            (layer.trailing == null ? [] : layer.trailing!(context)),
                       ),
                       Expanded(
                         child: Scrollbar(
