@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:relayered/widgets/body.dart';
 
-import '../body.dart';
 import '../functions/layers.dart';
 import '../settings/account.dart';
 import '../settings/interface.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:relayered/functions.dart';
 
-import '../body.dart';
 import '../data.dart';
 import '../functions/mail.dart';
+import '../widgets/body.dart';
 
 class PageMail extends StatefulWidget {
   const PageMail({Key? key}) : super(key: key);

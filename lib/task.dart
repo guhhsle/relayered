@@ -63,9 +63,7 @@ class Folder {
   Map<String, Object?> toJson() => {
         'name': encrypt(name),
         'id': id,
-        'items': items.map((e) {
-          return e.toJson();
-        }).toList(),
+        'items': items.map((e) => e.toJson()).toList(),
       };
 
   static Folder defaultNew({String name = '/'}) {
@@ -162,9 +160,7 @@ class Task {
     return Icons.radio_button_unchecked;
   }
 
-  bool hasDue() {
-    return due != null;
-  }
+  bool hasDue() => due != null;
 
   String shortDesc() {
     try {

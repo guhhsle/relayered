@@ -33,7 +33,7 @@ Future<void> getKey(String init) async {
   if (next.length == 16) {
     setPref('encryptKey', next);
   } else {
-    showSnack('MUST BE 16', false);
+    showSnack('KEY LENGTH ${next.length}/16', false);
     getKey(next);
   }
 }

@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 
-import '../body.dart';
 import '../data.dart';
 import '../functions/layers.dart';
 import '../functions/open_task.dart';
 import '../task.dart';
+import '../widgets/body.dart';
 
 class TaskPage extends StatefulWidget {
   final Task task;
