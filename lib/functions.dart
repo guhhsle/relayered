@@ -62,6 +62,7 @@ Color lighterColor(Color p, Color q) {
 }
 
 Future sync() async {
+  if (user.isAnonymous) return;
   await FirebaseFirestore.instance.enableNetwork();
   await Future.delayed(Duration(seconds: pf['syncTimeout']));
   await FirebaseFirestore.instance.disableNetwork();
