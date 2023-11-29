@@ -36,8 +36,7 @@ class _SheetModelState extends State<SheetModel> {
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
                   Row(
-                    children: (layer.leading == null ? <Widget>[] : layer.leading!(context)) +
-                        [
+                    children: <Widget>[
                           Expanded(
                             child: CustomCard(layer.action),
                           ),

@@ -162,32 +162,32 @@ Future<String> getInput(String? init, {String? hintText}) async {
   Completer<String> completer = Completer();
   TextEditingController controller = TextEditingController(text: init);
   BuildContext context = navigatorKey.currentContext!;
-  ColorScheme cs = Theme.of(context).colorScheme;
   showModalBottomSheet(
     context: context,
+    barrierColor: Colors.black.withOpacity(0.8),
     builder: (c) {
       return Padding(
         padding: MediaQuery.of(context).viewInsets,
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          color: cs.primary,
-          height: 64,
-          width: double.infinity,
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: hintText,
-              hintStyle: TextStyle(
-                color: cs.background.withOpacity(0.2),
-              ),
-            ),
-            autofocus: true,
-            controller: controller,
-            style: TextStyle(color: cs.background),
-            onSubmitted: (text) {
-              Navigator.of(c).pop();
-              completer.complete(text);
-            },
+        child: TextField(
+          cursorColor: Colors.white,
+          decoration: InputDecoration(
+            labelText: hintText,
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            floatingLabelAlignment: FloatingLabelAlignment.center,
+            labelStyle: const TextStyle(color: Colors.white),
           ),
+          autofocus: true,
+          controller: controller,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            color: Colors.white,
+          ),
+          onSubmitted: (text) {
+            Navigator.of(c).pop();
+            completer.complete(text);
+          },
         ),
       );
     },

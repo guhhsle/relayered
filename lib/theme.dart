@@ -5,7 +5,7 @@ import 'functions.dart';
 
 ThemeData theme(Color p, Color b) {
   return ThemeData(
-    useMaterial3: pf['material3'],
+    useMaterial3: false,
     colorScheme: ColorScheme(
       primary: p,
       secondary: p,

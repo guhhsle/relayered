@@ -12,12 +12,11 @@ import 'open_task.dart';
 class Layer {
   final Setting action;
   final List<Setting> list;
-  List<Widget> Function(BuildContext)? leading, trailing;
+  List<Widget> Function(BuildContext)? trailing;
 
   Layer({
     required this.action,
     required this.list,
-    this.leading,
     this.trailing,
   });
 }

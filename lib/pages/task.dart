@@ -12,9 +12,9 @@ class TaskPage extends StatefulWidget {
   final Task task;
 
   const TaskPage({
-    Key? key,
+    super.key,
     required this.task,
-  }) : super(key: key);
+  });
   @override
   TaskPageState createState() => TaskPageState();
 }
@@ -27,12 +27,8 @@ class TaskPageState extends State<TaskPage> {
   void initState() {
     task = widget.task;
     controller = QuillController(
-      document: Document.fromJson(
-        json.decode(task.desc),
-      ),
-      selection: const TextSelection.collapsed(
-        offset: 0,
-      ),
+      document: Document.fromJson(json.decode(task.desc)),
+      selection: const TextSelection.collapsed(offset: 0),
     );
     super.initState();
   }
@@ -40,13 +36,8 @@ class TaskPageState extends State<TaskPage> {
   @override
   Widget build(BuildContext context) {
     bool k = MediaQuery.of(context).viewInsets.bottom != 0;
-    Color p = Theme.of(context).colorScheme.primary;
-    Color b = Theme.of(context).colorScheme.background;
-    return WillPopScope(
-      onWillPop: () {
-        updateNote();
-        return Future.value(true);
-      },
+    return PopScope(
+      onPopInvoked: (b) => updateNote(),
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -102,15 +93,7 @@ class TaskPageState extends State<TaskPage> {
                       configurations: QuillConfigurations(controller: controller),
                       child: QuillToolbar(
                         configurations: QuillToolbarConfigurations(
-                          color: b,
-                          iconTheme: QuillIconTheme(
-                            iconSelectedColor: b,
-                            iconUnselectedColor: p,
-                            iconSelectedFillColor: p,
-                            iconUnselectedFillColor: b,
-                            disabledIconColor: p,
-                            disabledIconFillColor: p,
-                          ),
+                          color: Theme.of(context).colorScheme.background,
                           multiRowsDisplay: false,
                         ),
                       ),
@@ -131,7 +114,7 @@ class TaskPageState extends State<TaskPage> {
 
 class NoteTemplate extends StatelessWidget {
   final QuillController controller;
-  const NoteTemplate({Key? key, required this.controller}) : super(key: key);
+  const NoteTemplate({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {

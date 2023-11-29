@@ -15,7 +15,7 @@ dependencies:
   #Services
   awesome_notifications: any
   intl: any
-  shared_preferences: ^2.2.0
+  shared_preferences: any
 
   #UI
   flutter_quill: any
@@ -23,16 +23,16 @@ dependencies:
 
 
   #Firebase
-  encrypt: ^5.0.3
-  firebase_auth: ^4.7.2
-  cloud_firestore: ^4.8.4
-  firebase_core: ^2.15.0 
+  encrypt: any
+  firebase_auth: any
+  cloud_firestore: any
+  firebase_core: any 
 
 dev_dependencies:
-  flutter_launcher_icons: ^0.11.0
+  flutter_launcher_icons: any
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
+  flutter_lints: any
 
 flutter_icons:
   android: true
