@@ -50,7 +50,7 @@ List<Setting> foldersIn(String parent) {
     String str = tasks.keys.elementAt(i);
     String format = str.replaceFirst(parent, '');
     int index = format.indexOf('/');
-    if (str.startsWith(parent) && str != parent && index < 1) {
+    if (str.startsWith(parent == '/' ? '/' : '$parent/') && str != parent && index < 1) {
       list.add(
         Setting(
           folderName(str),

@@ -15,7 +15,6 @@ class Calendar extends StatefulWidget {
 }
 
 Map<String, Color> calendarColors = {
-  'Pending': Colors.black,
   'January': Colors.white,
   'February': Colors.pink,
   'March': Colors.purple,
@@ -34,11 +33,11 @@ Map<String, Color> calendarColors = {
 class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
-    calendarColors['Pending'] = Theme.of(context).colorScheme.primary;
+    calendarColors[' '] = Theme.of(context).colorScheme.background;
 
     Map<String, List<Task>> fetchAllTasks() {
       Map<String, List<Task>> list = {
-        calendarColors.keys.elementAt(DateTime.now().month): [
+        calendarColors.keys.elementAt(DateTime.now().month - 1): [
           Task.defaultNew(
             Folder.defaultNew(),
             name: '-----',
@@ -59,7 +58,7 @@ class _CalendarState extends State<Calendar> {
             if (month == null && task.due == null) {
               month = task.path.name.substring(1);
             }
-            month ??= calendarColors.keys.elementAt(task.due!.month);
+            month ??= calendarColors.keys.elementAt(task.due!.month - 1);
             if (list.containsKey(month)) {
               if (!list[month]!.contains(task)) list[month]!.add(task);
             } else {
@@ -104,7 +103,9 @@ class _CalendarState extends State<Calendar> {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 shadowColor: Colors.transparent,
-                color: (calendarColors[month] ?? taskColors[tasks['/$month']?.color] ?? calendarColors['Pending']!)
+                color: (calendarColors[month] ??
+                        taskColors[tasks['/$month']?.color] ??
+                        Theme.of(context).colorScheme.primary)
                     .withOpacity(0.3),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
@@ -127,6 +128,7 @@ class _CalendarState extends State<Calendar> {
                             ),
                             title: Text('${task.date()}   ${task.name}'),
                             trailing: InkWell(
+                              borderRadius: BorderRadius.circular(16),
                               onTap: () {
                                 task.done = !task.done;
                                 task.update();
