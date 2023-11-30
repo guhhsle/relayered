@@ -12,7 +12,7 @@ Layer account() {
   if (user.isAnonymous || user.email == null) {
     return Layer(
       action: Setting(
-        'No mail, sign in to backup',
+        'Sign in',
         Icons.mail_outline_rounded,
         '',
         (c) async {
@@ -29,7 +29,7 @@ Layer account() {
   } else {
     return Layer(
       action: Setting(
-        user.email ?? 'No mail, sign in to backup',
+        user.email ?? 'Sign in',
         Icons.mail_outline_rounded,
         '',
         (c) async => user.updateEmail(await getInput(user.email)),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:relayered/functions/folder_options.dart';
 
 import '../data.dart';
 import '../functions.dart';
@@ -52,19 +53,21 @@ List<Setting> foldersIn(String parent) {
     if (str.startsWith(parent) && str != parent && index < 1) {
       list.add(
         Setting(
-            folderName(str),
-            Icons.folder_outlined,
-            '',
-            (p0) => showSheet(
-                  func: openFolder,
-                  param: str,
-                  scroll: true,
-                  hidePrev: pf['stackLayers'] ? null : p0,
-                ), onHold: (c) {
-          if (tasks[str]!.items.isEmpty) {
-            tasks[str]!.delete();
-          }
-        }),
+          folderName(str),
+          Icons.folder_outlined,
+          '',
+          (p0) => showSheet(
+            func: openFolder,
+            param: str,
+            scroll: true,
+            hidePrev: pf['stackLayers'] ? null : p0,
+          ),
+          onHold: (c) => showSheet(
+            func: folderOptions,
+            param: str,
+          ),
+          iconColor: taskColors[tasks[str]?.color],
+        ),
       );
     }
   }

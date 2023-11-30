@@ -39,12 +39,14 @@ String? decryptStr(String? crypt) {
 
 class Folder {
   String name;
+  String? color;
   String? id;
   List<Task> items;
 
   Folder({
     required this.name,
     required this.items,
+    this.color,
     this.id,
   });
 
@@ -52,6 +54,7 @@ class Folder {
     Folder folder = Folder(
       name: decryptStr(json['name']) ?? '/${json['name']}',
       id: json['id'] ?? '',
+      color: json['col'],
       items: [],
     );
     for (Map m in json['items']) {
@@ -63,6 +66,7 @@ class Folder {
   Map<String, Object?> toJson() => {
         'name': encrypt(name),
         'id': id,
+        'col': color,
         'items': items.map((e) => e.toJson()).toList(),
       };
 
@@ -170,9 +174,9 @@ class Task {
     }
   }
 
-  String date({bool year = false}) {
+  String date({bool year = false, bool month = false}) {
     if (due == null) return '     ';
-    return formatDate(due!, year: year);
+    return formatDate(due!, year: year, month: month);
   }
 }
 

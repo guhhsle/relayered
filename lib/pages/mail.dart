@@ -6,7 +6,7 @@ import '../functions/mail.dart';
 import '../widgets/body.dart';
 
 class PageMail extends StatefulWidget {
-  const PageMail({Key? key}) : super(key: key);
+  const PageMail({super.key});
 
   @override
   State<PageMail> createState() => _PageMailState();
@@ -30,7 +30,7 @@ class _PageMailState extends State<PageMail> {
       builder: (context, snap) {
         if (!snap.hasData) return Container();
         return Scaffold(
-          appBar: AppBar(title: Text(l['Log in / sign up'])),
+          appBar: AppBar(title: Text(t('Account'))),
           body: Body(
             child: Padding(
               padding: const EdgeInsets.all(16),

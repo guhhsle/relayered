@@ -40,35 +40,36 @@ Layer openTask(dynamic id) {
         Icons.colorize_rounded,
         task.color,
         (p0) => showSheet(
-            scroll: true,
-            param: task,
-            func: (task) {
-              task as Task;
-              return Layer(
-                action: Setting(
-                  task.color,
-                  Icons.colorize_rounded,
-                  '',
-                  (p0) {},
-                ),
-                list: [
-                  for (MapEntry<String, Color?> col in taskColors.entries)
-                    Setting(
-                      '',
-                      Icons.circle,
-                      col.key,
-                      (p0) => (task..color = col.key).update(),
-                      iconColor: col.value,
-                    )
-                ],
-              );
-            }),
-        iconColor: colors[task.color],
+          scroll: true,
+          param: task,
+          func: (task) {
+            task as Task;
+            return Layer(
+              action: Setting(
+                task.color,
+                Icons.colorize_rounded,
+                '',
+                (p0) {},
+              ),
+              list: [
+                for (MapEntry<String, Color?> col in taskColors.entries)
+                  Setting(
+                    '',
+                    Icons.circle,
+                    col.key,
+                    (p0) => (task..color = col.key).update(),
+                    iconColor: col.value,
+                  )
+              ],
+            );
+          },
+        ),
+        iconColor: taskColors[task.color],
       ),
       Setting(
         '',
         Icons.calendar_today_rounded,
-        task.date(year: true),
+        task.date(year: true, month: true),
         (p0) => pickDate(task, p0),
       ),
       Setting(

@@ -71,11 +71,12 @@ Future sync() async {
 String formatDate(
   DateTime dt, {
   bool year = true,
+  bool month = true,
 }) {
   String years = year ? '.${dt.year}' : '';
-  String months = dt.month < 10 ? '0${dt.month}' : '${dt.month}';
+  String months = month ? (dt.month < 10 ? '.0${dt.month}' : '.${dt.month}') : '';
   String days = dt.day < 10 ? '0${dt.day}' : '${dt.day}';
-  return '$days.$months$years';
+  return '$days$months$years';
 }
 
 void setPref(

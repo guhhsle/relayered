@@ -32,10 +32,10 @@ Layer openFolder(dynamic parent) {
         radius: 4,
         onLongPress: () async {
           String str = parent == '/' ? '' : '/';
-          String newName = await getInput('$parent$str', hintText: 'New folder');
-          for (var entry in tasks.entries) {
-            if (entry.key.startsWith(parent) && entry.value.id != null) {}
-          }
+          String newName = await getInput(
+            '$parent$str',
+            hintText: 'New folder',
+          );
           Folder.defaultNew(name: newName).upload();
           refreshLayer();
         },
@@ -59,7 +59,10 @@ Layer openFolder(dynamic parent) {
       folderName(parent),
       (p0) async {
         Navigator.of(p0).pop();
-        String newParent = await getInput(parent, hintText: 'Rename folder');
+        String newParent = await getInput(
+          parent,
+          hintText: 'Rename folder',
+        );
         if (parent != newParent) {
           for (int i = 0; i < tasks.length; i++) {
             Folder folder = tasks.values.elementAt(i);

@@ -14,25 +14,27 @@ class Calendar extends StatefulWidget {
   State<Calendar> createState() => _CalendarState();
 }
 
+Map<String, Color> calendarColors = {
+  'Pending': Colors.black,
+  'January': Colors.white,
+  'February': Colors.pink,
+  'March': Colors.purple,
+  'April': Colors.yellow,
+  'May': Colors.green,
+  'June': Colors.orange,
+  'July': Colors.cyan,
+  'August': Colors.blue,
+  'September': Colors.orange,
+  'October': Colors.red,
+  'November': Colors.brown,
+  'December': Colors.red,
+  ' ': Colors.transparent,
+};
+
 class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
-    final Map<String, Color> calendarColors = {
-      'Pending': Theme.of(context).colorScheme.primary,
-      'January': Colors.white,
-      'February': Colors.pink,
-      'March': Colors.purple,
-      'April': Colors.yellow,
-      'May': Colors.green,
-      'June': Colors.orange,
-      'July': Colors.cyan,
-      'August': Colors.blue,
-      'September': Colors.orange,
-      'October': Colors.red,
-      'November': Colors.brown,
-      'December': Colors.red,
-      'Pinned': Theme.of(context).colorScheme.background,
-    };
+    calendarColors['Pending'] = Theme.of(context).colorScheme.primary;
 
     Map<String, List<Task>> fetchAllTasks() {
       Map<String, List<Task>> list = {
@@ -49,7 +51,7 @@ class _CalendarState extends State<Calendar> {
           Task task = sublist[j];
           String? month;
           if (task.pinned && pf['showPinned']) {
-            month = 'Pinned';
+            month = ' ';
           } else if (!pf['showPending'] && task.due == null || !pf['showDone'] && task.done) {
             continue;
           }
@@ -102,7 +104,8 @@ class _CalendarState extends State<Calendar> {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 shadowColor: Colors.transparent,
-                color: (calendarColors[month] ?? calendarColors.values.first).withOpacity(0.3),
+                color: (calendarColors[month] ?? taskColors[tasks['/$month']?.color] ?? calendarColors['Pending']!)
+                    .withOpacity(0.3),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Column(
@@ -123,12 +126,12 @@ class _CalendarState extends State<Calendar> {
                               TaskPage(task: task),
                             ),
                             title: Text('${task.date()}   ${task.name}'),
-                            trailing: IconButton(
-                              onPressed: () {
+                            trailing: InkWell(
+                              onTap: () {
                                 task.done = !task.done;
                                 task.update();
                               },
-                              icon: Icon(
+                              child: Icon(
                                 task.checked(),
                                 color: taskColors[task.color],
                               ),
