@@ -26,9 +26,10 @@ Map pf = {
   'stackLayers': false,
   //CALENDAR
   'showDone': true,
-  'showPending': true,
+  'showFolders': true,
   'showPinned': true,
   'taskNow': true,
+  'ignore': <String>[],
 };
 
 final Map<String, Color> colors = {

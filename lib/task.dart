@@ -175,7 +175,7 @@ class Task {
   }
 
   String date({bool year = false, bool month = false}) {
-    if (due == null) return '     ';
+    if (due == null) return '  ${year ? '     ' : ''}${month ? '   ' : ''}';
     return formatDate(due!, year: year, month: month);
   }
 }

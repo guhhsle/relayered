@@ -83,7 +83,7 @@ List<Setting> tasksIn(String parent, bool done) {
     if (task.done == done) {
       list.add(
         Setting(
-          task.name,
+          '${task.date(month: true)}  ${task.name}',
           task.checked(),
           '',
           (p0) => showSheet(

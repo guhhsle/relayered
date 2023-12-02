@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:relayered/functions/open_folder.dart';
 
 import '../data.dart';
 import '../functions.dart';
@@ -29,10 +30,55 @@ Layer calendar() => Layer(
           (c) => revPref('showDone', refresh: true),
         ),
         Setting(
-          'Show pending',
-          Icons.timer_rounded,
-          'pf//showPending',
-          (c) => revPref('showPending', refresh: true),
+          'Folder field',
+          Icons.folder_copy_rounded,
+          'pf//showFolders',
+          (c) => revPref('showFolders', refresh: true),
         ),
+        Setting(
+          'Source folders',
+          Icons.rule_folder_rounded,
+          '',
+          (c) => showSheet(
+            func: sourceFolders,
+            param: 0,
+            scroll: true,
+            hidePrev: c,
+          ),
+        ),
+      ],
+    );
+
+Layer sourceFolders(dynamic none) => Layer(
+      action: Setting(
+        'Sources',
+        Icons.folder_rounded,
+        '',
+        (c) {},
+      ),
+      list: [
+        for (var folder in tasks.values.toList()
+          ..removeWhere((e) => e.name.contains('.'))
+          ..sort((a, b) => a.name.compareTo(b.name)))
+          Setting(
+            folder.name,
+            pf['ignore'].contains(folder.name) ? Icons.radio_button_off : Icons.radio_button_on,
+            '',
+            (c) => showSheet(
+              func: openFolder,
+              param: folder.name,
+              scroll: true,
+              hidePrev: c,
+            ),
+            secondary: (c) {
+              List<String> l = pf['ignore'];
+              if (l.contains(folder.name)) {
+                l.remove(folder.name);
+              } else {
+                l.add(folder.name);
+              }
+              setPref('ignore', l, refresh: true);
+            },
+          )
       ],
     );

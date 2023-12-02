@@ -26,6 +26,11 @@ StreamSubscription<QuerySnapshot<Map<String, dynamic>>> listenNotes(User us) {
         }
       }
       for (Folder folder in tasks.values.toList()) {
+        folder.items.sort((a, b) {
+          if (a.due == null) return 1;
+          if (b.due == null) return -1;
+          return a.due!.compareTo(b.due!);
+        });
         for (int q = 1; q < folder.name.length; q++) {
           if (folder.name[q] == '/') {
             String name = folder.name.substring(0, q);
