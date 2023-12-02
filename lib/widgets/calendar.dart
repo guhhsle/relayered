@@ -78,7 +78,11 @@ class MonthContainer {
 }
 
 class _CalendarState extends State<Calendar> {
-  void addTaskToList(Task task, List<MonthContainer> list, {int reverse = 1}) {
+  void addTaskToList(
+    Task task,
+    List<MonthContainer> list, {
+    int reverse = 1,
+  }) {
     for (var monthContainer in list) {
       if (monthContainer.duringTask(task)) {
         monthContainer.list.add(task);
@@ -116,7 +120,9 @@ class _CalendarState extends State<Calendar> {
       List<MonthContainer> toToday = [];
       List<MonthContainer> folders = [];
 
-      DateTime yesterday = DateTime.now().subtract(const Duration(days: 1));
+      DateTime yesterday = DateTime.now().subtract(
+        const Duration(days: 1),
+      );
 
       for (var folder in tasks.values) {
         if (folder.name.contains('.')) continue;
@@ -156,83 +162,88 @@ class _CalendarState extends State<Calendar> {
         builder: (context, snap) {
           List<List<MonthContainer>> data = fetchAllTasks();
           return ListView.builder(
-              itemCount: data.length,
-              physics: scrollPhysics,
-              padding: const EdgeInsets.only(bottom: 64),
-              itemBuilder: (context, i) {
-                return Card(
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 16,
-                    horizontal: 5,
+            itemCount: data.length,
+            physics: scrollPhysics,
+            padding: const EdgeInsets.only(bottom: 64),
+            itemBuilder: (context, i) {
+              return Card(
+                margin: const EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 5,
+                ),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(32),
+                    topLeft: Radius.circular(16),
+                    bottomLeft: Radius.circular(16),
+                    bottomRight: Radius.circular(16),
                   ),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(32),
-                      topLeft: Radius.circular(16),
-                    ),
-                  ),
-                  shadowColor: Colors.transparent,
-                  color: Theme.of(context).primaryColor.withOpacity(0.08),
-                  child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: data[i].length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, j) {
-                      return Card(
-                        margin: const EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 8,
+                ),
+                shadowColor: Colors.transparent,
+                color: Theme.of(context).primaryColor.withOpacity(0.08),
+                child: ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: data[i].length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, j) {
+                    return Card(
+                      margin: const EdgeInsets.symmetric(
+                        vertical: 8,
+                        horizontal: 8,
+                      ),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(32),
+                          topLeft: Radius.circular(16),
+                          bottomLeft: Radius.circular(16),
+                          bottomRight: Radius.circular(16),
                         ),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(32),
-                            topLeft: Radius.circular(16),
-                          ),
+                      ),
+                      shadowColor: Colors.transparent,
+                      color: data[i][j].color.withOpacity(0.3),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Column(
+                          children: [
+                            Text(data[i][j].name),
+                            ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: data[i][j].list.length,
+                              itemBuilder: (context, k) {
+                                Task task = data[i][j].list[k];
+                                return ListTile(
+                                  onTap: () => showSheet(
+                                    func: openTask,
+                                    param: task.id,
+                                  ),
+                                  onLongPress: () => goToPage(
+                                    TaskPage(task: task),
+                                  ),
+                                  title: Text('${task.date()}   ${task.name}'),
+                                  trailing: InkWell(
+                                    borderRadius: BorderRadius.circular(16),
+                                    onTap: () {
+                                      task.done = !task.done;
+                                      task.update();
+                                    },
+                                    child: Icon(
+                                      task.checked(),
+                                      color: taskColors[task.color],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
                         ),
-                        shadowColor: Colors.transparent,
-                        color: data[i][j].color.withOpacity(0.3),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: Column(
-                            children: [
-                              Text(data[i][j].name),
-                              ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: data[i][j].list.length,
-                                itemBuilder: (context, k) {
-                                  Task task = data[i][j].list[k];
-                                  return ListTile(
-                                    onTap: () => showSheet(
-                                      func: openTask,
-                                      param: task.id,
-                                    ),
-                                    onLongPress: () => goToPage(
-                                      TaskPage(task: task),
-                                    ),
-                                    title: Text('${task.date()}   ${task.name}'),
-                                    trailing: InkWell(
-                                      borderRadius: BorderRadius.circular(16),
-                                      onTap: () {
-                                        task.done = !task.done;
-                                        task.update();
-                                      },
-                                      child: Icon(
-                                        task.checked(),
-                                        color: taskColors[task.color],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                );
-              });
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          );
         },
       ),
     );

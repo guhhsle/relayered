@@ -90,7 +90,9 @@ Map l = {
 
 late final SharedPreferences prefs;
 
-const ScrollPhysics scrollPhysics = BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics());
+const ScrollPhysics scrollPhysics = BouncingScrollPhysics(
+  parent: AlwaysScrollableScrollPhysics(),
+);
 late CollectionReference<Map<String, dynamic>> streamNote;
 late User user;
 late StreamSubscription noteStream;
