@@ -119,7 +119,7 @@ class Task {
       desc: jsonEncode(delta.toJson()),
       path: path,
       color: pf['defaultColor'],
-      due: pf['taskNow'] ? DateTime.now() : null,
+      due: pf['taskNow'] ? today() : null,
     );
   }
 

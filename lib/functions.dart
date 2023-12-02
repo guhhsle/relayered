@@ -79,6 +79,15 @@ String formatDate(
   return '$days$months$years';
 }
 
+DateTime today() {
+  DateTime now = DateTime.now();
+  return DateTime(
+    now.year,
+    now.month,
+    now.day,
+  );
+}
+
 void setPref(
   String pString,
   var value, {

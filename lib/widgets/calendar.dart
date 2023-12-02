@@ -120,10 +120,6 @@ class _CalendarState extends State<Calendar> {
       List<MonthContainer> toToday = [];
       List<MonthContainer> folders = [];
 
-      DateTime yesterday = DateTime.now().subtract(
-        const Duration(days: 1),
-      );
-
       for (var folder in tasks.values) {
         if (folder.name.contains('.')) continue;
         bool ignored = false;
@@ -137,10 +133,15 @@ class _CalendarState extends State<Calendar> {
           } else if (!pf['showDone'] && task.done) {
             continue;
           } else if (task.due != null) {
-            if (task.due!.isAfter(yesterday)) {
-              addTaskToList(task, fromToday);
+            int comparation = task.due!.compareTo(today());
+            if (comparation == 0) {
+              pinned.list.add(task);
             } else {
-              addTaskToList(task, toToday, reverse: -1);
+              addTaskToList(
+                task,
+                {-1: toToday, 1: fromToday}[comparation]!,
+                reverse: comparation,
+              );
             }
           } else if (pf['showFolders']) {
             addTaskToList(task, folders);
