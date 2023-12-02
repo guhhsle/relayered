@@ -102,23 +102,14 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     List<List<MonthContainer>> fetchAllTasks() {
-      MonthContainer pinned = MonthContainer(
+      List<List<MonthContainer>> list = [[], [], [], []];
+      list[0].add(MonthContainer(
         name: ' ',
         year: 9999,
         month: 9999,
         list: [],
         color: Theme.of(context).colorScheme.background,
-      );
-      List<MonthContainer> fromToday = [
-        MonthContainer.fromTask(
-          Task.defaultNew(
-            Folder.defaultNew(),
-            name: '----------',
-          )..due = DateTime.now(),
-        ),
-      ];
-      List<MonthContainer> toToday = [];
-      List<MonthContainer> folders = [];
+      ));
 
       for (var folder in tasks.values) {
         if (folder.name.contains('.')) continue;
@@ -129,31 +120,29 @@ class _CalendarState extends State<Calendar> {
         if (ignored) continue;
         for (var task in folder.items) {
           if (pf['showPinned'] && task.pinned) {
-            pinned.list.add(task);
+            list[0][0].list.add(task);
           } else if (!pf['showDone'] && task.done) {
             continue;
           } else if (task.due != null) {
             int comparation = task.due!.compareTo(today());
             if (comparation == 0) {
-              pinned.list.add(task);
+              list[0][0].list.add(task);
             } else {
               addTaskToList(
                 task,
-                {-1: toToday, 1: fromToday}[comparation]!,
+                list[{-1: 1, 1: 2}[comparation]!],
                 reverse: comparation,
               );
             }
           } else if (pf['showFolders']) {
-            addTaskToList(task, folders);
+            addTaskToList(task, list[3]);
           }
         }
       }
-      return [
-        [pinned..list.sort((a, b) => a.due?.compareTo(b.due ?? a.due!) ?? 1)],
-        fromToday,
-        toToday,
-        folders
-      ];
+      list[0][0].list.sort((a, b) {
+        return a.due?.compareTo(b.due ?? DateTime(999)) ?? -1;
+      });
+      return list;
     }
 
     return RefreshIndicator(
