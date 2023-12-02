@@ -119,6 +119,7 @@ class _CalendarState extends State<Calendar> {
       DateTime yesterday = DateTime.now().subtract(const Duration(days: 1));
 
       for (var folder in tasks.values) {
+        if (folder.name.contains('.')) continue;
         bool ignored = false;
         for (var str in pf['ignore']) {
           if (folder.name.startsWith(str)) ignored = true;
@@ -135,13 +136,13 @@ class _CalendarState extends State<Calendar> {
             } else {
               addTaskToList(task, toToday, reverse: -1);
             }
-          } else if (pf['showFolders'] && !task.path.name.contains('.')) {
+          } else if (pf['showFolders']) {
             addTaskToList(task, folders);
           }
         }
       }
       return [
-        [pinned],
+        [pinned..list.sort((a, b) => a.due?.compareTo(b.due ?? a.due!) ?? 1)],
         fromToday,
         toToday,
         folders
@@ -164,8 +165,11 @@ class _CalendarState extends State<Calendar> {
                     vertical: 16,
                     horizontal: 5,
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(32),
+                      topLeft: Radius.circular(16),
+                    ),
                   ),
                   shadowColor: Colors.transparent,
                   color: Theme.of(context).primaryColor.withOpacity(0.08),
@@ -179,8 +183,11 @@ class _CalendarState extends State<Calendar> {
                           vertical: 8,
                           horizontal: 8,
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(32),
+                            topLeft: Radius.circular(16),
+                          ),
                         ),
                         shadowColor: Colors.transparent,
                         color: data[i][j].color.withOpacity(0.3),
