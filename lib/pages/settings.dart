@@ -7,7 +7,7 @@ import '../settings/interface.dart';
 import '../settings/storage.dart';
 
 class PageSettings extends StatefulWidget {
-  const PageSettings({Key? key}) : super(key: key);
+  const PageSettings({super.key});
 
   @override
   PageSettingsState createState() => PageSettingsState();

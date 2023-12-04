@@ -5,11 +5,11 @@ class AnimatedText extends StatefulWidget {
   final TextStyle style;
   final Duration speed;
   const AnimatedText({
-    Key? key,
+    super.key,
     required this.text,
     required this.speed,
     required this.style,
-  }) : super(key: key);
+  });
 
   @override
   State<AnimatedText> createState() => _AnimatedTextState();

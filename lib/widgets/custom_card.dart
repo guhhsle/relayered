@@ -9,12 +9,12 @@ class CustomCard extends StatelessWidget {
 
   const CustomCard(
     this.setting, {
-    Key? key,
+    super.key,
     this.margin = const EdgeInsets.symmetric(
       vertical: 16,
       horizontal: 8,
     ),
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
