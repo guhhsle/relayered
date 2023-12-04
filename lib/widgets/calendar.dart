@@ -140,7 +140,7 @@ class _CalendarState extends State<Calendar> {
         }
       }
       list[0][0].list.sort((a, b) {
-        return a.due?.compareTo(b.due ?? DateTime(9999)) ?? -1;
+        return a.due?.compareTo(b.due ?? DateTime(9999)) ?? 1;
       });
       return list;
     }
