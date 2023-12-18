@@ -78,6 +78,22 @@ class MonthContainer {
 }
 
 class _CalendarState extends State<Calendar> {
+  void sortTasks(List<Task> list, int reverse) => list.sort((a, b) {
+        int i = 0;
+        if (a.due == null && b.due == null) {
+        } else if (a.due == null && b.due != null) {
+          i = -1;
+        } else if (a.due != null && b.due == null) {
+          i = 1;
+        } else {
+          i = a.due!.compareTo(b.due!);
+        }
+        if (i == 0) {
+          return a.name.compareTo(b.name);
+        }
+        return reverse * i;
+      });
+
   void addTaskToList(
     Task task,
     List<MonthContainer> list, {
@@ -86,9 +102,7 @@ class _CalendarState extends State<Calendar> {
     for (var monthContainer in list) {
       if (monthContainer.duringTask(task)) {
         monthContainer.list.add(task);
-        monthContainer.list.sort(
-          (a, b) => reverse * (a.due?.compareTo(b.due ?? a.due!) ?? 1),
-        );
+        sortTasks(monthContainer.list, reverse);
         return;
       }
     }
@@ -139,9 +153,7 @@ class _CalendarState extends State<Calendar> {
           }
         }
       }
-      list[0][0].list.sort((a, b) {
-        return a.due?.compareTo(b.due ?? DateTime(9999)) ?? 1;
-      });
+      sortTasks(list[0][0].list, -1);
       return list;
     }
 
