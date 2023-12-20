@@ -18,6 +18,7 @@ Map pf = {
   //STORAGE
   'defaultFolder': '/',
   //INTERFACE
+  'action': 'Floating',
   'background': 'Ivory',
   'defaultColor': 'Adaptive',
   'primary': 'Ultramarine',

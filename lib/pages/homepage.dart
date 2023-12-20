@@ -20,29 +20,49 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(8),
-        child: InkWell(
-          onLongPress: () async {
-            Task.defaultNew(
-              tasks[pf['defaultFolder']]!,
-              name: await getInput(null, hintText: 'New task'),
-            ).upload();
-          },
-          child: FloatingActionButton(
-            child: const Icon(Icons.folder_rounded),
-            onPressed: () => showSheet(
-              func: openFolder,
-              param: pf['defaultFolder'],
-              scroll: true,
-            ),
-          ),
-        ),
-      ),
+      floatingActionButton: pf['action'] == 'Floating'
+          ? Padding(
+              padding: const EdgeInsets.all(8),
+              child: InkWell(
+                onLongPress: () async {
+                  Task.defaultNew(
+                    tasks[pf['defaultFolder']]!,
+                    name: await getInput(null, hintText: 'New task'),
+                  ).upload();
+                },
+                child: FloatingActionButton(
+                  child: const Icon(Icons.folder_rounded),
+                  onPressed: () => showSheet(
+                    func: openFolder,
+                    param: pf['defaultFolder'],
+                    scroll: true,
+                  ),
+                ),
+              ),
+            )
+          : null,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(formatDate(DateTime.now(), year: false)),
         actions: [
+          pf['action'] == 'Top'
+              ? InkWell(
+                  onLongPress: () async {
+                    Task.defaultNew(
+                      tasks[pf['defaultFolder']]!,
+                      name: await getInput(null, hintText: 'New task'),
+                    ).upload();
+                  },
+                  child: IconButton(
+                    icon: const Icon(Icons.folder_rounded),
+                    onPressed: () => showSheet(
+                      func: openFolder,
+                      param: pf['defaultFolder'],
+                      scroll: true,
+                    ),
+                  ),
+                )
+              : Container(),
           web
               ? const IconButton(
                   onPressed: sync,

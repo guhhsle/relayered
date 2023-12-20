@@ -7,19 +7,23 @@ import '../functions/layers.dart';
 
 Layer interface() => Layer(
       action: Setting(
-        'Interface',
+        'Top',
         Icons.gradient_rounded,
-        '',
-        (c) {},
+        'pf//appbar',
+        (c) => nextPref(
+          'appbar',
+          ['Primary', 'Black', 'Transparent'],
+          refresh: true,
+        ),
       ),
       list: [
         Setting(
-          'Top',
-          Icons.gradient_rounded,
-          'pf//appbar',
+          'Action button',
+          Icons.folder_rounded,
+          'pf//action',
           (c) => nextPref(
-            'appbar',
-            ['Primary', 'Black', 'Transparent'],
+            'action',
+            ['Top', 'Floating'],
             refresh: true,
           ),
         ),
