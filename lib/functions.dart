@@ -159,14 +159,6 @@ String t(dynamic d) {
   return l[s] ?? s;
 }
 
-String folderName(String path) {
-  if (path == '/') return '/';
-  for (var i = path.length - 1; i > 0; i--) {
-    if (path[i] == '/') return path.substring(i + 1);
-  }
-  return path.substring(1);
-}
-
 Future<String> getInput(String? init, {String? hintText}) async {
   if (navigatorKey.currentContext == null) return '';
   Completer<String> completer = Completer();

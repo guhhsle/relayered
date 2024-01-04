@@ -6,6 +6,7 @@ import '../data.dart';
 import '../functions/layers.dart';
 import '../functions/open_task.dart';
 import '../task.dart';
+import '../theme.dart';
 import '../widgets/body.dart';
 
 class TaskPage extends StatefulWidget {
@@ -91,10 +92,12 @@ class TaskPageState extends State<TaskPage> {
               k
                   ? QuillProvider(
                       configurations: QuillConfigurations(controller: controller),
-                      child: QuillToolbar(
-                        configurations: QuillToolbarConfigurations(
-                          color: Theme.of(context).colorScheme.background,
-                          multiRowsDisplay: false,
+                      child: Theme(
+                        data: theme(Colors.black, Colors.black),
+                        child: const QuillToolbar(
+                          configurations: QuillToolbarConfigurations(
+                            multiRowsDisplay: false,
+                          ),
                         ),
                       ),
                     )

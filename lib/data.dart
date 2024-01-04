@@ -15,8 +15,6 @@ Map pf = {
   //ACCOUNT
   'syncTimeout': 6,
   'encryptKey': 'd203la9d02f9askc',
-  //STORAGE
-  'defaultFolder': '/',
   //INTERFACE
   'action': 'Floating',
   'background': 'Ivory',
@@ -100,13 +98,13 @@ late StreamSubscription noteStream;
 
 class Setting {
   final String title, trailing;
-  final IconData icon;
+  IconData icon;
   final Color? iconColor;
-  final void Function(BuildContext) onTap;
+  void Function(BuildContext) onTap;
   final void Function(BuildContext)? secondary;
-  final void Function(BuildContext)? onHold;
+  void Function(BuildContext)? onHold;
 
-  const Setting(
+  Setting(
     this.title,
     this.icon,
     this.trailing,
@@ -121,4 +119,4 @@ final ValueNotifier<ThemeData> themeNotifier = ValueNotifier(ThemeData());
 final ValueNotifier<bool> refreshLay = ValueNotifier(true);
 final navigatorKey = GlobalKey<NavigatorState>();
 
-Map<String, Folder> tasks = {};
+Map<String, Folder> structure = {};

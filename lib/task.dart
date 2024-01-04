@@ -9,6 +9,12 @@ import 'functions.dart';
 
 import 'package:encrypt/encrypt.dart' as e;
 
+import 'functions/folder_options.dart';
+import 'functions/layers.dart';
+import 'functions/open_folder.dart';
+import 'functions/open_task.dart';
+import 'pages/task.dart';
+
 String encrypt(String raw) {
   try {
     final keyString = pf['encryptKey'];
@@ -40,14 +46,20 @@ String? decryptStr(String? crypt) {
 class Folder {
   String name;
   String? color;
+  String prefix;
   String? id;
+  bool pin;
+  List<String> nodes;
   List<Task> items;
 
   Folder({
     required this.name,
     required this.items,
+    required this.nodes,
     this.color,
     this.id,
+    this.prefix = '',
+    this.pin = false,
   });
 
   static Folder fromJson(Map json) {
@@ -56,6 +68,9 @@ class Folder {
       id: json['id'] ?? '',
       color: json['col'],
       items: [],
+      prefix: json['pre'] ?? '',
+      nodes: (json['nodes'] as List?)?.map((e) => e.toString()).toList() ?? <String>[],
+      pin: json['pin'] ?? false,
     );
     for (Map m in json['items']) {
       folder.items.add(Task.fromJson(m, folder));
@@ -67,16 +82,39 @@ class Folder {
         'name': encrypt(name),
         'id': id,
         'col': color,
+        'pin': pin,
+        'nodes': nodes,
+        'pre': prefix,
         'items': items.map((e) => e.toJson()).toList(),
       };
 
-  static Folder defaultNew({String name = '/'}) {
-    return Folder(name: name, items: []);
+  static Folder defaultNew(String name, {String? node}) {
+    return Folder(name: name, items: [], nodes: node != null ? [node] : <String>[]);
   }
 
   Future<void> upload() async {
     await coll().add(toJson());
     refreshLayer();
+  }
+
+  Setting toSetting() {
+    return Setting(
+      name,
+      Icons.folder_outlined,
+      '',
+      (p0) => showSheet(
+        func: openFolder,
+        param: id,
+        scroll: true,
+        hidePrev: pf['stackLayers'] ? null : p0,
+      ),
+      secondary: (c) {},
+      onHold: (c) => showSheet(
+        func: folderOptions,
+        param: id,
+      ),
+      iconColor: taskColors[color],
+    );
   }
 
   Future update() async {
@@ -133,6 +171,24 @@ class Task {
       desc: decryptStr(json['desc']) ?? json['desc'] ?? '\n',
       due: json['due'] != null ? DateTime.parse(json['due']) : null,
       path: path,
+    );
+  }
+
+  Setting toSetting() {
+    return Setting(
+      '$name   ${date(month: true)}',
+      checked(),
+      '',
+      (p0) => showSheet(
+        func: openTask,
+        param: id,
+      ),
+      iconColor: taskColors[color],
+      secondary: (c) {
+        done = !done;
+        update;
+      },
+      onHold: (c) => goToPage(TaskPage(task: this)),
     );
   }
 

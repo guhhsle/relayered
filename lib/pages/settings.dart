@@ -4,7 +4,6 @@ import 'package:relayered/widgets/body.dart';
 import '../functions/layers.dart';
 import '../settings/account.dart';
 import '../settings/interface.dart';
-import '../settings/storage.dart';
 
 class PageSettings extends StatefulWidget {
   const PageSettings({super.key});
@@ -17,7 +16,6 @@ class PageSettingsState extends State<PageSettings> {
   Map<String, Layer> map = {
     'Interface': interface(),
     'Account': account(),
-    'Storage': storage(),
     'Primary': themeMap(true),
     'Background': themeMap(false),
   };
@@ -39,7 +37,7 @@ class PageSettingsState extends State<PageSettings> {
             onTap: () => showSheet(
               func: (i) => map.values.elementAt(index),
               param: 0,
-              scroll: index > 2,
+              scroll: index > 1,
             ),
           ),
         ),

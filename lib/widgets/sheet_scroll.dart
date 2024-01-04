@@ -67,12 +67,13 @@ class SheetScrollModelState extends State<SheetScrollModel> {
                                     : null,
                                 title: Text(t(list[i].title)),
                                 trailing: list[i].secondary != null
-                                    ? IconButton(
-                                        icon: Icon(
+                                    ? InkWell(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Icon(
                                           list[i].icon,
                                           color: list[i].iconColor,
                                         ),
-                                        onPressed: () {
+                                        onTap: () {
                                           list[i].secondary!(context);
                                           setState(() {});
                                         },

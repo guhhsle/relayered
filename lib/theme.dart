@@ -26,7 +26,7 @@ ThemeData theme(Color p, Color b) {
       trackVisibility: const MaterialStatePropertyAll(false),
     ),
     primaryColor: p,
-    fontFamily: 'JetBrainsMono',
+    fontFamily: pf['font'],
     scaffoldBackgroundColor: {'Black': Colors.black, 'Transparent': b}[pf['appbar']] ?? p,
     appBarTheme: AppBarTheme(
       backgroundColor: {'Black': Colors.black, 'Transparent': b}[pf['appbar']] ?? p,

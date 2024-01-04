@@ -9,8 +9,8 @@ import 'layers.dart';
 import 'open_folder.dart';
 
 Layer openTask(dynamic id) {
-  Task task = Task.defaultNew(Folder.defaultNew(name: '/ERROR'), name: 'ERROR');
-  for (MapEntry<String, Folder> map in tasks.entries) {
+  Task task = Task.defaultNew(Folder.defaultNew('/ERROR'), name: 'ERROR');
+  for (MapEntry<String, Folder> map in structure.entries) {
     for (Task current in map.value.items) {
       if (current.id == id) task = current;
     }
@@ -85,7 +85,7 @@ Layer openTask(dynamic id) {
         (p0) => showSheet(
           func: openFolder,
           scroll: true,
-          param: task.path.name,
+          param: task.path.id,
           hidePrev: p0,
         ),
       ),

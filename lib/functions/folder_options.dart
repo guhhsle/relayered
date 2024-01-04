@@ -4,33 +4,21 @@ import '../data.dart';
 import '../functions.dart';
 import '../task.dart';
 import 'layers.dart';
-import 'open_folder.dart';
+import 'structure.dart';
 
-Layer folderOptions(dynamic parent) {
-  Folder folder = tasks[parent] ?? Folder.defaultNew(name: parent);
-
+Layer folderOptions(dynamic id) {
+  Folder folder = structure[id] ?? Folder.defaultNew('/ERROR');
   return Layer(
     action: Setting(
       '',
       Icons.folder_rounded,
-      folderName(parent),
+      folder.name,
       (p0) async {
-        Navigator.of(p0).pop();
-        String newParent = await getInput(
-          parent,
+        folder.name = await getInput(
+          folder.name,
           hintText: 'Rename folder',
         );
-        if (parent != newParent) {
-          for (int i = 0; i < tasks.length; i++) {
-            Folder folder = tasks.values.elementAt(i);
-            if (folder.name.startsWith(parent) && folder.id != null) {
-              folder.name = folder.name.replaceFirst(parent, newParent);
-              folder.update();
-              i = 0;
-            }
-          }
-        }
-        showSheet(func: openFolder, param: newParent, scroll: true);
+        folder.update();
       },
     ),
     list: [
@@ -64,6 +52,42 @@ Layer folderOptions(dynamic parent) {
           },
         ),
         iconColor: taskColors[folder.color],
+      ),
+      folder.pin
+          ? Setting(
+              'Pinned',
+              Icons.push_pin_rounded,
+              '',
+              (c) => (folder..pin = false).update(),
+            )
+          : Setting(
+              'Pin',
+              Icons.push_pin_outlined,
+              '',
+              (c) => (folder..pin = true).update(),
+            ),
+      Setting(
+        'Connect',
+        Icons.line_style_rounded,
+        '${folder.nodes.length}',
+        (c) => showSheet(
+          func: allFolders,
+          param: id,
+          scroll: true,
+          hidePrev: c,
+        ),
+      ),
+      Setting(
+        'Prefix',
+        Icons.read_more_rounded,
+        folder.prefix,
+        (c) async {
+          folder.prefix = await getInput(
+            folder.prefix,
+            hintText: 'Prefix',
+          );
+          await folder.update();
+        },
       ),
       Setting(
         '${folder.items.length}',

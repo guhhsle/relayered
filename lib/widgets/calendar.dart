@@ -44,7 +44,7 @@ class MonthContainer {
   });
 
   bool duringTask(Task task) {
-    if (task.due == null) return '/$name' == task.path.name;
+    if (task.due == null) return name == task.path.name;
     if (task.due!.month != month) return false;
     if (task.due!.year != year) return false;
     return true;
@@ -53,7 +53,7 @@ class MonthContainer {
   static MonthContainer fromTask(Task task, {ColorScheme? cs}) {
     if (task.due == null) {
       return MonthContainer(
-        name: task.path.name.substring(1),
+        name: task.path.name,
         year: 9999,
         month: 12,
         list: [task],
@@ -125,8 +125,8 @@ class _CalendarState extends State<Calendar> {
         color: Theme.of(context).colorScheme.background,
       ));
 
-      for (var folder in tasks.values) {
-        if (folder.name.contains('.')) continue;
+      for (var folder in structure.values) {
+        //if (folder.name.contains('.')) continue;
         bool ignored = false;
         for (var str in pf['ignore']) {
           if (folder.name.startsWith(str)) ignored = true;
@@ -154,6 +154,7 @@ class _CalendarState extends State<Calendar> {
         }
       }
       sortTasks(list[0][0].list, -1);
+      list[3].sort((a, b) => a.name.compareTo(b.name));
       return list;
     }
 
@@ -222,7 +223,11 @@ class _CalendarState extends State<Calendar> {
                                   onLongPress: () => goToPage(
                                     TaskPage(task: task),
                                   ),
-                                  title: Text('${task.date()}   ${task.name}'),
+                                  title: Text(
+                                    task.path.prefix == ''
+                                        ? '${task.date()}   ${task.name}'
+                                        : '${task.date()}   ${task.path.prefix} ${task.name}',
+                                  ),
                                   trailing: InkWell(
                                     borderRadius: BorderRadius.circular(16),
                                     onTap: () {

@@ -57,16 +57,17 @@ Layer sourceFolders(dynamic none) => Layer(
         (c) {},
       ),
       list: [
-        for (var folder in tasks.values.toList()
-          ..removeWhere((e) => e.name.contains('.'))
-          ..sort((a, b) => a.name.compareTo(b.name)))
+        for (var folder in structure.values.toList()
+          ..sort(
+            (a, b) => a.name.compareTo(b.name),
+          ))
           Setting(
             folder.name,
             pf['ignore'].contains(folder.name) ? Icons.radio_button_off : Icons.radio_button_on,
             '',
             (c) => showSheet(
               func: openFolder,
-              param: folder.name,
+              param: folder.id,
               scroll: true,
               hidePrev: c,
             ),

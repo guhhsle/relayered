@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:relayered/functions/folder_options.dart';
 
 import '../data.dart';
-import '../functions.dart';
-import '../pages/task.dart';
 import '../task.dart';
 import '../widgets/sheet_model.dart';
 import '../widgets/sheet_scroll.dart';
-import 'open_folder.dart';
-import 'open_task.dart';
 
 class Layer {
   final Setting action;
@@ -44,61 +39,38 @@ void showSheet({
   );
 }
 
-List<Setting> foldersIn(String parent) {
+List<Setting> foldersIn(String id) {
+  if (structure[id] == null) return [];
   List<Setting> list = [];
-  for (int i = 0; i < tasks.length; i++) {
-    String str = tasks.keys.elementAt(i);
-    String format = str.replaceFirst(parent, '');
-    int index = format.indexOf('/');
-    if (str.startsWith(parent == '/' ? '/' : '$parent/') && str != parent && index < 1) {
-      list.add(
-        Setting(
-          folderName(str),
-          Icons.folder_outlined,
-          '',
-          (p0) => showSheet(
-            func: openFolder,
-            param: str,
-            scroll: true,
-            hidePrev: pf['stackLayers'] ? null : p0,
-          ),
-          onHold: (c) => showSheet(
-            func: folderOptions,
-            param: str,
-          ),
-          iconColor: taskColors[tasks[str]?.color],
-        ),
-      );
+
+  for (String nodeId in structure[id]!.nodes) {
+    for (Folder node in structure.values.where((e) => e.id == nodeId)) {
+      list.add(node.toSetting());
     }
   }
 
   return list;
 }
 
-List<Setting> tasksIn(String parent, bool done) {
-  if (tasks[parent] == null) return [];
+List<Setting> tasksIn(String id, bool done) {
+  if (structure[id] == null) return [];
   List<Setting> list = [];
 
-  for (Task task in tasks[parent]!.items) {
+  for (Task task in structure[id]!.items) {
     if (task.done == done) {
-      list.add(
-        Setting(
-          '${task.date(month: true)}  ${task.name}',
-          task.checked(),
-          '',
-          (p0) => showSheet(
-            func: openTask,
-            param: task.id,
-          ),
-          iconColor: taskColors[task.color],
-          secondary: (c) {
-            (task..done = !task.done).update();
-          },
-          onHold: (c) => goToPage(TaskPage(task: task)),
-        ),
-      );
+      list.add(task.toSetting());
     }
   }
 
   return list;
+}
+
+List<Task> pinnedTasks() {
+  List<Task> result = [];
+  for (Folder folder in structure.values) {
+    for (Task task in folder.items) {
+      if (task.pinned) result.add(task);
+    }
+  }
+  return result;
 }
