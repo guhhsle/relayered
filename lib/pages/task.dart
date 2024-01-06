@@ -85,9 +85,7 @@ class TaskPageState extends State<TaskPage> {
           child: Column(
             children: [
               Expanded(
-                child: NoteTemplate(
-                  controller: controller,
-                ),
+                child: NoteTemplate(controller: controller),
               ),
               k
                   ? QuillProvider(

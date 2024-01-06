@@ -18,53 +18,58 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: pf['action'] == 'Floating'
-          ? Padding(
-              padding: const EdgeInsets.all(8),
-              child: FloatingActionButton(
-                child: const Icon(Icons.folder_rounded),
-                onPressed: () => showSheet(
-                  func: pinnedFolders,
-                  param: null,
-                  scroll: true,
-                ),
-              ),
-            )
-          : null,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(formatDate(DateTime.now(), year: false)),
-        actions: [
-          pf['action'] == 'Top'
-              ? IconButton(
-                  icon: const Icon(Icons.folder_rounded),
-                  onPressed: () => showSheet(
-                    func: pinnedFolders,
-                    param: null,
-                    scroll: true,
+    return ValueListenableBuilder(
+      valueListenable: refreshLay,
+      builder: (context, snap, child) {
+        return Scaffold(
+          floatingActionButton: pf['action'] == 'Floating'
+              ? Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: FloatingActionButton(
+                    child: const Icon(Icons.folder_rounded),
+                    onPressed: () => showSheet(
+                      func: pinnedFolders,
+                      param: null,
+                      scroll: true,
+                    ),
                   ),
                 )
-              : Container(),
-          web
-              ? const IconButton(
-                  onPressed: sync,
-                  icon: Icon(Icons.refresh_rounded),
-                )
-              : Container(),
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () => showSheet(
-                param: 0,
-                func: (i) => calendar(),
+              : null,
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: Text(formatDate(DateTime.now(), year: false)),
+            actions: [
+              pf['action'] == 'Top'
+                  ? IconButton(
+                      icon: const Icon(Icons.folder_rounded),
+                      onPressed: () => showSheet(
+                        func: pinnedFolders,
+                        param: null,
+                        scroll: true,
+                      ),
+                    )
+                  : Container(),
+              web
+                  ? const IconButton(
+                      onPressed: sync,
+                      icon: Icon(Icons.refresh_rounded),
+                    )
+                  : Container(),
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () => showSheet(
+                    param: 0,
+                    func: (i) => calendar(),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
-      body: const Body(child: Calendar()),
+          body: const Body(child: Calendar()),
+        );
+      },
     );
   }
 }

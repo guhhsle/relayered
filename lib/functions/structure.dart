@@ -36,6 +36,14 @@ Layer pinnedFolders(dynamic nothing) {
         ),
         icon: const Icon(Icons.line_style_rounded),
       ),
+      IconButton(
+        onPressed: () async {
+          String newName = await getInput('', hintText: 'New folder');
+          Folder newFolder = Folder.defaultNew(newName)..pin = true;
+          await newFolder.upload();
+        },
+        icon: const Icon(Icons.add_rounded),
+      ),
     ],
   );
 }

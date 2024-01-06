@@ -107,6 +107,7 @@ void setPref(
 }
 
 void refreshAll() {
+  refreshLayer();
   themeNotifier.value = theme(color(true), color(false));
 }
 

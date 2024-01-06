@@ -14,7 +14,7 @@ Map pf = {
   'locale': 'en',
   //ACCOUNT
   'syncTimeout': 6,
-  'encryptKey': 'd203la9d02f9askc',
+  'encryptKey': '0000000000000000',
   //INTERFACE
   'action': 'Floating',
   'background': 'Ivory',
