@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:relayered/functions/open_folder.dart';
 
 import '../data.dart';
 import '../functions.dart';
@@ -34,6 +35,7 @@ class MonthContainer {
   Color color;
   int year, month;
   List<Task> list;
+  Folder? folder;
 
   MonthContainer({
     required this.name,
@@ -41,6 +43,7 @@ class MonthContainer {
     required this.color,
     required this.month,
     required this.list,
+    this.folder,
   });
 
   bool duringTask(Task task) {
@@ -57,7 +60,8 @@ class MonthContainer {
         year: 9999,
         month: 12,
         list: [task],
-        color: cs!.primary,
+        color: taskColors[task.path.color] ?? (cs!.primary),
+        folder: task.path,
       );
     }
     return MonthContainer(
@@ -158,6 +162,13 @@ class _CalendarState extends State<Calendar> {
       return list;
     }
 
+    const customRadius = BorderRadius.only(
+      topRight: Radius.circular(32),
+      topLeft: Radius.circular(16),
+      bottomLeft: Radius.circular(16),
+      bottomRight: Radius.circular(16),
+    );
+
     return RefreshIndicator(
       onRefresh: sync,
       child: StreamBuilder(
@@ -174,14 +185,7 @@ class _CalendarState extends State<Calendar> {
                   vertical: 16,
                   horizontal: 5,
                 ),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(32),
-                    topLeft: Radius.circular(16),
-                    bottomLeft: Radius.circular(16),
-                    bottomRight: Radius.circular(16),
-                  ),
-                ),
+                shape: const RoundedRectangleBorder(borderRadius: customRadius),
                 shadowColor: Colors.transparent,
                 color: Theme.of(context).primaryColor.withOpacity(0.08),
                 child: ListView.builder(
@@ -189,60 +193,63 @@ class _CalendarState extends State<Calendar> {
                   itemCount: data[i].length,
                   shrinkWrap: true,
                   itemBuilder: (context, j) {
-                    return Card(
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 8,
-                        horizontal: 8,
-                      ),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(32),
-                          topLeft: Radius.circular(16),
-                          bottomLeft: Radius.circular(16),
-                          bottomRight: Radius.circular(16),
-                        ),
-                      ),
-                      shadowColor: Colors.transparent,
-                      color: data[i][j].color.withOpacity(0.3),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Column(
-                          children: [
-                            Text(data[i][j].name),
-                            ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: data[i][j].list.length,
-                              itemBuilder: (context, k) {
-                                Task task = data[i][j].list[k];
-                                return ListTile(
-                                  onTap: () => showSheet(
-                                    func: openTask,
-                                    param: task.id,
-                                  ),
-                                  onLongPress: () => goToPage(
-                                    TaskPage(task: task),
-                                  ),
-                                  title: Text(
-                                    task.path.prefix == ''
-                                        ? '${task.date()}   ${task.name}'
-                                        : '${task.date()}   ${task.path.prefix} ${task.name}',
-                                  ),
-                                  trailing: InkWell(
-                                    borderRadius: BorderRadius.circular(16),
-                                    onTap: () {
-                                      task.done = !task.done;
-                                      task.update();
-                                    },
-                                    child: Icon(
-                                      task.checked(),
-                                      color: taskColors[task.color],
-                                    ),
-                                  ),
-                                );
-                              },
+                    return InkWell(
+                      borderRadius: customRadius,
+                      onTap: () => data[i][j].folder == null
+                          ? {}
+                          : showSheet(
+                              func: openFolder,
+                              param: data[i][j].folder!.id,
+                              scroll: true,
                             ),
-                          ],
+                      child: Card(
+                        margin: const EdgeInsets.symmetric(
+                          vertical: 8,
+                          horizontal: 8,
+                        ),
+                        shape: const RoundedRectangleBorder(borderRadius: customRadius),
+                        shadowColor: Colors.transparent,
+                        color: data[i][j].color.withOpacity(0.3),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: Column(
+                            children: [
+                              Text(data[i][j].name),
+                              ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: data[i][j].list.length,
+                                itemBuilder: (context, k) {
+                                  Task task = data[i][j].list[k];
+                                  return ListTile(
+                                    onTap: () => showSheet(
+                                      func: openTask,
+                                      param: task.id,
+                                    ),
+                                    onLongPress: () => goToPage(
+                                      TaskPage(task: task),
+                                    ),
+                                    title: Text(
+                                      task.path.prefix == ''
+                                          ? '${task.date()}   ${task.name}'
+                                          : '${task.date()}   ${task.path.prefix} ${task.name}',
+                                    ),
+                                    trailing: InkWell(
+                                      borderRadius: BorderRadius.circular(16),
+                                      onTap: () {
+                                        task.done = !task.done;
+                                        task.update();
+                                      },
+                                      child: Icon(
+                                        task.checked(),
+                                        color: taskColors[task.color],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );

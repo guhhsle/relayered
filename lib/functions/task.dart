@@ -39,5 +39,8 @@ StreamSubscription<QuerySnapshot<Map<String, dynamic>>> listenNotes(User us) {
         return structure[a]!.name.compareTo(structure[b]!.name);
       });
     }
+    structure = Map.fromEntries(
+      structure.entries.toList()..sort((e1, e2) => e1.value.name.compareTo(e2.value.name)),
+    );
   });
 }

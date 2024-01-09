@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 
 import '../data.dart';
@@ -88,6 +90,34 @@ Layer openTask(dynamic id) {
           param: task.path.id,
           hidePrev: p0,
         ),
+        onHold: (p0) => showSheet(
+          func: (dynamic d) => Layer(
+            action: Setting(
+              'New',
+              Icons.add_rounded,
+              '',
+              (c) async {
+                String newName = await getInput('', hintText: 'New folder');
+                Folder newFolder = Folder.defaultNew(newName);
+                await newFolder.upload();
+              },
+            ),
+            list: structure.values
+                .map((e) => e.toSetting()
+                  ..onTap = (c) async {
+                    Navigator.of(c).pop();
+                    Map json = task.toJson();
+                    await Future.wait([
+                      task.delete(),
+                      moveTask(json, e.id),
+                    ]);
+                  })
+                .toList(),
+          ),
+          param: null,
+          scroll: true,
+          hidePrev: p0,
+        ),
       ),
       Setting(
         '',
@@ -97,4 +127,8 @@ Layer openTask(dynamic id) {
       )
     ],
   );
+}
+
+Future<void> moveTask(Map taskMap, String? folderID) async {
+  await Task.fromJson(taskMap, structure[folderID]!).upload();
 }

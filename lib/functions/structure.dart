@@ -62,7 +62,7 @@ Layer allFolders(dynamic id) {
           await newFolder.upload();
         },
       ),
-      list: structure.values.map((e) => e.toSetting()).toList()..sort((a, b) => a.title.compareTo(b.title)),
+      list: structure.values.map((e) => e.toSetting()).toList(),
     );
   } else {
     return Layer(
@@ -91,8 +91,7 @@ Layer allFolders(dynamic id) {
               }
               await Future.wait([e.update(), folder.update()]);
             })
-          .toList()
-        ..sort((a, b) => a.title.compareTo(b.title)),
+          .toList(),
     );
   }
 }
