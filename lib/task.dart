@@ -66,7 +66,7 @@ class Folder {
     Folder folder = Folder(
       name: decryptStr(json['name']) ?? '/${json['name']}',
       id: json['id'] ?? '',
-      color: json['col'],
+      color: json['col'] == 'Adaptive' ? null : json['col'],
       items: [],
       prefix: json['pre'] ?? '',
       nodes: (json['nodes'] as List?)?.map((e) => e.toString()).toList() ?? <String>[],

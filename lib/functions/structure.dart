@@ -18,14 +18,8 @@ Layer pinnedFolders(dynamic nothing) {
             .map(
               (e) => e.toSetting(),
             )
-            .toList()
-          ..sort(
-            (a, b) => a.title.compareTo(b.title),
-          )) +
-        (pinnedTasks().map((e) => e.toSetting()).toList()
-          ..sort(
-            (a, b) => a.title.compareTo(b.title),
-          )),
+            .toList()) +
+        (pinnedTasks().map((e) => e.toSetting()).toList()),
     trailing: (c) => [
       IconButton(
         onPressed: () => showSheet(

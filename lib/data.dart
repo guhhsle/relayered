@@ -92,6 +92,14 @@ late final SharedPreferences prefs;
 const ScrollPhysics scrollPhysics = BouncingScrollPhysics(
   parent: AlwaysScrollableScrollPhysics(),
 );
+
+const customRadius = BorderRadius.only(
+  topRight: Radius.circular(32),
+  topLeft: Radius.circular(16),
+  bottomLeft: Radius.circular(16),
+  bottomRight: Radius.circular(16),
+);
+
 late CollectionReference<Map<String, dynamic>> streamNote;
 late User user;
 late StreamSubscription noteStream;

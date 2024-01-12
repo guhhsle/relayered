@@ -95,6 +95,8 @@ class TaskPageState extends State<TaskPage> {
                         child: const QuillToolbar(
                           configurations: QuillToolbarConfigurations(
                             multiRowsDisplay: false,
+                            showFontFamily: false,
+                            showBoldButton: false,
                           ),
                         ),
                       ),

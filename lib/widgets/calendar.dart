@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:relayered/functions/folder_options.dart';
 import 'package:relayered/functions/open_folder.dart';
 
 import '../data.dart';
@@ -162,13 +163,6 @@ class _CalendarState extends State<Calendar> {
       return list;
     }
 
-    const customRadius = BorderRadius.only(
-      topRight: Radius.circular(32),
-      topLeft: Radius.circular(16),
-      bottomLeft: Radius.circular(16),
-      bottomRight: Radius.circular(16),
-    );
-
     return RefreshIndicator(
       onRefresh: sync,
       child: StreamBuilder(
@@ -199,6 +193,13 @@ class _CalendarState extends State<Calendar> {
                           ? {}
                           : showSheet(
                               func: openFolder,
+                              param: data[i][j].folder!.id,
+                              scroll: true,
+                            ),
+                      onLongPress: () => data[i][j].folder == null
+                          ? {}
+                          : showSheet(
+                              func: folderOptions,
                               param: data[i][j].folder!.id,
                               scroll: true,
                             ),

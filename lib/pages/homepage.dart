@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:relayered/widgets/calendar.dart';
+import 'package:relayered/widgets/relation.dart';
 
 import '../data.dart';
 import '../functions.dart';
@@ -6,7 +8,6 @@ import '../functions/layers.dart';
 import '../functions/structure.dart';
 import '../settings/calendar.dart';
 import '../widgets/body.dart';
-import '../widgets/calendar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -67,7 +68,15 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-          body: const Body(child: Calendar()),
+          body: Body(
+            child: PageView(
+              physics: scrollPhysics,
+              children: const [
+                Calendar(),
+                Relation(),
+              ],
+            ),
+          ),
         );
       },
     );
