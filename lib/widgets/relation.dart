@@ -92,7 +92,9 @@ class RelationState extends State<Relation> {
       stream: streamNote.snapshots(),
       builder: (context, snap) {
         try {
-          if (selectedRoot == '') selectedRoot = structure.keys.first;
+          if (selectedRoot == '') {
+            selectedRoot = structure.entries.firstWhere((e) => e.value.pin).key;
+          }
           initRelation(selectedRoot);
           pinned = structure.values.where((e) => e.pin).toList();
         } catch (e) {
