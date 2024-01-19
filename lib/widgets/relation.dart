@@ -72,9 +72,10 @@ void initRelation(String root) {
 
 List<Folder> pinned = [];
 String selectedRoot = '';
-Color mixColors(Color color1, Color color2, double ratio) {
-  ratio = ratio.clamp(0.0, 1.0); // Ensure that the ratio is between 0.0 and 1.0
+double scale = 1;
 
+Color mixColors(Color color1, Color color2, double ratio) {
+  ratio = ratio.clamp(0.0, 1.0);
   int mixedRed = ((1 - ratio) * color1.red + ratio * color2.red).round();
   int mixedGreen = ((1 - ratio) * color1.green + ratio * color2.green).round();
   int mixedBlue = ((1 - ratio) * color1.blue + ratio * color2.blue).round();
@@ -89,21 +90,21 @@ class RelationState extends State<Relation> {
     return StreamBuilder(
       stream: streamNote.snapshots(),
       builder: (context, snap) {
-        return const ZoomableRelation();
+        return ZoomableRelation(param: snap);
       },
     );
   }
 }
 
 class ZoomableRelation extends StatefulWidget {
-  const ZoomableRelation({super.key});
+  final Object param;
+  const ZoomableRelation({super.key, required this.param});
 
   @override
   State<ZoomableRelation> createState() => _ZoomableRelationState();
 }
 
 class _ZoomableRelationState extends State<ZoomableRelation> with SingleTickerProviderStateMixin {
-  double scale = 1;
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
 
@@ -113,6 +114,7 @@ class _ZoomableRelationState extends State<ZoomableRelation> with SingleTickerPr
 
     _controller = AnimationController(
       vsync: this,
+      value: scale,
       duration: const Duration(milliseconds: 128),
     );
 
@@ -120,6 +122,12 @@ class _ZoomableRelationState extends State<ZoomableRelation> with SingleTickerPr
       parent: _controller,
       curve: Curves.easeOutCubic,
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -137,12 +145,9 @@ class _ZoomableRelationState extends State<ZoomableRelation> with SingleTickerPr
       final RenderBox renderBox = relationKey.currentContext!.findRenderObject() as RenderBox;
       final double childWidth = renderBox.size.width;
       double newScale = MediaQuery.of(context).size.width / childWidth;
-      double diff = scale - newScale;
-      if (diff.abs() > 0.01) {
-        _scaleAnimation = Tween<double>(begin: scale, end: newScale).animate(_controller);
-        _controller.forward(from: 0);
-        scale = newScale;
-      }
+      _scaleAnimation = Tween<double>(begin: scale, end: newScale).animate(_controller);
+      _controller.forward(from: 0);
+      scale = newScale;
     });
     Color primary = Theme.of(context).primaryColor;
     Color background = Theme.of(context).colorScheme.background;
