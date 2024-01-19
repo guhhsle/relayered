@@ -33,6 +33,8 @@ class Node {
   Node(this.id, {this.parent});
 }
 
+final GlobalKey relationKey = GlobalKey();
+
 void fillDegree(int degree) {
   relationDegrees.add([]);
   if (degree > 10 || relationDegrees[degree].isEmpty) return;
@@ -68,80 +70,138 @@ void initRelation(String root) {
   }
 }
 
+List<Folder> pinned = [];
+String selectedRoot = '';
+Color mixColors(Color color1, Color color2, double ratio) {
+  ratio = ratio.clamp(0.0, 1.0); // Ensure that the ratio is between 0.0 and 1.0
+
+  int mixedRed = ((1 - ratio) * color1.red + ratio * color2.red).round();
+  int mixedGreen = ((1 - ratio) * color1.green + ratio * color2.green).round();
+  int mixedBlue = ((1 - ratio) * color1.blue + ratio * color2.blue).round();
+  int mixedAlpha = ((1 - ratio) * color1.alpha + ratio * color2.alpha).round();
+
+  return Color.fromARGB(mixedAlpha, mixedRed, mixedGreen, mixedBlue);
+}
+
 class RelationState extends State<Relation> {
-  String selectedRoot = '';
-
-  Color mixColors(Color color1, Color color2, double ratio) {
-    ratio = ratio.clamp(0.0, 1.0); // Ensure that the ratio is between 0.0 and 1.0
-
-    int mixedRed = ((1 - ratio) * color1.red + ratio * color2.red).round();
-    int mixedGreen = ((1 - ratio) * color1.green + ratio * color2.green).round();
-    int mixedBlue = ((1 - ratio) * color1.blue + ratio * color2.blue).round();
-    int mixedAlpha = ((1 - ratio) * color1.alpha + ratio * color2.alpha).round();
-
-    return Color.fromARGB(mixedAlpha, mixedRed, mixedGreen, mixedBlue);
-  }
-
-  List<Folder> pinned = [];
-
   @override
   Widget build(BuildContext context) {
-    Color primary = Theme.of(context).primaryColor;
-    Color background = Theme.of(context).colorScheme.background;
     return StreamBuilder(
       stream: streamNote.snapshots(),
       builder: (context, snap) {
-        try {
-          if (selectedRoot == '') {
-            selectedRoot = structure.entries.firstWhere((e) => e.value.pin).key;
-          }
-          initRelation(selectedRoot);
-          pinned = structure.values.where((e) => e.pin).toList();
-        } catch (e) {
-          //STRUCTURE NOT INITIALIZED
-        }
-        return Padding(
-          padding: const EdgeInsets.only(top: 16),
-          child: SingleChildScrollView(
-            physics: scrollPhysics,
-            child: SingleChildScrollView(
-              physics: scrollPhysics,
-              scrollDirection: Axis.horizontal,
+        return const ZoomableRelation();
+      },
+    );
+  }
+}
+
+class ZoomableRelation extends StatefulWidget {
+  const ZoomableRelation({super.key});
+
+  @override
+  State<ZoomableRelation> createState() => _ZoomableRelationState();
+}
+
+class _ZoomableRelationState extends State<ZoomableRelation> with SingleTickerProviderStateMixin {
+  double scale = 1;
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 128),
+    );
+
+    _scaleAnimation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutCubic,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    try {
+      if (selectedRoot == '') {
+        selectedRoot = structure.entries.firstWhere((e) => e.value.pin).key;
+      }
+      initRelation(selectedRoot);
+      pinned = structure.values.where((e) => e.pin).toList();
+    } catch (e) {
+      //STRUCTURE NOT INITIALIZED
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final RenderBox renderBox = relationKey.currentContext!.findRenderObject() as RenderBox;
+      final double childWidth = renderBox.size.width;
+      double newScale = MediaQuery.of(context).size.width / childWidth;
+      double diff = scale - newScale;
+      if (diff.abs() > 0.01) {
+        _scaleAnimation = Tween<double>(begin: scale, end: newScale).animate(_controller);
+        _controller.forward(from: 0);
+        scale = newScale;
+      }
+    });
+    Color primary = Theme.of(context).primaryColor;
+    Color background = Theme.of(context).colorScheme.background;
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: AnimatedBuilder(
+        animation: _scaleAnimation,
+        builder: (context, child) {
+          return InteractiveViewer(
+            boundaryMargin: const EdgeInsets.all(double.infinity),
+            constrained: false,
+            minScale: 1,
+            child: Transform.scale(
+              alignment: Alignment.topLeft,
+              scale: _scaleAnimation.value,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 55,
+                    width: MediaQuery.of(context).size.width / scale,
                     child: Card(
                       shadowColor: Colors.transparent,
                       color: Theme.of(context).primaryColor.withOpacity(0.5),
                       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                       shape: RoundedRectangleBorder(
                         side: BorderSide.none,
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      child: ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.only(left: 4),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: pinned.length,
-                        itemBuilder: (context, index) {
-                          Folder folder = pinned[index];
-                          return CustomChip(
-                            onSelected: (sel) {
-                              selectedRoot = folder.id!;
-                              setState(() {});
-                            },
-                            selected: folder.id == selectedRoot,
-                            label: folder.name,
-                          );
-                        },
+                      child: SizedBox(
+                        height: 45,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: scrollPhysics,
+                          padding: const EdgeInsets.only(left: 8),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: pinned.length,
+                          itemBuilder: (context, index) {
+                            Folder folder = pinned[index];
+                            return CustomChip(
+                              onSelected: (sel) {
+                                selectedRoot = folder.id!;
+                                setState(() {});
+                              },
+                              onHold: () => showSheet(
+                                func: openFolder,
+                                param: folder.id,
+                                scroll: true,
+                              ),
+                              selected: folder.id == selectedRoot,
+                              label: folder.name,
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 8),
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    key: relationKey,
                     child: Column(
                       children: [
                         for (var degree in relationDegrees)
@@ -200,89 +260,13 @@ class RelationState extends State<Relation> {
                           )
                       ],
                     ),
-                  ),
-                  /*
-                  ListView.builder(
-                    itemCount: relationDegrees.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, i) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: SizedBox(
-                          height: 50,
-                          child: Center(
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              scrollDirection: Axis.horizontal,
-                              itemCount: relationDegrees[i].length,
-                              itemBuilder: (context, j) {
-                                List<Node> field = relationDegrees[i][j];
-                                return SizedBox(
-                                  height: 50,
-                                  child: Card(
-                                    shadowColor: Colors.transparent,
-                                    color: Theme.of(context).primaryColor.withOpacity(field.isEmpty ? 0 : 0.15),
-                                    margin: EdgeInsets.symmetric(vertical: 2.5, horizontal: field.isEmpty ? 4 : 2),
-                                    shape: RoundedRectangleBorder(
-                                      side: BorderSide.none,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: ListView.builder(
-                                      itemCount: field.length,
-                                      physics: const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      padding: EdgeInsets.only(left: field.isEmpty ? 0 : 4),
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder: (context, k) {
-                                        Folder folder = structure[field[k].id]!;
-                                        return InkWell(
-                                          onLongPress: () => showSheet(
-                                            func: folderOptions,
-                                            param: folder.id,
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(right: 4),
-                                            child: InputChip(
-                                              showCheckmark: false,
-                                              selected: folder.pin || folder.color != null,
-                                              onSelected: (sel) => showSheet(
-                                                func: openFolder,
-                                                param: folder.id,
-                                                scroll: true,
-                                              ),
-                                              selectedColor: folder.color == null
-                                                  ? null
-                                                  : mixColors(background, taskColors[folder.color]!, 0.5),
-                                              label: Text(
-                                                folder.name,
-                                                style: TextStyle(
-                                                  color: folder.pin && folder.color == null ? background : primary,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-            			  */
+                  )
                 ],
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

@@ -4,6 +4,7 @@ import '../data.dart';
 
 class CustomChip extends StatefulWidget {
   final void Function(bool value) onSelected;
+  final void Function() onHold;
   final bool selected;
   final String label;
   final Color? primary, background;
@@ -11,6 +12,7 @@ class CustomChip extends StatefulWidget {
   const CustomChip({
     super.key,
     required this.onSelected,
+    required this.onHold,
     required this.selected,
     required this.label,
     this.primary,
@@ -28,16 +30,19 @@ class _CustomChipState extends State<CustomChip> {
     Color background = widget.background ?? Theme.of(context).colorScheme.background;
     return Padding(
       padding: const EdgeInsets.only(right: 8),
-      child: InputChip(
-        selected: widget.selected,
-        onSelected: widget.onSelected,
-        backgroundColor: background,
-        selectedColor: primary,
-        label: Text(
-          l[widget.label] ?? widget.label,
-          style: TextStyle(
-            color: widget.selected ? background : primary,
-            fontWeight: FontWeight.bold,
+      child: InkWell(
+        onLongPress: widget.onHold,
+        child: InputChip(
+          selected: widget.selected,
+          onSelected: widget.onSelected,
+          backgroundColor: background,
+          selectedColor: primary,
+          label: Text(
+            l[widget.label] ?? widget.label,
+            style: TextStyle(
+              color: widget.selected ? background : primary,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
