@@ -87,15 +87,13 @@ class _CalendarState extends State<Calendar> {
         int i = 0;
         if (a.due == null && b.due == null) {
         } else if (a.due == null && b.due != null) {
-          i = -1;
-        } else if (a.due != null && b.due == null) {
           i = 1;
+        } else if (a.due != null && b.due == null) {
+          i = -1;
         } else {
           i = a.due!.compareTo(b.due!);
         }
-        if (i == 0) {
-          return a.name.compareTo(b.name);
-        }
+        if (i == 0) return a.name.compareTo(b.name);
         return reverse * i;
       });
 
@@ -158,7 +156,7 @@ class _CalendarState extends State<Calendar> {
           }
         }
       }
-      sortTasks(list[0][0].list, -1);
+      sortTasks(list[0][0].list, 1);
       list[3].sort((a, b) => a.name.compareTo(b.name));
       return list;
     }
@@ -201,7 +199,6 @@ class _CalendarState extends State<Calendar> {
                           : showSheet(
                               func: folderOptions,
                               param: data[i][j].folder!.id,
-                              scroll: true,
                             ),
                       child: Card(
                         margin: const EdgeInsets.symmetric(

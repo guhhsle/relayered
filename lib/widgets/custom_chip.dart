@@ -33,6 +33,7 @@ class _CustomChipState extends State<CustomChip> {
       child: InkWell(
         onLongPress: widget.onHold,
         child: InputChip(
+          showCheckmark: false,
           selected: widget.selected,
           onSelected: widget.onSelected,
           backgroundColor: background,

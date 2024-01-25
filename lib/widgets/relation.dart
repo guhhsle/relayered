@@ -70,7 +70,6 @@ void initRelation(String root) {
   }
 }
 
-List<Folder> pinned = [];
 String selectedRoot = '';
 double scale = 1;
 
@@ -107,6 +106,7 @@ class ZoomableRelation extends StatefulWidget {
 class _ZoomableRelationState extends State<ZoomableRelation> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
+  List<Folder> pinned = [];
 
   @override
   void initState() {
