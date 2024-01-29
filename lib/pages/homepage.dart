@@ -8,6 +8,7 @@ import '../functions/layers.dart';
 import '../functions/structure.dart';
 import '../settings/calendar.dart';
 import '../widgets/body.dart';
+import '../widgets/overview.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,6 +18,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    _pageController = PageController(initialPage: 1);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -70,8 +85,10 @@ class _HomePageState extends State<HomePage> {
           ),
           body: Body(
             child: PageView(
+              controller: _pageController,
               physics: scrollPhysics,
               children: const [
+                Overview(),
                 Calendar(),
                 Relation(),
               ],
