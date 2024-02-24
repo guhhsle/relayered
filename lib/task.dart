@@ -150,11 +150,11 @@ class Task {
     this.pinned = false,
   });
 
-  static Task defaultNew(Folder path, {String? name, String? desc}) {
-    final quill.Delta delta = quill.Delta()..insert('${desc ?? ''}\n');
+  static Task defaultNew(Folder path, {String? name}) {
+    //final Delta delta = quill.Delta()..insert('${desc ?? ''}\n');
     return Task(
       name: name ?? 'NOVO',
-      desc: jsonEncode(delta.toJson()),
+      desc: r'[{"insert":"\n"}]',
       path: path,
       color: pf['defaultColor'],
       due: pf['taskNow'] ? today() : null,

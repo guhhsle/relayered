@@ -27,6 +27,7 @@ class TaskPageState extends State<TaskPage> {
   @override
   void initState() {
     task = widget.task;
+    debugPrint(task.desc);
     controller = QuillController(
       document: Document.fromJson(json.decode(task.desc)),
       selection: const TextSelection.collapsed(offset: 0),
@@ -88,17 +89,16 @@ class TaskPageState extends State<TaskPage> {
                 child: NoteTemplate(controller: controller),
               ),
               k
-                  ? QuillProvider(
-                      configurations: QuillConfigurations(controller: controller),
-                      child: Theme(
-                        data: theme(Colors.black, Colors.black),
-                        child: const QuillToolbar(
-                          configurations: QuillToolbarConfigurations(
-                            multiRowsDisplay: false,
-                            showFontFamily: false,
-                            showBoldButton: false,
-                          ),
-                        ),
+                  ? QuillToolbar.simple(
+                      configurations: QuillSimpleToolbarConfigurations(
+                        controller: controller,
+                        sectionDividerColor: Theme.of(context).colorScheme.background,
+                        color: Colors.transparent,
+                        multiRowsDisplay: false,
+                        showFontFamily: false,
+                        showBoldButton: false,
+                        toolbarSize: 38,
+                        sectionDividerSpace: 0,
                       ),
                     )
                   : Container(),
@@ -121,22 +121,20 @@ class NoteTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return QuillProvider(
-      configurations: QuillConfigurations(controller: controller),
-      child: QuillEditor(
-        scrollController: ScrollController(),
-        focusNode: FocusNode(),
-        configurations: QuillEditorConfigurations(
-          autoFocus: false,
-          scrollPhysics: const BouncingScrollPhysics(),
-          scrollable: true,
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-          expands: true,
-          readOnly: false,
-          onImagePaste: (imageBytes) async {
-            return imageBytes.toString();
-          },
-        ),
+    return QuillEditor(
+      scrollController: ScrollController(),
+      focusNode: FocusNode(),
+      configurations: QuillEditorConfigurations(
+        controller: controller,
+        autoFocus: false,
+        scrollPhysics: const BouncingScrollPhysics(),
+        scrollable: true,
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+        expands: true,
+        readOnly: false,
+        onImagePaste: (imageBytes) async {
+          return imageBytes.toString();
+        },
       ),
     );
   }
