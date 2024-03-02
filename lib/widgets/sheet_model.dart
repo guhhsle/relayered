@@ -27,64 +27,35 @@ class _SheetModelState extends State<SheetModel> {
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: ValueListenableBuilder(
-            valueListenable: refreshLay,
-            builder: (context, non, child) {
-              Layer layer = widget.func(widget.param);
-              List<Setting> list = layer.list;
-              return ListView(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  Row(
-                    children: <Widget>[
-                          Expanded(
-                            child: CustomCard(layer.action),
-                          ),
-                        ] +
-                        (layer.trailing == null ? [] : layer.trailing!(context)),
+          valueListenable: refreshLay,
+          builder: (context, non, child) {
+            Layer layer = widget.func(widget.param);
+            List<Setting> list = layer.list;
+            return ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                Row(
+                  children: <Widget>[
+                        Expanded(
+                          child: CustomCard(layer.action),
+                        ),
+                      ] +
+                      (layer.trailing == null ? [] : layer.trailing!(context)),
+                ),
+                ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: list.length,
+                  itemBuilder: (context, i) => settingToTile(
+                    list[i],
+                    context,
                   ),
-                  ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: list.length,
-                    itemBuilder: (context, i) {
-                      return ListTile(
-                        leading: list[i].secondary == null
-                            ? Icon(
-                                list[i].icon,
-                                color: list[i].iconColor,
-                              )
-                            : null,
-                        title: Text(t(list[i].title)),
-                        trailing: list[i].secondary != null
-                            ? InkWell(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Icon(
-                                  list[i].icon,
-                                  color: list[i].iconColor,
-                                ),
-                                onTap: () {
-                                  list[i].secondary!(context);
-                                  setState(() {});
-                                },
-                              )
-                            : Text(t(list[i].trailing)),
-                        onTap: () {
-                          list[i].onTap(context);
-                          setState(() {});
-                        },
-                        onLongPress: list[i].onHold == null
-                            ? null
-                            : () {
-                                list[i].onHold!(context);
-                                setState(() {});
-                              },
-                      );
-                    },
-                  ),
-                ],
-              );
-            }),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

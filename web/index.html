@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
@@ -42,22 +55,5 @@
       });
     });
   </script>
-  <script type="module">
-	import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
-	import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-analytics.js";
-    import { getFirestore } from "firebase/firestore";
-	const firebaseConfig = {
-		apiKey: "AIzaSyDGpEQYTrJoxD7IKwGRYD3Eu_zGbvZvvWI",
-		authDomain: "relayered-39.firebaseapp.com",
-		projectId: "relayered-39",
-		storageBucket: "relayered-39.appspot.com",
-		messagingSenderId: "675281183231",
-		appId: "1:675281183231:web:c52713b2e93a705e1f47ca",
-		measurementId: "G-E9BWD4GDWF"
-	};
-	
-	const app = initializeApp(firebaseConfig);
-	const analytics = getAnalytics(app);
-	</script>
 </body>
 </html>

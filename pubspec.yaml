@@ -25,7 +25,7 @@ dependencies:
   encrypt: any
   firebase_auth: any
   cloud_firestore: any
-  firebase_core: any 
+  firebase_core: ^2.24.2 
 
 dev_dependencies:
   flutter_launcher_icons: any
@@ -47,23 +47,23 @@ flutter:
   fonts:
     - family: OpenSans
       fonts:
-        - asset: fonts/OpenSans-Regular.ttf
+        - asset: assets/fonts/OpenSans-Regular.ttf
 
     - family: RobotoMono
       fonts:
-        - asset: fonts/RobotoMono-Regular.ttf
+        - asset: assets/fonts/RobotoMono-Regular.ttf
 
     - family: JetBrainsMono
       fonts:
-        - asset: fonts/JetBrainsMono-Regular.ttf
+        - asset: assets/fonts/JetBrainsMono-Regular.ttf
 
     - family: IBMPlexMono
       fonts:
-        - asset: fonts/IBMPlexMono-Regular.ttf
+        - asset: assets/fonts/IBMPlexMono-Regular.ttf
 
     - family: Pacifico
       fonts:
-        - asset: fonts/Pacifico-Regular.ttf
+        - asset: assets/fonts/Pacifico-Regular.ttf
         
   assets:
     - assets/translations/

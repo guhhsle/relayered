@@ -1,7 +1,16 @@
 # relayered
 
-Recursive notes app made using Flutter
+A new Flutter project.
 
+## Getting Started
 
-![  ](https://github.com/guhhsle/relayered/assets/148794958/f6a2eb91-4670-4283-b1b3-923a5b551ef2)
-![  ](https://github.com/guhhsle/relayered/assets/148794958/2fb237fa-f686-405b-8d06-e00e238215de)
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.

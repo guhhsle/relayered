@@ -5,11 +5,11 @@ import '../data.dart';
 import '../functions.dart';
 import '../functions/layers.dart';
 
-Layer interface() => Layer(
+Layer interface(dynamic d) => Layer(
       action: Setting(
         'Top',
         Icons.gradient_rounded,
-        'pf//appbar',
+        pf['appbar'],
         (c) => nextPref(
           'appbar',
           ['Primary', 'Black', 'Transparent'],
@@ -20,7 +20,7 @@ Layer interface() => Layer(
         Setting(
           'Action button',
           Icons.folder_rounded,
-          'pf//action',
+          pf['action'],
           (c) => nextPref(
             'action',
             ['Top', 'Floating'],
@@ -30,24 +30,24 @@ Layer interface() => Layer(
         Setting(
           'Task now',
           Icons.calendar_view_week,
-          'pf//taskNow',
+          '${pf['taskNow']}',
           (c) => revPref('taskNow'),
         ),
         Setting(
           'Stack layers',
           Icons.layers_rounded,
-          'pf//stackLayers',
+          '${pf['stackLayers']}',
           (c) => revPref('stackLayers'),
         ),
         Setting(
           'Default color',
           Icons.colorize_rounded,
-          'pf//defaultColor',
+          pf['defaultColor'],
           (c) => showSheet(
             param: 0,
             func: (i) => Layer(
               action: Setting(
-                'pf//defaultColor',
+                pf['defaultColor'],
                 Icons.colorize_rounded,
                 '',
                 (c) {},
@@ -68,10 +68,11 @@ Layer interface() => Layer(
       ],
     );
 
-Layer themeMap(bool p) {
+Layer themeMap(dynamic p) {
+  p is bool;
   Layer layer = Layer(
       action: Setting(
-        p ? 'pf//primary' : 'pf//background',
+        pf[p ? 'primary' : 'background'],
         p ? Icons.colorize_rounded : Icons.tonality_rounded,
         '',
         (c) => fetchColor(p),

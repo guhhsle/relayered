@@ -13,11 +13,11 @@ class PageSettings extends StatefulWidget {
 }
 
 class PageSettingsState extends State<PageSettings> {
-  Map<String, Layer> map = {
-    'Interface': interface(),
-    'Account': account(),
-    'Primary': themeMap(true),
-    'Background': themeMap(false),
+  Map<String, Layer Function(dynamic)> map = {
+    'Interface': interface,
+    'Account': account,
+    'Primary': themeMap,
+    'Background': themeMap,
   };
 
   @override
@@ -32,11 +32,11 @@ class PageSettingsState extends State<PageSettings> {
           itemBuilder: (context, index) => ListTile(
             title: Text(map.keys.elementAt(index)),
             leading: Icon(
-              map.values.elementAt(index).action.icon,
+              map.values.elementAt(index)(true).action.icon,
             ),
             onTap: () => showSheet(
-              func: (i) => map.values.elementAt(index),
-              param: 0,
+              func: map.values.elementAt(index),
+              param: index == 2,
               scroll: index > 1,
             ),
           ),

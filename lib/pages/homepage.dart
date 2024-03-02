@@ -9,6 +9,7 @@ import '../functions/structure.dart';
 import '../settings/calendar.dart';
 import '../widgets/body.dart';
 import '../widgets/overview.dart';
+import 'search.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -55,6 +56,13 @@ class _HomePageState extends State<HomePage> {
             automaticallyImplyLeading: false,
             title: Text(formatDate(DateTime.now(), year: false)),
             actions: [
+              IconButton(
+                tooltip: t('Search'),
+                icon: const Icon(Icons.fiber_manual_record_outlined),
+                onPressed: () {
+                  showSearch(context: context, delegate: Delegate());
+                },
+              ),
               pf['action'] == 'Top'
                   ? IconButton(
                       icon: const Icon(Icons.folder_rounded),

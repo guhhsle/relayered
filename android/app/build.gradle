@@ -2,6 +2,7 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+	id "com.google.gms.google-services"
 }
 
 def localProperties = new Properties()
@@ -22,11 +23,9 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-apply plugin: 'com.google.gms.google-services'
-
 android {
     namespace "com.guhhsle.relayered"
-    compileSdkVersion 34
+    compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
     compileOptions {

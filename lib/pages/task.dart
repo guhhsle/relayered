@@ -6,7 +6,6 @@ import '../data.dart';
 import '../functions/layers.dart';
 import '../functions/open_task.dart';
 import '../task.dart';
-import '../theme.dart';
 import '../widgets/body.dart';
 
 class TaskPage extends StatefulWidget {

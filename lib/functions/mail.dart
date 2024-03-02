@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:relayered/functions.dart';
 
 import '../data.dart';
 import '../pages/homepage.dart';
@@ -17,35 +18,26 @@ class FirebaseService {
     BuildContext context,
   ) async {
     try {
-      await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      try {
+        await _auth.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+      } catch (e) {
+        try {
+          await _auth.createUserWithEmailAndPassword(
+            email: email,
+            password: password,
+          );
+          await user.sendEmailVerification();
+        } on FirebaseAuthException catch (e) {
+          crashDialog(context, e.code);
+        }
+      }
       user = FirebaseAuth.instance.currentUser!;
 
       await FirebaseFirestore.instance.enableNetwork();
-      noteStream = listenNotes(user);
-
-      Navigator.of(context).push(MaterialPageRoute(builder: (c) => const HomePage()));
-    } on FirebaseAuthException catch (e) {
-      crashDialog(context, e.code);
-    }
-  }
-
-  Future signUpWithMail(
-    String email,
-    String password,
-    BuildContext context,
-  ) async {
-    try {
-      await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      user = FirebaseAuth.instance.currentUser!;
-
-      await FirebaseFirestore.instance.enableNetwork();
-      await user.sendEmailVerification();
+      sync();
       noteStream = listenNotes(user);
 
       Navigator.of(context).push(MaterialPageRoute(builder: (c) => const HomePage()));

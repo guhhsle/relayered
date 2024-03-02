@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:relayered/firebase_options.dart';
 
 import 'data.dart';
 import 'functions.dart';
@@ -15,6 +16,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   web = kIsWeb;
   await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  /*
     options: web
         ? const FirebaseOptions(
             apiKey: "AIzaSyDGpEQYTrJoxD7IKwGRYD3Eu_zGbvZvvWI",
@@ -26,7 +30,12 @@ Future<void> main() async {
             measurementId: "G-E9BWD4GDWF",
           )
         : null,
-  );
+Platform  Firebase App Id
+web       1:675281183231:web:c52713b2e93a705e1f47ca
+android   1:675281183231:android:fced4c0d2e302e321f47ca
+ios       1:675281183231:ios:d72b704471f68f911f47ca
+macos     1:675281183231:ios:3a9cd96471923e261f47ca
+	 */
 
   FirebaseFirestore.instance.settings = const Settings(
     cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
@@ -35,9 +44,8 @@ Future<void> main() async {
   await initPrefs();
   if (pf['firstBoot']) {
     await FirebaseAuth.instance.signInAnonymously();
-  } else {
-    await FirebaseFirestore.instance.disableNetwork();
   }
+  await FirebaseFirestore.instance.disableNetwork();
   user = FirebaseAuth.instance.currentUser!;
   noteStream = listenNotes(user);
   runApp(const MyApp());

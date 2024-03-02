@@ -61,6 +61,39 @@ Color lighterColor(Color p, Color q) {
   return q;
 }
 
+ListTile settingToTile(Setting set, BuildContext context) {
+  Widget? leading, trailing;
+  if (set.secondary == null) {
+    leading = Icon(set.icon, color: set.iconColor);
+    trailing = Text(t(set.trailing));
+  } else {
+    trailing = InkWell(
+      borderRadius: BorderRadius.circular(10),
+      child: Icon(set.icon, color: set.iconColor),
+      onTap: () {
+        set.secondary!(context);
+        refreshLayer();
+      },
+    );
+  }
+
+  return ListTile(
+    leading: leading,
+    title: Text(t(set.title)),
+    trailing: trailing,
+    onTap: () {
+      set.onTap(context);
+      refreshLayer();
+    },
+    onLongPress: set.onHold == null
+        ? null
+        : () {
+            set.onHold!(context);
+            refreshLayer();
+          },
+  );
+}
+
 Future sync() async {
   if (user.isAnonymous) return;
   await FirebaseFirestore.instance.enableNetwork();
@@ -154,9 +187,11 @@ Future<int> loadLocale() async {
 
 String t(dynamic d) {
   String s = '$d';
+  /*
   if (s.startsWith('pf//')) {
     return t(pf[s.replaceAll('pf//', '')]);
   }
+  */
   return l[s] ?? s;
 }
 

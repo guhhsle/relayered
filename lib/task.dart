@@ -174,9 +174,10 @@ class Task {
     );
   }
 
-  Setting toSetting() {
+  Setting toSetting({String? title}) {
+    title ??= '$name   ${date(month: true)}';
     return Setting(
-      '$name   ${date(month: true)}',
+      title,
       checked(),
       '',
       (p0) => showSheet(
@@ -186,7 +187,7 @@ class Task {
       iconColor: taskColors[color],
       secondary: (c) {
         done = !done;
-        update;
+        update();
       },
       onHold: (c) => goToPage(TaskPage(task: this)),
     );

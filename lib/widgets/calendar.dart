@@ -219,30 +219,13 @@ class _CalendarState extends State<Calendar> {
                                 itemCount: data[i][j].list.length,
                                 itemBuilder: (context, k) {
                                   Task task = data[i][j].list[k];
-                                  return ListTile(
-                                    onTap: () => showSheet(
-                                      func: openTask,
-                                      param: task.id,
-                                    ),
-                                    onLongPress: () => goToPage(
-                                      TaskPage(task: task),
-                                    ),
-                                    title: Text(
-                                      task.path.prefix == ''
+                                  return settingToTile(
+                                    task.toSetting(
+                                      title: task.path.prefix == ''
                                           ? '${task.date()}   ${task.name}'
                                           : '${task.date()}   ${task.path.prefix} ${task.name}',
                                     ),
-                                    trailing: InkWell(
-                                      borderRadius: BorderRadius.circular(16),
-                                      onTap: () {
-                                        task.done = !task.done;
-                                        task.update();
-                                      },
-                                      child: Icon(
-                                        task.checked(),
-                                        color: taskColors[task.color],
-                                      ),
-                                    ),
+                                    context,
                                   );
                                 },
                               ),

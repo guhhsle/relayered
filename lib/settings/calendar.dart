@@ -20,19 +20,19 @@ Layer calendar() => Layer(
         Setting(
           'Show pinned',
           Icons.push_pin_rounded,
-          'pf//showPinned',
+          '${pf['showPinned']}',
           (c) => revPref('showPinned', refresh: true),
         ),
         Setting(
           'Show done',
           Icons.done_rounded,
-          'pf//showDone',
+          '${pf['showDone']}',
           (c) => revPref('showDone', refresh: true),
         ),
         Setting(
           'Folder field',
           Icons.folder_copy_rounded,
-          'pf//showFolders',
+          '${pf['showFolders']}',
           (c) => revPref('showFolders', refresh: true),
         ),
         Setting(
