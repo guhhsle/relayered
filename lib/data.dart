@@ -103,26 +103,6 @@ const customRadius = BorderRadius.only(
 late CollectionReference<Map<String, dynamic>> streamNote;
 late User user;
 late StreamSubscription noteStream;
-
-class Setting {
-  final String title, trailing;
-  IconData icon;
-  final Color? iconColor;
-  void Function(BuildContext) onTap;
-  final void Function(BuildContext)? secondary;
-  void Function(BuildContext)? onHold;
-
-  Setting(
-    this.title,
-    this.icon,
-    this.trailing,
-    this.onTap, {
-    this.secondary,
-    this.onHold,
-    this.iconColor,
-  });
-}
-
 final ValueNotifier<ThemeData> themeNotifier = ValueNotifier(ThemeData());
 final ValueNotifier<bool> refreshLay = ValueNotifier(true);
 final navigatorKey = GlobalKey<NavigatorState>();

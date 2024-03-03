@@ -5,8 +5,6 @@ import 'package:relayered/functions/open_folder.dart';
 import '../data.dart';
 import '../functions.dart';
 import '../functions/layers.dart';
-import '../functions/open_task.dart';
-import '../pages/task.dart';
 import '../task.dart';
 
 class Calendar extends StatefulWidget {
@@ -219,14 +217,13 @@ class _CalendarState extends State<Calendar> {
                                 itemCount: data[i][j].list.length,
                                 itemBuilder: (context, k) {
                                   Task task = data[i][j].list[k];
-                                  return settingToTile(
-                                    task.toSetting(
-                                      title: task.path.prefix == ''
-                                          ? '${task.date()}   ${task.name}'
-                                          : '${task.date()}   ${task.path.prefix} ${task.name}',
-                                    ),
-                                    context,
-                                  );
+                                  return task
+                                      .toSetting(
+                                        title: task.path.prefix == ''
+                                            ? '${task.date()}   ${task.name}'
+                                            : '${task.date()}   ${task.path.prefix} ${task.name}',
+                                      )
+                                      .toTile(context);
                                 },
                               ),
                             ],

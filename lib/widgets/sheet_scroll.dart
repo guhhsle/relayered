@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../data.dart';
-import '../functions.dart';
 import '../functions/layers.dart';
 import 'custom_card.dart';
 
@@ -57,10 +56,7 @@ class SheetScrollModelState extends State<SheetScrollModel> {
                             padding: const EdgeInsets.only(bottom: 8),
                             controller: controller,
                             itemCount: list.length,
-                            itemBuilder: (context, i) => settingToTile(
-                              list[i],
-                              context,
-                            ),
+                            itemBuilder: (context, i) => list[i].toTile(context),
                           ),
                         ),
                       ),

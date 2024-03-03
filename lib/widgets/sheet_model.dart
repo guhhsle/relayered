@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../data.dart';
-import '../functions.dart';
 import '../functions/layers.dart';
 import 'custom_card.dart';
 
@@ -47,10 +46,7 @@ class _SheetModelState extends State<SheetModel> {
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: list.length,
-                  itemBuilder: (context, i) => settingToTile(
-                    list[i],
-                    context,
-                  ),
+                  itemBuilder: (context, i) => list[i].toTile(context),
                 ),
               ],
             );

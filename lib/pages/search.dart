@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:relayered/functions.dart';
 
 import '../data.dart';
 import '../task.dart';
@@ -104,10 +103,7 @@ class SuggestionListState extends State<SuggestionList> {
                 vertical: 32,
                 horizontal: 16,
               ),
-              itemBuilder: (context, i) => settingToTile(
-                results[i].toSetting(),
-                context,
-              ),
+              itemBuilder: (context, i) => results[i].toSetting().toTile(context),
             ),
           ),
         );
