@@ -15,8 +15,11 @@ StreamSubscription<QuerySnapshot<Map<String, dynamic>>> listenNotes(User us) {
       folder.id = snap.id;
       structure.addAll({snap.id: folder});
       folder.items.sort((a, b) {
-        if (a.due == null) return 1;
-        if (b.due == null) return -1;
+        if (a.due == null && b.due == null) {
+          return a.name.compareTo(b.name);
+        } else if (a.due == null) {
+          return 1;
+        }
         return a.due!.compareTo(b.due!);
       });
 
