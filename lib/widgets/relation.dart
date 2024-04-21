@@ -151,127 +151,123 @@ class _ZoomableRelationState extends State<ZoomableRelation> with SingleTickerPr
     });
     Color primary = Theme.of(context).primaryColor;
     Color background = Theme.of(context).colorScheme.background;
-    return Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: AnimatedBuilder(
-        animation: _scaleAnimation,
-        builder: (context, child) {
-          return InteractiveViewer(
-            boundaryMargin: const EdgeInsets.all(double.infinity),
-            constrained: false,
-            minScale: 1,
-            child: Transform.scale(
-              alignment: Alignment.topLeft,
-              scale: _scaleAnimation.value,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / scale,
-                    child: Card(
-                      shadowColor: Colors.transparent,
-                      color: Theme.of(context).primaryColor.withOpacity(0.5),
-                      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide.none,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: SizedBox(
-                        height: 45,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: scrollPhysics,
-                          padding: const EdgeInsets.only(left: 8),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: pinned.length,
-                          itemBuilder: (context, index) {
-                            Folder folder = pinned[index];
-                            return CustomChip(
-                              onSelected: (sel) {
-                                selectedRoot = folder.id!;
-                                setState(() {});
-                              },
-                              onHold: () => showSheet(
-                                func: openFolder,
-                                param: folder.id,
-                                scroll: true,
-                              ),
-                              selected: folder.id == selectedRoot,
-                              label: folder.name,
-                            );
+    return AnimatedBuilder(
+      animation: _scaleAnimation,
+      builder: (context, child) {
+        return InteractiveViewer(
+          boundaryMargin: const EdgeInsets.all(double.infinity),
+          constrained: false,
+          minScale: 1,
+          child: Transform.scale(
+            alignment: Alignment.topLeft,
+            scale: _scaleAnimation.value,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / scale,
+                  height: 65,
+                  child: Card(
+                    shadowColor: Colors.transparent,
+                    color: Theme.of(context).primaryColor.withOpacity(0.5),
+                    margin: const EdgeInsets.all(8),
+                    shape: const RoundedRectangleBorder(
+                      side: BorderSide.none,
+                      borderRadius: customRadius,
+                    ),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: scrollPhysics,
+                      padding: const EdgeInsets.only(left: 8),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: pinned.length,
+                      itemBuilder: (context, index) {
+                        Folder folder = pinned[index];
+                        return CustomChip(
+                          onSelected: (sel) {
+                            selectedRoot = folder.id!;
+                            setState(() {});
                           },
-                        ),
-                      ),
+                          onHold: () => showSheet(
+                            func: openFolder,
+                            param: folder.id,
+                            scroll: true,
+                          ),
+                          selected: folder.id == selectedRoot,
+                          label: folder.name,
+                        );
+                      },
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    key: relationKey,
-                    child: Column(
-                      children: [
-                        for (var degree in relationDegrees)
-                          SizedBox(
-                            height: 55,
-                            child: Row(
-                              children: [
-                                for (var field in degree)
-                                  Card(
-                                    shadowColor: Colors.transparent,
-                                    color: Theme.of(context).primaryColor.withOpacity(field.isEmpty ? 0 : 0.15),
-                                    margin: EdgeInsets.symmetric(vertical: 5, horizontal: field.isEmpty ? 5 : 2),
-                                    shape: RoundedRectangleBorder(
-                                      side: BorderSide.none,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: field.isEmpty ? 0 : 4),
-                                      child: Row(
-                                        children: [
-                                          for (Folder folder in field.map((e) => structure[e.id]!))
-                                            InkWell(
-                                              onLongPress: () => showSheet(
-                                                func: folderOptions,
-                                                param: folder.id,
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(right: 4),
-                                                child: InputChip(
-                                                  showCheckmark: false,
-                                                  selected: folder.pin || folder.color != null,
-                                                  onSelected: (sel) => showSheet(
-                                                    func: openFolder,
-                                                    param: folder.id,
-                                                    scroll: true,
-                                                  ),
-                                                  selectedColor: folder.color == null
-                                                      ? null
-                                                      : mixColors(background, taskColors[folder.color]!, 0.5),
-                                                  label: Text(
-                                                    folder.name,
-                                                    style: TextStyle(
-                                                      color: folder.pin && folder.color == null ? background : primary,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
+                ),
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  key: relationKey,
+                  child: Column(
+                    children: [
+                      for (var degree in relationDegrees)
+                        SizedBox(
+                          height: 55,
+                          child: Row(
+                            children: [
+                              for (var field in degree)
+                                Card(
+                                  shadowColor: Colors.transparent,
+                                  color: Theme.of(context).primaryColor.withOpacity(field.isEmpty ? 0 : 0.15),
+                                  margin: EdgeInsets.symmetric(vertical: 5, horizontal: field.isEmpty ? 5 : 2),
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide.none,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: field.isEmpty ? 0 : 4),
+                                    child: Row(
+                                      children: [
+                                        for (Folder folder in field.map((e) => structure[e.id]!))
+                                          InkWell(
+                                            onLongPress: () => showSheet(
+                                              func: folderOptions,
+                                              param: folder.id,
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(right: 4),
+                                              child: InputChip(
+                                                showCheckmark: false,
+                                                selected: folder.pin || folder.color != null,
+                                                onSelected: (sel) => showSheet(
+                                                  func: openFolder,
+                                                  param: folder.id,
+                                                  scroll: true,
+                                                ),
+                                                selectedColor: folder.color == null
+                                                    ? null
+                                                    : mixColors(background, taskColors[folder.color]!, 0.5),
+                                                label: Text(
+                                                  folder.name,
+                                                  style: TextStyle(
+                                                    color: folder.pin && folder.color == null ? background : primary,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
                                               ),
-                                            )
-                                        ],
-                                      ),
+                                            ),
+                                          )
+                                      ],
                                     ),
-                                  )
-                              ],
-                            ),
-                          )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                                  ),
+                                )
+                            ],
+                          ),
+                        )
+                    ],
+                  ),
+                )
+              ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

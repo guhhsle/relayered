@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:relayered/functions/folder_options.dart';
-import 'package:relayered/functions/open_folder.dart';
-
+import '../functions/folder_options.dart';
+import '../functions/open_folder.dart';
 import '../data.dart';
 import '../functions.dart';
 import '../functions/layers.dart';
@@ -171,10 +170,7 @@ class _CalendarState extends State<Calendar> {
             padding: const EdgeInsets.only(bottom: 64),
             itemBuilder: (context, i) {
               return Card(
-                margin: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 5,
-                ),
+                margin: const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 32),
                 shape: const RoundedRectangleBorder(borderRadius: customRadius),
                 shadowColor: Colors.transparent,
                 color: Theme.of(context).primaryColor.withOpacity(0.08),

@@ -3,7 +3,6 @@ import 'package:relayered/data.dart';
 import 'package:relayered/functions/folder_options.dart';
 import 'package:relayered/functions/layers.dart';
 import 'package:relayered/functions/open_folder.dart';
-import 'package:relayered/widgets/custom_chip.dart';
 
 import 'relation.dart';
 
@@ -23,10 +22,7 @@ class OverviewState extends State<Overview> {
       stream: streamNote.snapshots(),
       builder: (context, snap) {
         return Card(
-          margin: const EdgeInsets.symmetric(
-            vertical: 16,
-            horizontal: 5,
-          ),
+          margin: const EdgeInsets.all(8),
           shadowColor: Colors.transparent,
           color: Theme.of(context).primaryColor.withOpacity(0.08),
           shape: const RoundedRectangleBorder(borderRadius: customRadius),
