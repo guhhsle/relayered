@@ -24,7 +24,8 @@ Future<void> main() async {
   );
 
   await initPrefs();
-  if (pf['firstBoot']) {
+
+  if (FirebaseAuth.instance.currentUser == null) {
     await FirebaseAuth.instance.signInAnonymously();
   }
   await FirebaseFirestore.instance.disableNetwork();

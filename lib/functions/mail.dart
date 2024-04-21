@@ -2,8 +2,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:relayered/functions.dart';
-
 import '../data.dart';
 import '../pages/homepage.dart';
 import 'task.dart';
@@ -16,6 +14,7 @@ class FirebaseService {
     String password,
     BuildContext context,
   ) async {
+    await FirebaseFirestore.instance.enableNetwork();
     try {
       try {
         await _auth.signInWithEmailAndPassword(
@@ -34,9 +33,6 @@ class FirebaseService {
         }
       }
       user = FirebaseAuth.instance.currentUser!;
-
-      await FirebaseFirestore.instance.enableNetwork();
-      sync();
       noteStream = listenNotes(user);
 
       Navigator.of(context).push(MaterialPageRoute(builder: (c) => const HomePage()));
