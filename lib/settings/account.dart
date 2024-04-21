@@ -1,13 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import '../data.dart';
 import '../functions.dart';
 import '../functions/layers.dart';
 import '../functions/mail.dart';
+import '../functions/prefs.dart';
 import '../functions/task.dart';
 
 String? mail, password;

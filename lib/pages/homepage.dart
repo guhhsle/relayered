@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:relayered/widgets/calendar.dart';
-import 'package:relayered/widgets/relation.dart';
-
+import '../widgets/calendar.dart';
+import '../widgets/relation.dart';
 import '../data.dart';
 import '../functions.dart';
 import '../functions/layers.dart';

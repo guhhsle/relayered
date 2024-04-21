@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import '../data.dart';
-import '../functions.dart';
 import '../functions/layers.dart';
+import '../functions/prefs.dart';
 
 Layer interface(dynamic d) => Layer(
       action: Setting(

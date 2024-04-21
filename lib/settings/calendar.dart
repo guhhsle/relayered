@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:relayered/functions/open_folder.dart';
-
+import '../functions/open_folder.dart';
 import '../data.dart';
 import '../functions.dart';
 import '../functions/layers.dart';
+import '../functions/prefs.dart';
 import '../pages/settings.dart';
 
 Layer calendar() => Layer(

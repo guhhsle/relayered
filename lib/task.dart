@@ -1,14 +1,10 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'data.dart';
 import 'functions.dart';
-
 import 'package:encrypt/encrypt.dart' as e;
-
 import 'functions/folder_options.dart';
 import 'functions/layers.dart';
 import 'functions/open_folder.dart';
@@ -34,10 +30,7 @@ String? decryptStr(String? crypt) {
     final key = e.Key.fromUtf8(keyString);
     final iv = e.IV.fromUtf8(keyString);
     final encrypter = e.Encrypter(e.AES(key));
-    return encrypter.decrypt(
-      e.Encrypted.fromBase64(crypt!),
-      iv: iv,
-    );
+    return encrypter.decrypt(e.Encrypted.fromBase64(crypt!), iv: iv);
   } catch (e) {
     return null;
   }
