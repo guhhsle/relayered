@@ -14,8 +14,8 @@ Layer account(dynamic d) {
   if (user.isAnonymous || user.email == null) {
     return Layer(
       action: Setting(
-        'Save',
-        Icons.save_outlined,
+        'Continue',
+        Icons.person_add_rounded,
         '',
         (c) async {
           FirebaseService service = FirebaseService();
@@ -101,7 +101,7 @@ Layer account(dynamic d) {
           (c) async {
             await FirebaseAuth.instance.signInAnonymously();
             user = FirebaseAuth.instance.currentUser!;
-            noteStream = listenNotes(user);
+            noteStream = listenNotes();
             await FirebaseFirestore.instance.disableNetwork();
             Navigator.of(c).pop();
           },

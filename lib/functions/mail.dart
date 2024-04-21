@@ -33,7 +33,7 @@ class FirebaseService {
         }
       }
       user = FirebaseAuth.instance.currentUser!;
-      noteStream = listenNotes(user);
+      noteStream = listenNotes();
 
       Navigator.of(context).push(MaterialPageRoute(builder: (c) => const HomePage()));
     } on FirebaseAuthException catch (e) {

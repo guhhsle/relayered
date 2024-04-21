@@ -30,7 +30,7 @@ Future<void> main() async {
   }
   await FirebaseFirestore.instance.disableNetwork();
   user = FirebaseAuth.instance.currentUser!;
-  noteStream = listenNotes(user);
+  noteStream = listenNotes();
   runApp(const MyApp());
 }
 

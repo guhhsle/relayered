@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../data.dart';
 import '../functions.dart';
 import '../task.dart';
 
-StreamSubscription<QuerySnapshot<Map<String, dynamic>>> listenNotes(User us) {
+StreamSubscription<QuerySnapshot<Map<String, dynamic>>> listenNotes() {
   streamNote = coll();
   return streamNote.snapshots().listen((data) {
     structure.clear();
