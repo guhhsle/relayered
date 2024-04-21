@@ -25,7 +25,7 @@ dependencies:
   encrypt: any
   firebase_auth: any
   cloud_firestore: any
-  firebase_core: ^2.24.2 
+  firebase_core: any 
 
 dev_dependencies:
   flutter_launcher_icons: any
