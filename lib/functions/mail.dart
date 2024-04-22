@@ -9,36 +9,33 @@ import 'task.dart';
 class FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future signInWithMail(
+  Future signIn(
     String email,
     String password,
     BuildContext context,
+    bool existing,
   ) async {
     await FirebaseFirestore.instance.enableNetwork();
     try {
-      try {
+      if (existing) {
         await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
-      } catch (e) {
-        try {
-          await _auth.createUserWithEmailAndPassword(
-            email: email,
-            password: password,
-          );
-          await user.sendEmailVerification();
-        } on FirebaseAuthException catch (e) {
-          crashDialog(context, e.code);
-        }
+      } else {
+        await _auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        await user.sendEmailVerification();
       }
-      user = FirebaseAuth.instance.currentUser!;
-      noteStream = listenNotes();
-
-      Navigator.of(context).push(MaterialPageRoute(builder: (c) => const HomePage()));
-    } on FirebaseAuthException catch (e) {
-      crashDialog(context, e.code);
+    } catch (e) {
+      crashDialog(context, '$e');
     }
+    user = FirebaseAuth.instance.currentUser!;
+    noteStream = listenNotes();
+
+    Navigator.of(context).push(MaterialPageRoute(builder: (c) => const HomePage()));
   }
 
   Future resetPassword(String email, BuildContext context) async {

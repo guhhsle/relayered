@@ -8,23 +8,39 @@ import '../functions/layers.dart';
 import '../functions/mail.dart';
 import '../functions/prefs.dart';
 import '../functions/task.dart';
+import '../widgets/custom_card.dart';
 
 String? mail, password;
 Layer account(dynamic d) {
   if (user.isAnonymous || user.email == null) {
     return Layer(
+      trailing: (c) => [
+        Expanded(
+          child: CustomCard(
+            Setting(
+              'Login',
+              Icons.person_add_rounded,
+              ' ',
+              (c) => FirebaseService().signIn(
+                mail!.trim(),
+                password!,
+                c,
+                true,
+              ),
+            ),
+          ),
+        )
+      ],
       action: Setting(
-        'Continue',
+        ' ',
         Icons.person_add_rounded,
-        '',
-        (c) async {
-          FirebaseService service = FirebaseService();
-          await service.signInWithMail(
-            mail!.trim(),
-            password!,
-            c,
-          );
-        },
+        'Sign up',
+        (c) => FirebaseService().signIn(
+          mail!.trim(),
+          password!,
+          c,
+          false,
+        ),
       ),
       list: [
         Setting(
@@ -66,21 +82,13 @@ Layer account(dynamic d) {
       ),
       list: [
         Setting(
-          'Key',
+          'Encryption',
           Icons.key_rounded,
           pf['encryptKey'],
           (c) async {
             Navigator.of(c).pop();
             await getKey(pf['encryptKey']);
           },
-        ),
-        Setting(
-          user.displayName ?? 'User',
-          Icons.person_rounded,
-          'Change',
-          (c) async => user.updateDisplayName(
-            await getInput(user.displayName),
-          ),
         ),
         Setting(
           'Sync timeout',
@@ -92,7 +100,7 @@ Layer account(dynamic d) {
           'Change password',
           Icons.password_rounded,
           '',
-          (c) => FirebaseService().resetPassword(user.email ?? ' ', c),
+          (c) => FirebaseService().resetPassword(user.email!, c),
         ),
         Setting(
           'Log out',
@@ -105,12 +113,6 @@ Layer account(dynamic d) {
             await FirebaseFirestore.instance.disableNetwork();
             Navigator.of(c).pop();
           },
-        ),
-        Setting(
-          'Delete account',
-          Icons.person_off_rounded,
-          '',
-          (c) {},
         ),
       ],
     );

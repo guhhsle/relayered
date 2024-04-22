@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../data.dart';
 import '../functions/layers.dart';
 import 'custom_card.dart';
@@ -38,7 +37,7 @@ class _SheetModelState extends State<SheetModel> {
                   children: <Widget>[
                         Expanded(
                           child: CustomCard(layer.action),
-                        ),
+                        )
                       ] +
                       (layer.trailing == null ? [] : layer.trailing!(context)),
                 ),

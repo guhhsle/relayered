@@ -30,7 +30,7 @@ dynamic getPref(pString) {
   }
 }
 
-Future setPref(String pString, var value, {bool refresh = false}) async {
+Future<void> setPref(String pString, var value, {bool refresh = false}) async {
   pf[pString] = value;
   if (value is int) {
     await prefs.setInt(pString, value);
