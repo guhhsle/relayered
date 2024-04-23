@@ -6,9 +6,7 @@ Future<void> initPrefs() async {
   prefs = await SharedPreferences.getInstance();
 
   for (MapEntry entry in pf.entries) {
-    if (getPref(entry.key) == null) {
-      await setPref(entry.key, entry.value);
-    } else {
+    if (getPref(entry.key) != null) {
       pf[entry.key] = getPref(entry.key);
     }
   }
