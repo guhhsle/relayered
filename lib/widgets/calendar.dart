@@ -126,7 +126,6 @@ class _CalendarState extends State<Calendar> {
       ));
 
       for (var folder in structure.values) {
-        //if (folder.name.contains('.')) continue;
         bool ignored = false;
         for (var str in pf['ignore']) {
           if (folder.name.startsWith(str)) ignored = true;
@@ -140,7 +139,7 @@ class _CalendarState extends State<Calendar> {
           } else if (task.due != null) {
             int comparation = task.due!.compareTo(today());
             if (comparation == 0) {
-              list[0][0].list.add(task);
+              list[0][0].list.add(task); //TODAY
             } else {
               addTaskToList(
                 task,
@@ -153,7 +152,11 @@ class _CalendarState extends State<Calendar> {
           }
         }
       }
-      sortTasks(list[0][0].list, 1);
+      if (list[0][0].list.isEmpty) {
+        list[0].clear();
+      } else {
+        sortTasks(list[0][0].list, 1);
+      }
       list[3].sort((a, b) => a.name.compareTo(b.name));
       return list;
     }
