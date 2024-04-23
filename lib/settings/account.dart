@@ -62,9 +62,9 @@ Layer account(dynamic d) {
           },
         ),
         Setting(
-          'Key',
+          'Encryption key',
           Icons.key_rounded,
-          pf['encryptKey'],
+          '',
           (c) async {
             await getKey(pf['encryptKey']);
             refreshLayer();
@@ -82,9 +82,9 @@ Layer account(dynamic d) {
       ),
       list: [
         Setting(
-          'Encryption',
+          'Encryption key',
           Icons.key_rounded,
-          pf['encryptKey'],
+          '',
           (c) async {
             Navigator.of(c).pop();
             await getKey(pf['encryptKey']);
