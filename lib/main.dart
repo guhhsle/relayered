@@ -52,7 +52,8 @@ class Home extends StatelessWidget {
         return MaterialApp(
           navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
-          theme: theme(color(true), color(false)),
+          theme: theme(color(true, lightTheme: true), color(false, lightTheme: true)),
+          darkTheme: theme(color(true, lightTheme: false), color(false, lightTheme: false)),
           title: 'Relayered',
           home: AnnotatedRegion<SystemUiOverlayStyle>(
             value: SystemUiOverlayStyle(
