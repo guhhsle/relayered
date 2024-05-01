@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
+import 'package:relayered/functions/task.dart';
 import '../data.dart';
 import '../pages/task.dart';
 import '../task.dart';
@@ -70,7 +71,42 @@ Future<Layer> openTask(dynamic id) async {
         '',
         Icons.calendar_today_rounded,
         task.date(year: true, month: true),
-        (p0) => pickDate(task, p0),
+        (p0) {
+          showSheet(
+            func: (non) async {
+              return Layer(
+                action: Setting(
+                  'Add date',
+                  Icons.insert_invitation_rounded,
+                  '',
+                  (context) async {
+                    var due = await pickDate(task, context);
+                    if (due != null) {
+                      task.dues.add(due);
+                      await task.update();
+                    }
+                  },
+                ),
+                list: [
+                  for (var due in task.dues)
+                    Setting(
+                      formatDate(due, year: false),
+                      Icons.event_busy_rounded,
+                      '',
+                      (c) {
+                        task.dues.remove(due);
+                        task.update();
+                      },
+                      secondary: (c) {
+                        task.dues.remove(due);
+                        task.update();
+                      },
+                    )
+                ],
+              );
+            },
+          );
+        },
       ),
       Setting(
         '',

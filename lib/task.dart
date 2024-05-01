@@ -129,7 +129,7 @@ class Folder {
 class Task {
   String name, desc, color;
   String? id;
-  DateTime? due;
+  List<DateTime> dues;
   Folder path;
   bool done, pinned;
 
@@ -138,7 +138,7 @@ class Task {
     required this.desc,
     required this.color,
     required this.path,
-    this.due,
+    this.dues = const [],
     this.id,
     this.done = false,
     this.pinned = false,
@@ -151,7 +151,7 @@ class Task {
       desc: r'[{"insert":"\n"}]',
       path: path,
       color: pf['defaultColor'],
-      due: pf['taskNow'] ? today() : null,
+      dues: [],
     );
   }
 
@@ -163,7 +163,7 @@ class Task {
       done: json['done'] ?? false,
       color: json['col'] ?? 'Adaptive',
       desc: decryptStr(json['desc']) ?? json['desc'] ?? '\n',
-      due: json['due'] != null ? DateTime.parse(json['due']) : null,
+      dues: (json['dues'] as List? ?? []).map((e) => DateTime.parse(e)).toList(),
       path: path,
     );
   }
@@ -194,7 +194,7 @@ class Task {
         'done': done,
         'col': color,
         'desc': encrypt(desc),
-        'due': due?.toIso8601String(),
+        'dues': dues.map((e) => e.toIso8601String()).toList(),
       };
 
   Future<void> upload() async {
@@ -215,7 +215,7 @@ class Task {
     return Icons.radio_button_unchecked;
   }
 
-  bool hasDue() => due != null;
+  bool get hasDue => dues.isNotEmpty;
 
   String shortDesc() {
     try {
@@ -226,8 +226,13 @@ class Task {
   }
 
   String date({bool year = false, bool month = false}) {
-    if (due == null) return '  ${year ? '     ' : ''}${month ? '   ' : ''}';
-    return formatDate(due!, year: year, month: month);
+    if (!hasDue) {
+      return '  ${year ? '     ' : ''}${month ? '   ' : ''}';
+    } else if (dues.length == 1) {
+      return formatDate(dues[0], year: year, month: month);
+    } else {
+      return '${formatDate(dues[0], year: year, month: month)}...';
+    }
   }
 }
 

@@ -33,7 +33,7 @@ class MonthContainer {
   String name;
   Color color;
   int year, month;
-  List<Task> list;
+  List<MapEntry<DateTime?, Task>> list;
   Folder? folder;
 
   MonthContainer({
@@ -45,30 +45,30 @@ class MonthContainer {
     this.folder,
   });
 
-  bool duringTask(Task task) {
-    if (task.due == null) return name == task.path.name;
-    if (task.due!.month != month) return false;
-    if (task.due!.year != year) return false;
+  bool during(MapEntry<DateTime?, Task> entry) {
+    if (entry.key == null) return entry.value.path.name == name;
+    if (entry.key!.month != month) return false;
+    if (entry.key!.year != year) return false;
     return true;
   }
 
-  static MonthContainer fromTask(Task task, {ColorScheme? cs}) {
-    if (task.due == null) {
+  static MonthContainer from(MapEntry<DateTime?, Task> entry, {ColorScheme? cs}) {
+    if (entry.key != null) {
       return MonthContainer(
-        name: task.path.name,
-        year: 9999,
-        month: 12,
-        list: [task],
-        color: taskColors[task.path.color] ?? (cs!.primary),
-        folder: task.path,
+        name: monthColors.keys.elementAt(entry.key!.month - 1),
+        year: entry.key!.year,
+        month: entry.key!.month,
+        list: [entry],
+        color: monthColors.values.elementAt(entry.key!.month - 1),
       );
     }
     return MonthContainer(
-      name: monthColors.keys.elementAt(task.due!.month - 1),
-      year: task.due!.year,
-      month: task.due!.month,
-      list: [task],
-      color: monthColors.values.elementAt(task.due!.month - 1),
+      name: entry.value.path.name,
+      year: 9999,
+      month: 12,
+      list: [entry],
+      color: taskColors[entry.value.path.color] ?? (cs!.primary),
+      folder: entry.value.path,
     );
   }
 
@@ -81,37 +81,77 @@ class MonthContainer {
 }
 
 class _CalendarState extends State<Calendar> {
-  void sortTasks(List<Task> list, int reverse) => list.sort((a, b) {
+  void sortTasks(List<MapEntry<DateTime?, Task>> list, int reverse) => list.sort((a, b) {
         int i = 0;
-        if (a.due == null && b.due == null) {
-        } else if (a.due == null && b.due != null) {
+        if (a.key == null && b.key == null) {
+        } else if (a.key == null && b.key != null) {
           i = 1;
-        } else if (a.due != null && b.due == null) {
+        } else if (a.key != null && b.key == null) {
           i = -1;
         } else {
-          i = a.due!.compareTo(b.due!);
+          i = a.key!.compareTo(b.key!);
         }
-        if (i == 0) return a.name.compareTo(b.name);
+        if (i == 0) return a.value.name.compareTo(b.value.name);
         return reverse * i;
       });
 
   void addTaskToList(
-    Task task,
+    MapEntry<DateTime?, Task> entry,
     List<MonthContainer> list, {
     int reverse = 1,
   }) {
     for (var monthContainer in list) {
-      if (monthContainer.duringTask(task)) {
-        monthContainer.list.add(task);
+      if (monthContainer.during(entry)) {
+        monthContainer.list.add(MapEntry(entry.key, entry.value));
         sortTasks(monthContainer.list, reverse);
         return;
       }
     }
-    list.add(MonthContainer.fromTask(
-      task,
+    list.add(MonthContainer.from(
+      MapEntry(entry.key, entry.value),
       cs: Theme.of(context).colorScheme,
     ));
     list.sort((a, b) => reverse * a.compareTo(b));
+
+/*
+
+
+    if (!task.hasDue) {
+      for (var monthContainer in list) {
+        if (monthContainer.name == task.path.name) {
+          monthContainer.list.add(MapEntry(null, task));
+          sortTasks(monthContainer.list, reverse);
+          return;
+        }
+      }
+      list.add(MonthContainer.from(
+        MapEntry(null, task),
+        cs: Theme.of(context).colorScheme,
+      ));
+    } else {
+      bool added = false;
+
+      print('-----');
+      for (var due in task.dues) {
+        print(due);
+        for (var monthContainer in list) {
+          if (monthContainer.during(due)) {
+            monthContainer.list.add(MapEntry(due, task));
+            sortTasks(monthContainer.list, reverse);
+            added = true;
+            break;
+          }
+        }
+        if (!added) {
+          list.add(MonthContainer.from(
+            MapEntry(due, task),
+            cs: Theme.of(context).colorScheme,
+          ));
+          //list.sort((a, b) => reverse * a.compareTo(b));
+      
+		  }
+      }
+    }*/
   }
 
   @override
@@ -134,22 +174,24 @@ class _CalendarState extends State<Calendar> {
         if (ignored) continue;
         for (var task in folder.items) {
           if (pf['showPinned'] && task.pinned) {
-            list[0][0].list.add(task);
-          } else if (!pf['showDone'] && task.done) {
+            list[0][0].list.add(MapEntry(null, task));
+          }
+          if (!pf['showDone'] && task.done) {
             continue;
-          } else if (task.due != null) {
-            int comparation = task.due!.compareTo(today());
-            if (comparation == 0) {
-              list[0][0].list.add(task); //TODAY
-            } else {
+          } else if (task.hasDue) {
+            for (var date in task.dues) {
+              int comparation = date.compareTo(today());
+              if (comparation == 0) {
+                list[0][0].list.add(MapEntry(null, task)); //TODAY
+              }
               addTaskToList(
-                task,
+                MapEntry(date, task),
                 list[{-1: 2, 1: 1}[comparation] ?? 0],
                 reverse: comparation,
               );
             }
           } else if (pf['showFolders']) {
-            addTaskToList(task, list[3]);
+            addTaskToList(MapEntry(null, task), list[3]);
           }
         }
       }
@@ -216,12 +258,13 @@ class _CalendarState extends State<Calendar> {
                                 shrinkWrap: true,
                                 itemCount: data[i][j].list.length,
                                 itemBuilder: (context, k) {
-                                  Task task = data[i][j].list[k];
-                                  return task
+                                  MapEntry<DateTime?, Task> entry = data[i][j].list[k];
+                                  String date = formatDate(entry.key, year: false, month: false);
+                                  return entry.value
                                       .toSetting(
-                                        title: task.path.prefix == ''
-                                            ? '${task.date()}   ${task.name}'
-                                            : '${task.date()}   ${task.path.prefix} ${task.name}',
+                                        title: entry.value.path.prefix == ''
+                                            ? '$date   ${entry.value.name}'
+                                            : '$date   ${entry.value.path.prefix} ${entry.value.name}',
                                       )
                                       .toTile(context);
                                 },
@@ -242,7 +285,16 @@ class _CalendarState extends State<Calendar> {
   }
 }
 
-Future pickDate(Task task, BuildContext context) async {
+Future<DateTime?> pickDate(Task task, BuildContext context) async {
+  return await showDatePicker(
+    builder: (context, child2) => child2!,
+    context: context,
+    //initialDate: task.due!,
+    firstDate: DateTime(DateTime.now().year - 1),
+    lastDate: DateTime(DateTime.now().year + 5),
+  );
+
+  /*
   FocusScope.of(context).unfocus();
   task.due ??= DateTime.now();
   /*
@@ -262,4 +314,6 @@ Future pickDate(Task task, BuildContext context) async {
     lastDate: DateTime(DateTime.now().year + 5),
   );
   await task.update();
+
+	   */
 }

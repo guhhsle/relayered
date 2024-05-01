@@ -26,12 +26,6 @@ Future<Layer> interface(dynamic d) async => Layer(
           ),
         ),
         Setting(
-          'Task now',
-          Icons.calendar_view_week,
-          '${pf['taskNow']}',
-          (c) => revPref('taskNow'),
-        ),
-        Setting(
           'Stack layers',
           Icons.layers_rounded,
           '${pf['stackLayers']}',

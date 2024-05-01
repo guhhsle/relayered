@@ -14,12 +14,15 @@ StreamSubscription<QuerySnapshot<Map<String, dynamic>>> listenNotes() {
       folder.id = snap.id;
       structure.addAll({snap.id: folder});
       folder.items.sort((a, b) {
-        if (a.due == null && b.due == null) {
+        if (a.hasDue && b.hasDue) {
+          return a.dues[0].compareTo(b.dues[0]);
+        } else if (!a.hasDue && !b.hasDue) {
           return a.name.compareTo(b.name);
-        } else if (a.due == null) {
+        } else if (!a.hasDue) {
           return 1;
+        } else {
+          return -1;
         }
-        return a.due!.compareTo(b.due!);
       });
 
       refreshLayer();
@@ -53,10 +56,11 @@ Future sync() async {
 }
 
 String formatDate(
-  DateTime dt, {
+  DateTime? dt, {
   bool year = true,
   bool month = true,
 }) {
+  if (dt == null) return '';
   String years = year ? '.${dt.year}' : '';
   String months = month ? (dt.month < 10 ? '.0${dt.month}' : '.${dt.month}') : '';
   String days = dt.day < 10 ? '0${dt.day}' : '${dt.day}';

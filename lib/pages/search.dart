@@ -19,23 +19,14 @@ class SearchState extends State<Search> {
   String start = '';
   @override
   Widget build(BuildContext context) {
-    Map<String, List<Task>> charGroup = {};
+    List<String> chars = [''];
     for (var folder in structure.entries) {
       for (var task in folder.value.items) {
         String char = task.name[0];
-        if (charGroup[char] == null) {
-          charGroup.addAll({
-            char: [task]
-          });
-        } else {
-          charGroup[char]?.add(task);
-          charGroup[char]?.sort((a, b) => a.name.compareTo(b.name));
-        }
+        if (!chars.contains(char)) chars.add(char);
       }
     }
-    charGroup = Map.fromEntries(
-      charGroup.entries.toList()..sort((e1, e2) => e1.key.compareTo(e2.key)),
-    );
+    chars.sort();
     return Scaffold(
       appBar: AppBar(
         title: TextFormField(
@@ -98,17 +89,16 @@ class SearchState extends State<Search> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 64, bottom: 8),
+                  padding: const EdgeInsets.only(top: 16, bottom: 8),
                   child: LayoutBuilder(
                     builder: (context, constraints) {
                       return GestureDetector(
                         onPanUpdate: (details) {
                           late String next;
                           try {
-                            if (details.localPosition.dy < 0) throw Exception();
                             double proportion = constraints.maxHeight / details.localPosition.dy;
-                            int i = charGroup.length ~/ proportion;
-                            next = charGroup.keys.elementAt(i);
+                            int i = chars.length ~/ proportion;
+                            next = chars[i];
                           } catch (e) {
                             next = '';
                           }
@@ -128,7 +118,13 @@ class SearchState extends State<Search> {
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                for (var char in charGroup.keys) Text(char),
+                                for (var char in chars)
+                                  Text(
+                                    char,
+                                    style: TextStyle(
+                                      color: start == char ? Theme.of(context).colorScheme.background : null,
+                                    ),
+                                  ),
                               ],
                             ),
                           ),

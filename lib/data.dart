@@ -25,7 +25,6 @@ Map pf = {
   'showDone': true,
   'showFolders': true,
   'showPinned': true,
-  'taskNow': true,
   'ignore': <String>[],
 };
 
