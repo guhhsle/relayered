@@ -1,10 +1,11 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import '../data.dart';
-import '../functions.dart';
+import 'data.dart';
+import 'functions.dart';
+import 'layer.dart';
 
 Future<void> initPrefs() async {
   prefs = await SharedPreferences.getInstance();
-
   for (MapEntry entry in pf.entries) {
     final val = getPref(entry.key);
     if (val != null) pf[entry.key] = val;
@@ -19,24 +20,22 @@ Future<void> nextPref(String pref, List<String> list, {bool refresh = false}) as
   await setPref(pref, list[(list.indexOf(pf[pref]) + 1) % list.length], refresh: refresh);
 }
 
-dynamic getPref(pString) {
-  if (prefs.get(pString) is List) {
-    return prefs.getStringList(pString);
-  } else {
-    return prefs.get(pString);
-  }
+dynamic getPref(name) {
+  var val = prefs.get(name);
+  if (val is List) return prefs.getStringList(name);
+  return val;
 }
 
-Future<void> setPref(String pString, var value, {bool refresh = false}) async {
-  pf[pString] = value;
+Future setPref(String name, var value, {bool refresh = false}) async {
+  pf[name] = value;
   if (value is int) {
-    await prefs.setInt(pString, value);
+    await prefs.setInt(name, value);
   } else if (value is bool) {
-    await prefs.setBool(pString, value);
+    await prefs.setBool(name, value);
   } else if (value is String) {
-    await prefs.setString(pString, value);
+    await prefs.setString(name, value);
   } else if (value is List<String>) {
-    await prefs.setStringList(pString, pf[pString]);
+    await prefs.setStringList(name, pf[name]);
   }
   if (refresh) refreshInterface();
   refreshLayer();

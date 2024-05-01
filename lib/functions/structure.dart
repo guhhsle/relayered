@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import '../data.dart';
-import '../functions.dart';
 import '../task.dart';
-import 'layers.dart';
+import '../template/functions.dart';
+import '../template/layer.dart';
+import 'task.dart';
 
-Layer pinnedFolders(dynamic nothing) {
+Future<Layer> pinnedFolders(dynamic nothing) async {
   return Layer(
     action: Setting(
       'Pinned',
@@ -36,12 +37,13 @@ Layer pinnedFolders(dynamic nothing) {
           await newFolder.upload();
         },
         icon: const Icon(Icons.add_rounded),
+        tooltip: t('New folder'),
       ),
     ],
   );
 }
 
-Layer allFolders(dynamic id) {
+Future<Layer> allFolders(dynamic id) async {
   Folder? folder = structure[id];
   if (folder == null) {
     return Layer(

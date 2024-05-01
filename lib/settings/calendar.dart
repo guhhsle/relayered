@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import '../functions/open_folder.dart';
 import '../data.dart';
-import '../functions.dart';
-import '../functions/layers.dart';
-import '../functions/prefs.dart';
 import '../pages/settings.dart';
+import '../template/functions.dart';
+import '../template/layer.dart';
+import '../template/prefs.dart';
 
-Layer calendar() => Layer(
+Future<Layer> calendar() async => Layer(
       action: Setting(
         'More',
         Icons.tune_rounded,
@@ -49,7 +49,7 @@ Layer calendar() => Layer(
       ],
     );
 
-Layer sourceFolders(dynamic none) => Layer(
+Future<Layer> sourceFolders(dynamic none) async => Layer(
       action: Setting(
         'Sources',
         Icons.folder_rounded,

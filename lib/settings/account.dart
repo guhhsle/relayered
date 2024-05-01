@@ -3,24 +3,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../data.dart';
-import '../functions.dart';
-import '../functions/layers.dart';
 import '../functions/mail.dart';
-import '../functions/prefs.dart';
 import '../functions/task.dart';
-import '../widgets/custom_card.dart';
+import '../template/custom_card.dart';
+import '../template/functions.dart';
+import '../template/layer.dart';
+import '../template/prefs.dart';
 
 String? mail, password;
-Layer account(dynamic d) {
+Future<Layer> account(dynamic d) async {
   if (user.isAnonymous || user.email == null) {
     return Layer(
       trailing: (c) => [
         Expanded(
           child: CustomCard(
             Setting(
-              'Login',
-              Icons.person_add_rounded,
               ' ',
+              Icons.person_add_rounded,
+              'Login',
               (c) => FirebaseService().signIn(
                 mail!.trim(),
                 password!,
@@ -32,9 +32,9 @@ Layer account(dynamic d) {
         )
       ],
       action: Setting(
-        ' ',
-        Icons.person_add_rounded,
         'Sign up',
+        Icons.person_add_rounded,
+        ' ',
         (c) => FirebaseService().signIn(
           mail!.trim(),
           password!,
@@ -78,7 +78,7 @@ Layer account(dynamic d) {
         user.email ?? 'ERROR',
         Icons.mail_outline_rounded,
         '',
-        (c) async => user.updateEmail(await getInput(user.email)),
+        (c) async => user.verifyBeforeUpdateEmail(await getInput(user.email)),
       ),
       list: [
         Setting(

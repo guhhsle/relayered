@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import '../data.dart';
-import '../functions.dart';
 import '../task.dart';
-import 'layers.dart';
+import '../template/functions.dart';
+import '../template/layer.dart';
 import 'structure.dart';
 
-Layer folderOptions(dynamic id) {
+Future<Layer> folderOptions(dynamic id) async {
   Folder folder = structure[id] ?? Folder.defaultNew('/ERROR');
   return Layer(
     action: Setting(
@@ -28,7 +28,7 @@ Layer folderOptions(dynamic id) {
         (p0) => showSheet(
           scroll: true,
           param: folder,
-          func: (folder) {
+          func: (folder) async {
             folder as Folder;
             return Layer(
               action: Setting(

@@ -1,16 +1,16 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import '../data.dart';
-import '../functions.dart';
 import '../pages/task.dart';
 import '../task.dart';
+import '../template/functions.dart';
+import '../template/layer.dart';
 import '../widgets/calendar.dart';
-import 'layers.dart';
 import 'open_folder.dart';
 
-Layer openTask(dynamic id) {
+Future<Layer> openTask(dynamic id) async {
   Task task = Task.defaultNew(Folder.defaultNew('/ERROR'), name: 'ERROR');
-  for (MapEntry<String, Folder> map in structure.entries) {
+  for (var map in structure.entries) {
     for (Task current in map.value.items) {
       if (current.id == id) task = current;
     }
@@ -42,7 +42,7 @@ Layer openTask(dynamic id) {
         (p0) => showSheet(
           scroll: true,
           param: task,
-          func: (task) {
+          func: (task) async {
             task as Task;
             return Layer(
               action: Setting(
@@ -89,7 +89,7 @@ Layer openTask(dynamic id) {
           hidePrev: p0,
         ),
         onHold: (p0) => showSheet(
-          func: (dynamic d) => Layer(
+          func: (dynamic d) async => Layer(
             action: Setting(
               'New',
               Icons.add_rounded,

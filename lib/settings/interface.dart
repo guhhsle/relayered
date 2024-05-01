@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../data.dart';
-import '../functions/layers.dart';
-import '../functions/prefs.dart';
+import '../template/layer.dart';
+import '../template/prefs.dart';
 
-Layer interface(dynamic d) => Layer(
+Future<Layer> interface(dynamic d) async => Layer(
       action: Setting(
         'Top',
         Icons.gradient_rounded,
@@ -44,7 +43,7 @@ Layer interface(dynamic d) => Layer(
           pf['defaultColor'],
           (c) => showSheet(
             param: 0,
-            func: (i) => Layer(
+            func: (i) async => Layer(
               action: Setting(
                 pf['defaultColor'],
                 Icons.colorize_rounded,
@@ -66,60 +65,3 @@ Layer interface(dynamic d) => Layer(
         ),
       ],
     );
-
-Layer themeMap(dynamic p) {
-  p is bool;
-  Layer layer = Layer(
-      action: Setting(
-        pf[p ? 'primary' : 'background'],
-        p ? Icons.colorize_rounded : Icons.tonality_rounded,
-        '',
-        (c) => fetchColor(p),
-      ),
-      list: []);
-  for (int i = 0; i < colors.length; i++) {
-    String name = colors.keys.toList()[i];
-    layer.list.add(
-      Setting(
-        name,
-        iconsTheme[name]!,
-        '',
-        (c) => setPref(
-          p ? 'primary' : 'background',
-          name,
-          refresh: true,
-        ),
-        iconColor: colors.values.elementAt(i),
-      ),
-    );
-  }
-  return layer;
-}
-
-void fetchColor(bool p) {
-  Clipboard.getData(Clipboard.kTextPlain).then((value) {
-    if (value == null || value.text == null || int.tryParse('0xFF${value.text!.replaceAll('#', '')}') == null) {
-      showSnack('Clipboard HEX', false);
-    } else {
-      setPref(
-        p ? 'primary' : 'background',
-        value.text,
-        refresh: true,
-      );
-    }
-  });
-}
-
-void showSnack(String text, bool good) {
-  ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
-    SnackBar(
-      backgroundColor: good ? Colors.green.shade200 : Colors.red.shade200,
-      content: Center(
-        child: Text(
-          text,
-          style: const TextStyle(color: Colors.black),
-        ),
-      ),
-    ),
-  );
-}

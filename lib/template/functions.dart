@@ -1,58 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flashy_flushbar/flashy_flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'data.dart';
+
+import '../data.dart';
+import '../template/data.dart';
 import 'theme.dart';
-
-void refreshInterface() {
-  themeNotifier.value = theme(color(true), color(false));
-}
-
-Color color(bool primary) {
-  if (primary) {
-    return colors[pf['primary']] ?? Color(int.tryParse('0xFF${pf['primary']}') ?? 0xFF170a1c);
-  } else {
-    return colors[pf['background']] ?? Color(int.tryParse('0xFF${pf['background']}') ?? 0xFFf6f7eb);
-  }
-}
-
-Color lighterColor(Color p, Color q) {
-  if (p.computeLuminance() > q.computeLuminance()) return p;
-  return q;
-}
-
-Future sync() async {
-  if (user.isAnonymous) return;
-  await FirebaseFirestore.instance.enableNetwork();
-  await Future.delayed(Duration(seconds: pf['syncTimeout']));
-  await FirebaseFirestore.instance.disableNetwork();
-}
-
-String formatDate(
-  DateTime dt, {
-  bool year = true,
-  bool month = true,
-}) {
-  String years = year ? '.${dt.year}' : '';
-  String months = month ? (dt.month < 10 ? '.0${dt.month}' : '.${dt.month}') : '';
-  String days = dt.day < 10 ? '0${dt.day}' : '${dt.day}';
-  return '$days$months$years';
-}
-
-DateTime today() {
-  DateTime now = DateTime.now();
-  return DateTime(
-    now.year,
-    now.month,
-    now.day,
-  );
-}
-
-void refreshLayer() {
-  refreshLay.value = !refreshLay.value;
-}
 
 void goToPage(Widget page) {
   if (navigatorKey.currentContext == null) return;
@@ -61,17 +15,26 @@ void goToPage(Widget page) {
   );
 }
 
-Future<int> loadLocale() async {
-  final String response = await rootBundle.loadString(
-    'assets/translations/${pf['locale']}.json',
-  );
-  l = await jsonDecode(response);
-  return 0;
-}
-
-String t(dynamic d) {
-  String s = '$d';
-  return l[s] ?? s;
+void showSnack(String text, bool good, {Function()? onTap}) {
+  FlashyFlushbar(
+    leadingWidget: Icon(
+      good ? Icons.check_rounded : Icons.error_outline,
+      color: Colors.black,
+      size: 24,
+    ),
+    margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 4),
+    backgroundColor: good ? Colors.green.shade100 : Colors.red.shade100,
+    animationDuration: const Duration(milliseconds: 64),
+    message: text,
+    duration: const Duration(seconds: 3),
+    isDismissible: true,
+    onTap: onTap ?? () {},
+    messageStyle: TextStyle(
+      color: Colors.black,
+      fontWeight: FontWeight.bold,
+      fontFamily: pf['font'],
+    ),
+  ).show();
 }
 
 Future<String> getInput(String? init, {String? hintText}) async {
@@ -110,4 +73,24 @@ Future<String> getInput(String? init, {String? hintText}) async {
     },
   );
   return completer.future;
+}
+
+void refreshInterface() {
+  themeNotifier.value = theme(color(true), color(false));
+}
+
+Future<int> loadLocale() async {
+  final String response = await rootBundle.loadString(
+    'assets/translations/${pf['locale']}.json',
+  );
+  l = await jsonDecode(response);
+  return 0;
+}
+
+String t(dynamic d) {
+  String s = '$d';
+  if (s.startsWith('pf//')) {
+    return t(pf[s.replaceAll('pf//', '')]);
+  }
+  return l[s] ?? s;
 }

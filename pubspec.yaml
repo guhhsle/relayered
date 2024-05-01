@@ -15,6 +15,7 @@ dependencies:
     #awesome_notifications: any
   intl: any
   shared_preferences: any
+  flashy_flushbar: any
 
   #UI
   flutter_quill: any

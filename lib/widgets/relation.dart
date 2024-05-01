@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:relayered/data.dart';
 import 'package:relayered/functions/folder_options.dart';
-import 'package:relayered/functions/layers.dart';
 import 'package:relayered/functions/open_folder.dart';
-import 'package:relayered/widgets/custom_chip.dart';
 
 import '../task.dart';
+import '../template/custom_chip.dart';
+import '../template/data.dart';
+import '../template/layer.dart';
 
 class Relation extends StatefulWidget {
   const Relation({super.key});

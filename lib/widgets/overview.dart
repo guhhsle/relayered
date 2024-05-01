@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:relayered/data.dart';
 import 'package:relayered/functions/folder_options.dart';
-import 'package:relayered/functions/layers.dart';
 import 'package:relayered/functions/open_folder.dart';
 
+import '../template/layer.dart';
 import 'relation.dart';
 
 class Overview extends StatefulWidget {

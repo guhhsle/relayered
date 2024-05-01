@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:relayered/widgets/body.dart';
-
-import '../functions/layers.dart';
 import '../settings/account.dart';
 import '../settings/interface.dart';
+import '../template/layer.dart';
+import '../template/theme.dart';
 
 class PageSettings extends StatefulWidget {
   const PageSettings({super.key});
@@ -13,11 +13,17 @@ class PageSettings extends StatefulWidget {
 }
 
 class PageSettingsState extends State<PageSettings> {
-  Map<String, Layer Function(dynamic)> map = {
+  final Map<String, Future<Layer> Function(dynamic)> map = {
     'Interface': interface,
     'Account': account,
     'Primary': themeMap,
     'Background': themeMap,
+  };
+  final Map<String, IconData> iconMap = {
+    'Interface': Icons.toggle_on,
+    'Account': Icons.person_rounded,
+    'Primary': Icons.colorize_rounded,
+    'Background': Icons.colorize_rounded,
   };
 
   @override
@@ -31,9 +37,7 @@ class PageSettingsState extends State<PageSettings> {
           itemCount: map.length,
           itemBuilder: (context, index) => ListTile(
             title: Text(map.keys.elementAt(index)),
-            leading: Icon(
-              map.values.elementAt(index)(true).action.icon,
-            ),
+            leading: Icon(iconMap.values.elementAt(index)),
             onTap: () => showSheet(
               func: map.values.elementAt(index),
               param: index == 2,

@@ -1,10 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-
 import '../data.dart';
 import '../task.dart';
+import '../template/data.dart';
 import '../widgets/body.dart';
 
 class Delegate extends SearchDelegate {

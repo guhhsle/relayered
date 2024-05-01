@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'firebase_options.dart';
 import 'data.dart';
-import 'functions.dart';
-import 'functions/prefs.dart';
 import 'functions/task.dart';
 import 'pages/homepage.dart';
-import 'theme.dart';
+import 'template/data.dart';
+import 'template/prefs.dart';
+import 'template/theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

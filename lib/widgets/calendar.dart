@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import '../functions/folder_options.dart';
 import '../functions/open_folder.dart';
 import '../data.dart';
-import '../functions.dart';
-import '../functions/layers.dart';
+import '../functions/task.dart';
 import '../task.dart';
+import '../template/data.dart';
+import '../template/layer.dart';
 
 class Calendar extends StatefulWidget {
   const Calendar({super.key});

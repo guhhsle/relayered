@@ -3,13 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'data.dart';
-import 'functions.dart';
 import 'package:encrypt/encrypt.dart' as e;
 import 'functions/folder_options.dart';
-import 'functions/layers.dart';
 import 'functions/open_folder.dart';
 import 'functions/open_task.dart';
+import 'functions/task.dart';
 import 'pages/task.dart';
+import 'template/functions.dart';
+import 'template/layer.dart';
 
 String encrypt(String raw) {
   try {

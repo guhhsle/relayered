@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-
-import '../data.dart';
-import '../functions/layers.dart';
 import '../functions/open_task.dart';
 import '../task.dart';
+import '../template/functions.dart';
+import '../template/layer.dart';
 import '../widgets/body.dart';
 
 class TaskPage extends StatefulWidget {
@@ -26,7 +25,6 @@ class TaskPageState extends State<TaskPage> {
   @override
   void initState() {
     task = widget.task;
-    debugPrint(task.desc);
     controller = QuillController(
       document: Document.fromJson(json.decode(task.desc)),
       selection: const TextSelection.collapsed(offset: 0),
@@ -76,7 +74,7 @@ class TaskPageState extends State<TaskPage> {
               border: InputBorder.none,
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
-              hintText: l['Title'],
+              hintText: t('Title'),
             ),
             onChanged: (str) => task.name = str,
           ),
