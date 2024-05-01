@@ -61,7 +61,8 @@ class _HomePageState extends State<HomePage> {
                 tooltip: t('Search'),
                 icon: const Icon(Icons.fiber_manual_record_outlined),
                 onPressed: () {
-                  showSearch(context: context, delegate: Delegate());
+                  goToPage(const Search());
+                  //showSearch(context: context, delegate: Delegate());
                 },
               ),
               pf['action'] == 'Top'
