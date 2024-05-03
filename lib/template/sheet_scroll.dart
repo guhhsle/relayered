@@ -3,7 +3,7 @@ import 'custom_card.dart';
 import 'data.dart';
 import 'layer.dart';
 
-class SheetScrollModel extends StatefulWidget {
+class SheetScrollModel extends StatelessWidget {
   final Future<Layer> Function(dynamic) func;
   final dynamic param;
   const SheetScrollModel({
@@ -12,11 +12,6 @@ class SheetScrollModel extends StatefulWidget {
     required this.param,
   });
 
-  @override
-  SheetScrollModelState createState() => SheetScrollModelState();
-}
-
-class SheetScrollModelState extends State<SheetScrollModel> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -34,41 +29,39 @@ class SheetScrollModelState extends State<SheetScrollModel> {
               padding: const EdgeInsets.all(8),
               child: ValueListenableBuilder(
                 valueListenable: refreshLay,
-                builder: (context, non, child) {
-                  return FutureBuilder(
-                    future: widget.func.call(widget.param),
-                    builder: (context, snap) {
-                      if (!snap.hasData) return Container();
-                      Layer layer = snap.data!;
-                      List<Setting> list = layer.list;
-                      return Column(
-                        children: [
-                          Row(
-                            children: (layer.leading == null ? <Widget>[] : layer.leading!(context)) +
-                                [
-                                  Expanded(
-                                    child: CustomCard(layer.action),
-                                  )
-                                ] +
-                                (layer.trailing == null ? [] : layer.trailing!(context)),
-                          ),
-                          Expanded(
-                            child: Scrollbar(
+                builder: (context, non, child) => FutureBuilder(
+                  future: func.call(param),
+                  builder: (context, snap) {
+                    if (!snap.hasData) return Container();
+                    Layer layer = snap.data!;
+                    List<Setting> list = layer.list;
+                    return Column(
+                      children: [
+                        Row(
+                          children: (layer.leading == null ? <Widget>[] : layer.leading!(context)) +
+                              [
+                                Expanded(
+                                  child: CustomCard(layer.action),
+                                )
+                              ] +
+                              (layer.trailing == null ? [] : layer.trailing!(context)),
+                        ),
+                        Expanded(
+                          child: Scrollbar(
+                            controller: controller,
+                            child: ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              padding: const EdgeInsets.only(bottom: 8),
                               controller: controller,
-                              child: ListView.builder(
-                                physics: const BouncingScrollPhysics(),
-                                padding: const EdgeInsets.only(bottom: 8),
-                                controller: controller,
-                                itemCount: list.length,
-                                itemBuilder: (context, i) => list[i].toTile(context),
-                              ),
+                              itemCount: list.length,
+                              itemBuilder: (context, i) => list[i].toTile(context),
                             ),
                           ),
-                        ],
-                      );
-                    },
-                  );
-                },
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
           ),

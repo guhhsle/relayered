@@ -59,7 +59,7 @@ Future<void> fetchColor(bool p, bool light) async {
   try {
     String val = await getInput('', hintText: 'HEX value')
       ..replaceAll('#', '');
-    int.parse(val);
+    int.parse('0xFF$val');
     setPref(
       light ? (p ? 'primary' : 'background') : (p ? 'primaryDark' : 'backgroundDark'),
       val,

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flashy_flushbar/flashy_flushbar_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -55,6 +56,7 @@ class Home extends StatelessWidget {
           theme: theme(color(true, lightTheme: true), color(false, lightTheme: true)),
           darkTheme: theme(color(true, lightTheme: false), color(false, lightTheme: false)),
           title: 'Relayered',
+          builder: FlashyFlushbarProvider.init(),
           home: AnnotatedRegion<SystemUiOverlayStyle>(
             value: SystemUiOverlayStyle(
               statusBarColor: Colors.transparent,
