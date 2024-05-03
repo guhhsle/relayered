@@ -89,8 +89,5 @@ Future<int> loadLocale() async {
 
 String t(dynamic d) {
   String s = '$d';
-  if (s.startsWith('pf//')) {
-    return t(pf[s.replaceAll('pf//', '')]);
-  }
   return l[s] ?? s;
 }

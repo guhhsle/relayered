@@ -2,8 +2,12 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:relayered/settings/account.dart';
 
+import 'settings/interface.dart';
 import 'task.dart';
+import 'template/layer.dart';
+import 'template/theme.dart';
 
 Map pf = {
   //MORE
@@ -40,6 +44,13 @@ final Map<String, Color?> taskColors = {
 };
 
 late bool web;
+
+final List<Setting> settings = [
+  Setting('Interface', Icons.toggle_on, '', (c) => showSheet(func: interfaceSet)),
+  Setting('Account', Icons.person_rounded, '', (c) => showSheet(func: accountSet)),
+  Setting('Primary', Icons.colorize_rounded, '', (c) => showSheet(func: themeMap, param: true, scroll: true)),
+  Setting('Background', Icons.colorize_rounded, '', (c) => showSheet(func: themeMap, param: false, scroll: true)),
+];
 
 const customRadius = BorderRadius.only(
   topRight: Radius.circular(32),

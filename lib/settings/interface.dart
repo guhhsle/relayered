@@ -3,7 +3,7 @@ import '../data.dart';
 import '../template/layer.dart';
 import '../template/prefs.dart';
 
-Future<Layer> interface(dynamic d) async => Layer(
+Future<Layer> interfaceSet(dynamic d) async => Layer(
       action: Setting(
         'Top',
         Icons.gradient_rounded,

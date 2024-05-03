@@ -5,7 +5,7 @@ import '../functions/open_task.dart';
 import '../task.dart';
 import '../template/functions.dart';
 import '../template/layer.dart';
-import '../widgets/body.dart';
+import '../widgets/frame.dart';
 
 class TaskPage extends StatefulWidget {
   final Task task;
@@ -37,70 +37,66 @@ class TaskPageState extends State<TaskPage> {
     bool k = MediaQuery.of(context).viewInsets.bottom != 0;
     return PopScope(
       onPopInvoked: (b) => updateNote(),
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () => showSheet(
-              func: openTask,
-              param: task.id,
-            ),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: IconButton(
-                onPressed: () {
-                  updateNote();
-                  Navigator.of(context).pop();
-                },
-                icon: const Icon(Icons.done_rounded),
-              ),
-            ),
-          ],
-          title: TextFormField(
-            maxLines: 1,
-            maxLength: 24,
-            key: Key(task.name),
-            initialValue: task.name,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).appBarTheme.foregroundColor,
-              fontSize: 18,
-            ),
-            cursorColor: Theme.of(context).appBarTheme.foregroundColor,
-            decoration: InputDecoration(
-              counterText: "",
-              border: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              hintText: t('Title'),
-            ),
-            onChanged: (str) => task.name = str,
+      child: Frame(
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () => showSheet(
+            func: openTask,
+            param: task.id,
           ),
         ),
-        body: Body(
-          child: Column(
-            children: [
-              Expanded(
-                child: NoteTemplate(controller: controller),
-              ),
-              k
-                  ? QuillToolbar.simple(
-                      configurations: QuillSimpleToolbarConfigurations(
-                        controller: controller,
-                        sectionDividerColor: Theme.of(context).colorScheme.background,
-                        color: Colors.transparent,
-                        multiRowsDisplay: false,
-                        showFontFamily: false,
-                        showBoldButton: false,
-                        toolbarSize: 38,
-                        sectionDividerSpace: 0,
-                      ),
-                    )
-                  : Container(),
-            ],
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: IconButton(
+              onPressed: () {
+                updateNote();
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(Icons.done_rounded),
+            ),
           ),
+        ],
+        title: TextFormField(
+          maxLines: 1,
+          maxLength: 24,
+          key: Key(task.name),
+          initialValue: task.name,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).appBarTheme.foregroundColor,
+            fontSize: 18,
+          ),
+          cursorColor: Theme.of(context).appBarTheme.foregroundColor,
+          decoration: InputDecoration(
+            counterText: "",
+            border: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            hintText: t('Title'),
+          ),
+          onChanged: (str) => task.name = str,
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: NoteTemplate(controller: controller),
+            ),
+            k
+                ? QuillToolbar.simple(
+                    configurations: QuillSimpleToolbarConfigurations(
+                      controller: controller,
+                      sectionDividerColor: Theme.of(context).colorScheme.background,
+                      color: Colors.transparent,
+                      multiRowsDisplay: false,
+                      showFontFamily: false,
+                      showBoldButton: false,
+                      toolbarSize: 38,
+                      sectionDividerSpace: 0,
+                    ),
+                  )
+                : Container(),
+          ],
         ),
       ),
     );

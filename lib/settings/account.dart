@@ -11,7 +11,7 @@ import '../template/layer.dart';
 import '../template/prefs.dart';
 
 String? mail, password;
-Future<Layer> account(dynamic d) async {
+Future<Layer> accountSet(dynamic d) async {
   if (user.isAnonymous || user.email == null) {
     return Layer(
       trailing: (c) => [

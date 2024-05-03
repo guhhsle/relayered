@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../functions/open_folder.dart';
 import '../data.dart';
-import '../pages/settings.dart';
 import '../template/functions.dart';
 import '../template/layer.dart';
 import '../template/prefs.dart';
+import '../template/settings.dart';
 
 Future<Layer> calendar() async => Layer(
       action: Setting(
