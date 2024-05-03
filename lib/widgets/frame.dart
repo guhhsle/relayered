@@ -31,22 +31,22 @@ class Frame extends StatelessWidget {
           const SizedBox(width: 8),
         ],
       ),
-      body: Card(
-        color: Theme.of(context).colorScheme.background,
-        margin: EdgeInsets.zero,
-        shadowColor: Colors.transparent,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(32),
-            topLeft: Radius.circular(16),
-          ),
-        ),
+      body: SizedBox(
+        height: double.infinity,
         child: ClipRRect(
           borderRadius: const BorderRadius.only(
             topRight: Radius.circular(32),
             topLeft: Radius.circular(16),
           ),
-          child: child,
+          child: Card(
+            color: Theme.of(context).colorScheme.background,
+            margin: EdgeInsets.zero,
+            shadowColor: Colors.transparent,
+            shape: const RoundedRectangleBorder(),
+            child: ClipRRect(
+              child: child,
+            ),
+          ),
         ),
       ),
     );
