@@ -30,7 +30,6 @@ class SearchState extends State<Search> {
     return Frame(
       title: TextFormField(
         maxLines: 1,
-        maxLength: 24,
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 18,
