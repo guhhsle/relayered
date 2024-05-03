@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:syllable/template/data.dart';
 import '../data.dart';
 import '../template/functions.dart';
 import '../widgets/frame.dart';
+import 'data.dart';
 
 class PageSettings extends StatelessWidget {
   const PageSettings({super.key});
