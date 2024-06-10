@@ -175,7 +175,26 @@ class _CalendarState extends State<Calendar> {
         }
         if (ignored) continue;
         for (var task in folder.items) {
-          if (pf['showPinned'] && task.pinned) {
+          if (task.done && !pf['showDone'] && !task.pinned) continue;
+          if (task.hasDue) {
+            for (int i = 0; i < task.dues.length; i++) {
+              int comparation = task.dues[i].compareTo(today());
+              if (task.pinned && i == 0) comparation = 0;
+              addTaskToList(
+                MapEntry(task.dues[i], task),
+                list[{-1: 2, 1: 1}[comparation] ?? 0],
+                reverse: comparation,
+              );
+            }
+          } else {
+            if (task.pinned) {
+              list[0][0].list.add(MapEntry(null, task));
+            } else if (pf['showFolders']) {
+              addTaskToList(MapEntry(null, task), list[3]);
+            }
+          }
+
+          if (pf['showPinned'] && task.pinned && !task.hasDue) {
             list[0][0].list.add(MapEntry(null, task));
           }
           if (!pf['showDone'] && task.done) {
