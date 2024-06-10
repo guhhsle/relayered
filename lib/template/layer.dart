@@ -5,7 +5,7 @@ import 'sheet_model.dart';
 import 'sheet_scroll.dart';
 
 class Setting {
-  String title, trailing;
+  dynamic title, trailing;
   IconData icon;
   Color? iconColor;
   void Function(BuildContext) onTap;
@@ -69,8 +69,12 @@ class Layer {
   });
 }
 
+void refreshLayer() {
+  refreshLay.value = !refreshLay.value;
+}
+
 void showSheet({
-  required Future<Layer> Function(dynamic) func,
+  required Function(dynamic) func,
   dynamic param,
   bool scroll = false,
   BuildContext? hidePrev,
@@ -89,6 +93,40 @@ void showSheet({
   );
 }
 
-void refreshLayer() {
-  refreshLay.value = !refreshLay.value;
+class LayerBuilder extends StatelessWidget {
+  final Function(dynamic) func;
+  final dynamic param;
+  final Widget Function(BuildContext, AsyncSnapshot<Layer>) builder;
+  const LayerBuilder({
+    super.key,
+    required this.func,
+    required this.builder,
+    this.param,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (func is Stream<Layer> Function(dynamic)) {
+      Stream<Layer> Function(dynamic) f = func as Stream<Layer> Function(dynamic);
+      return StreamBuilder(
+        stream: f.call(param),
+        builder: (context, snap) => builder(context, snap),
+      );
+    } else if (func is Future<Layer> Function(dynamic)) {
+      Future<Layer> Function(dynamic) f = func as Future<Layer> Function(dynamic);
+      return FutureBuilder(
+        future: f.call(param),
+        builder: builder,
+      );
+    } else {
+      Layer Function(dynamic) f = func as Layer Function(dynamic);
+      return builder(
+        context,
+        AsyncSnapshot.withData(
+          ConnectionState.done,
+          f.call(param),
+        ),
+      );
+    }
+  }
 }

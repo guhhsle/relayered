@@ -104,7 +104,8 @@ class ZoomableRelation extends StatefulWidget {
   State<ZoomableRelation> createState() => _ZoomableRelationState();
 }
 
-class _ZoomableRelationState extends State<ZoomableRelation> with SingleTickerProviderStateMixin {
+class _ZoomableRelationState extends State<ZoomableRelation>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   List<Folder> pinned = [];
@@ -143,15 +144,17 @@ class _ZoomableRelationState extends State<ZoomableRelation> with SingleTickerPr
       //STRUCTURE NOT INITIALIZED
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final RenderBox renderBox = relationKey.currentContext!.findRenderObject() as RenderBox;
+      final RenderBox renderBox =
+          relationKey.currentContext!.findRenderObject() as RenderBox;
       final double childWidth = renderBox.size.width;
       double newScale = MediaQuery.of(context).size.width / childWidth;
-      _scaleAnimation = Tween<double>(begin: scale, end: newScale).animate(_controller);
+      _scaleAnimation =
+          Tween<double>(begin: scale, end: newScale).animate(_controller);
       _controller.forward(from: 0);
       scale = newScale;
     });
     Color primary = Theme.of(context).primaryColor;
-    Color background = Theme.of(context).colorScheme.background;
+    Color background = Theme.of(context).colorScheme.surface;
     return AnimatedBuilder(
       animation: _scaleAnimation,
       builder: (context, child) {
@@ -215,39 +218,55 @@ class _ZoomableRelationState extends State<ZoomableRelation> with SingleTickerPr
                               for (var field in degree)
                                 Card(
                                   shadowColor: Colors.transparent,
-                                  color: Theme.of(context).primaryColor.withOpacity(field.isEmpty ? 0 : 0.15),
-                                  margin: EdgeInsets.symmetric(vertical: 5, horizontal: field.isEmpty ? 5 : 2),
+                                  color: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(field.isEmpty ? 0 : 0.15),
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 5,
+                                      horizontal: field.isEmpty ? 5 : 2),
                                   shape: RoundedRectangleBorder(
                                     side: BorderSide.none,
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsets.only(left: field.isEmpty ? 0 : 4),
+                                    padding: EdgeInsets.only(
+                                        left: field.isEmpty ? 0 : 4),
                                     child: Row(
                                       children: [
-                                        for (Folder folder in field.map((e) => structure[e.id]!))
+                                        for (Folder folder in field
+                                            .map((e) => structure[e.id]!))
                                           InkWell(
                                             onLongPress: () => showSheet(
                                               func: folderOptions,
                                               param: folder.id,
                                             ),
                                             child: Padding(
-                                              padding: const EdgeInsets.only(right: 4),
+                                              padding: const EdgeInsets.only(
+                                                  right: 4),
                                               child: InputChip(
                                                 showCheckmark: false,
-                                                selected: folder.pin || folder.color != null,
+                                                selected: folder.pin ||
+                                                    folder.color != null,
                                                 onSelected: (sel) => showSheet(
                                                   func: openFolder,
                                                   param: folder.id,
                                                   scroll: true,
                                                 ),
-                                                selectedColor: folder.color == null
-                                                    ? null
-                                                    : mixColors(background, taskColors[folder.color]!, 0.5),
+                                                selectedColor:
+                                                    folder.color == null
+                                                        ? null
+                                                        : mixColors(
+                                                            background,
+                                                            taskColors[
+                                                                folder.color]!,
+                                                            0.5),
                                                 label: Text(
                                                   folder.name,
                                                   style: TextStyle(
-                                                    color: folder.pin && folder.color == null ? background : primary,
+                                                    color: folder.pin &&
+                                                            folder.color == null
+                                                        ? background
+                                                        : primary,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),

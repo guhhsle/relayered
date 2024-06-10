@@ -17,7 +17,7 @@ class OverviewState extends State<Overview> {
   @override
   Widget build(BuildContext context) {
     Color primary = Theme.of(context).primaryColor;
-    Color background = Theme.of(context).colorScheme.background;
+    Color background = Theme.of(context).colorScheme.surface;
     return StreamBuilder(
       stream: streamNote.snapshots(),
       builder: (context, snap) {
@@ -47,12 +47,16 @@ class OverviewState extends State<Overview> {
                           param: folder.id,
                           scroll: true,
                         ),
-                        selectedColor:
-                            folder.color == null ? null : mixColors(background, taskColors[folder.color]!, 0.5),
+                        selectedColor: folder.color == null
+                            ? null
+                            : mixColors(
+                                background, taskColors[folder.color]!, 0.5),
                         label: Text(
                           folder.name,
                           style: TextStyle(
-                            color: folder.pin && folder.color == null ? background : primary,
+                            color: folder.pin && folder.color == null
+                                ? background
+                                : primary,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

@@ -46,10 +46,14 @@ final Map<String, Color?> taskColors = {
 late bool web;
 
 final List<Setting> settings = [
-  Setting('Interface', Icons.toggle_on, '', (c) => showSheet(func: interfaceSet)),
-  Setting('Account', Icons.person_rounded, '', (c) => showSheet(func: accountSet)),
-  Setting('Primary', Icons.colorize_rounded, '', (c) => showSheet(func: themeMap, param: true, scroll: true)),
-  Setting('Background', Icons.colorize_rounded, '', (c) => showSheet(func: themeMap, param: false, scroll: true)),
+  Setting(
+      'Interface', Icons.toggle_on, '', (c) => showSheet(func: interfaceSet)),
+  Setting(
+      'Account', Icons.person_rounded, '', (c) => showSheet(func: accountSet)),
+  Setting('Primary', Icons.colorize_rounded, '',
+      (c) => showSheet(func: themeMap, param: true, scroll: true)),
+  Setting('Background', Icons.colorize_rounded, '',
+      (c) => showSheet(func: themeMap, param: false, scroll: true)),
 ];
 
 const customRadius = BorderRadius.only(

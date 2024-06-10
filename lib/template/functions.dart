@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flashy_flushbar/flashy_flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import '../data.dart';
 import '../template/data.dart';
 import 'theme.dart';
@@ -37,10 +36,10 @@ void showSnack(String text, bool good, {Function()? onTap}) {
   ).show();
 }
 
-Future<String> getInput(String? init, {String? hintText}) async {
+Future<String> getInput(dynamic init, {String? hintText}) async {
   if (navigatorKey.currentContext == null) return '';
   Completer<String> completer = Completer();
-  TextEditingController controller = TextEditingController(text: init);
+  TextEditingController controller = TextEditingController(text: '$init');
   BuildContext context = navigatorKey.currentContext!;
   showModalBottomSheet(
     context: context,

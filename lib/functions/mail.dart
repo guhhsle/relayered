@@ -35,7 +35,8 @@ class FirebaseService {
     user = FirebaseAuth.instance.currentUser!;
     noteStream = listenNotes();
 
-    Navigator.of(context).push(MaterialPageRoute(builder: (c) => const HomePage()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (c) => const HomePage()));
   }
 
   Future resetPassword(String email, BuildContext context) async {
@@ -70,7 +71,7 @@ void crashDialog(BuildContext context, String text) {
           child: DefaultTextStyle(
             style: TextStyle(
               fontFamily: pf['font'],
-              color: Theme.of(context).colorScheme.background,
+              color: Theme.of(context).colorScheme.surface,
               fontWeight: FontWeight.bold,
             ),
             child: Text(text),

@@ -24,7 +24,7 @@ Color lighterColor(Color p, Color q) {
   return q;
 }
 
-Future<Layer> themeMap(dynamic p) async {
+Stream<Layer> themeMap(dynamic p) async* {
   p is bool;
   var dispatcher = SchedulerBinding.instance.platformDispatcher;
   bool light = dispatcher.platformBrightness == Brightness.light;
@@ -52,7 +52,7 @@ Future<Layer> themeMap(dynamic p) async {
       ),
     );
   }
-  return layer;
+  yield layer;
 }
 
 Future<void> fetchColor(bool p, bool light) async {
@@ -76,10 +76,8 @@ ThemeData theme(Color p, Color b) {
     colorScheme: ColorScheme(
       primary: p,
       secondary: p,
-      background: b,
       brightness: Brightness.light,
       error: Colors.red,
-      onBackground: p,
       onError: b,
       onPrimary: b,
       onSecondary: b,
@@ -87,13 +85,13 @@ ThemeData theme(Color p, Color b) {
       surface: b,
     ),
     scrollbarTheme: ScrollbarThemeData(
-      thumbColor: MaterialStatePropertyAll(p.withOpacity(0.7)),
+      thumbColor: WidgetStatePropertyAll(p.withOpacity(0.7)),
       radius: const Radius.circular(16),
-      thumbVisibility: const MaterialStatePropertyAll(true),
-      trackVisibility: const MaterialStatePropertyAll(false),
+      thumbVisibility: const WidgetStatePropertyAll(true),
+      trackVisibility: const WidgetStatePropertyAll(false),
     ),
     primaryColor: p,
-    fontFamily: 'JetBrainsMono',
+    fontFamily: pf['font'],
     scaffoldBackgroundColor: {'Black': Colors.black, 'Transparent': b}[pf['appbar']] ?? p,
     appBarTheme: AppBarTheme(
       backgroundColor: {'Black': Colors.black, 'Transparent': b}[pf['appbar']] ?? p,

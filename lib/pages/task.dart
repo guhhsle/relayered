@@ -86,7 +86,8 @@ class TaskPageState extends State<TaskPage> {
                 ? QuillToolbar.simple(
                     configurations: QuillSimpleToolbarConfigurations(
                       controller: controller,
-                      sectionDividerColor: Theme.of(context).colorScheme.background,
+                      sectionDividerColor:
+                          Theme.of(context).colorScheme.surface,
                       color: Colors.transparent,
                       multiRowsDisplay: false,
                       showFontFamily: false,
@@ -124,10 +125,7 @@ class NoteTemplate extends StatelessWidget {
         scrollable: true,
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
         expands: true,
-        readOnly: false,
-        onImagePaste: (imageBytes) async {
-          return imageBytes.toString();
-        },
+        onImagePaste: (imageBytes) async => imageBytes.toString(),
       ),
     );
   }

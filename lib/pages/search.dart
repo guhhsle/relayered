@@ -39,7 +39,8 @@ class SearchState extends State<Search> {
           counterText: "",
           hintText: t('Search'),
           hintStyle: TextStyle(
-            color: Theme.of(context).appBarTheme.foregroundColor!.withOpacity(0.5),
+            color:
+                Theme.of(context).appBarTheme.foregroundColor!.withOpacity(0.5),
           ),
           border: InputBorder.none,
           enabledBorder: InputBorder.none,
@@ -81,7 +82,8 @@ class SearchState extends State<Search> {
                     top: 16,
                     left: 8,
                   ),
-                  itemBuilder: (context, i) => results[i].toSetting().toTile(context),
+                  itemBuilder: (context, i) =>
+                      results[i].toSetting().toTile(context),
                 ),
               ),
               Padding(
@@ -92,7 +94,8 @@ class SearchState extends State<Search> {
                       onPanUpdate: (details) {
                         late String next;
                         try {
-                          double proportion = constraints.maxHeight / details.localPosition.dy;
+                          double proportion =
+                              constraints.maxHeight / details.localPosition.dy;
                           int i = chars.length ~/ proportion;
                           next = chars[i];
                         } catch (e) {
@@ -105,7 +108,10 @@ class SearchState extends State<Search> {
                         }
                       },
                       child: Card(
-                        color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withOpacity(0.2),
                         margin: const EdgeInsets.only(right: 16),
                         child: SizedBox(
                           width: 24,
@@ -118,7 +124,9 @@ class SearchState extends State<Search> {
                                 Text(
                                   char,
                                   style: TextStyle(
-                                    color: start == char ? Theme.of(context).colorScheme.background : null,
+                                    color: start == char
+                                        ? Theme.of(context).colorScheme.surface
+                                        : null,
                                   ),
                                 ),
                             ],

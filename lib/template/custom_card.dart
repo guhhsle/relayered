@@ -55,7 +55,7 @@ class CustomCard extends StatelessWidget {
                   child: setting.trailing == ''
                       ? Icon(
                           setting.icon,
-                          color: Theme.of(context).colorScheme.background,
+                          color: Theme.of(context).colorScheme.surface,
                         )
                       : Text(
                           t(setting.trailing),

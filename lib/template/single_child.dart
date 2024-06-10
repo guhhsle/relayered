@@ -5,26 +5,24 @@ import 'data.dart';
 import 'layer.dart';
 
 Future<void> singleChildSheet({
-  required String title,
-  required IconData icon,
+  required Setting action,
   required Widget child,
-  required BuildContext context,
+  double initialSize = 0.4,
 }) async {
-  Navigator.of(context).pop();
   showModalBottomSheet(
-    context: context,
+    context: navigatorKey.currentContext!,
     isScrollControlled: true,
     builder: (context) {
       return Container(
         color: Colors.transparent,
         child: DraggableScrollableSheet(
-          initialChildSize: 0.4,
+          initialChildSize: initialSize,
           maxChildSize: 0.9,
           minChildSize: 0.2,
           builder: (_, controller) {
             return Card(
               margin: const EdgeInsets.all(8),
-              color: Theme.of(context).colorScheme.background.withOpacity(0.8),
+              color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
               shape: RoundedRectangleBorder(
                 side: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
                 borderRadius: BorderRadius.circular(24),
@@ -33,7 +31,7 @@ Future<void> singleChildSheet({
                 padding: const EdgeInsets.all(8),
                 child: Column(
                   children: [
-                    CustomCard(Setting(title, icon, '', (c) {})),
+                    CustomCard(action),
                     Expanded(
                       child: SingleChildScrollView(
                         padding: const EdgeInsets.symmetric(

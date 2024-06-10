@@ -39,7 +39,7 @@ class Frame extends StatelessWidget {
             topLeft: Radius.circular(16),
           ),
           child: Card(
-            color: Theme.of(context).colorScheme.background,
+            color: Theme.of(context).colorScheme.surface,
             margin: EdgeInsets.zero,
             shadowColor: Colors.transparent,
             shape: const RoundedRectangleBorder(),

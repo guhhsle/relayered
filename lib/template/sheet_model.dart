@@ -4,7 +4,7 @@ import 'data.dart';
 import 'layer.dart';
 
 class SheetModel extends StatelessWidget {
-  final Future<Layer> Function(dynamic) func;
+  final Function(dynamic) func;
   final dynamic param;
   const SheetModel({
     super.key,
@@ -16,13 +16,14 @@ class SheetModel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.all(8),
-      color: Theme.of(context).colorScheme.background.withOpacity(0.8),
+      color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: ValueListenableBuilder(
           valueListenable: refreshLay,
-          builder: (context, non, child) => FutureBuilder(
-            future: func.call(param),
+          builder: (context, non, child) => LayerBuilder(
+            func: func,
+            param: param,
             builder: (context, snap) {
               if (!snap.hasData) return Container();
               Layer layer = snap.data!;

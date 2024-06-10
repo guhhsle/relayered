@@ -22,7 +22,7 @@ class CustomChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color pr = primary ?? Theme.of(context).primaryColor;
-    Color bg = background ?? Theme.of(context).colorScheme.background;
+    Color bg = background ?? Theme.of(context).colorScheme.surface;
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: InkWell(

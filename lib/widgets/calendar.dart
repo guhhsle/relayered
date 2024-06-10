@@ -52,7 +52,8 @@ class MonthContainer {
     return true;
   }
 
-  static MonthContainer from(MapEntry<DateTime?, Task> entry, {ColorScheme? cs}) {
+  static MonthContainer from(MapEntry<DateTime?, Task> entry,
+      {ColorScheme? cs}) {
     if (entry.key != null) {
       return MonthContainer(
         name: monthColors.keys.elementAt(entry.key!.month - 1),
@@ -81,7 +82,8 @@ class MonthContainer {
 }
 
 class _CalendarState extends State<Calendar> {
-  void sortTasks(List<MapEntry<DateTime?, Task>> list, int reverse) => list.sort((a, b) {
+  void sortTasks(List<MapEntry<DateTime?, Task>> list, int reverse) =>
+      list.sort((a, b) {
         int i = 0;
         if (a.key == null && b.key == null) {
         } else if (a.key == null && b.key != null) {
@@ -163,7 +165,7 @@ class _CalendarState extends State<Calendar> {
         year: 9999,
         month: 9999,
         list: [],
-        color: Theme.of(context).colorScheme.background,
+        color: Theme.of(context).colorScheme.surface,
       ));
 
       for (var folder in structure.values) {
@@ -216,7 +218,8 @@ class _CalendarState extends State<Calendar> {
             padding: const EdgeInsets.only(bottom: 64),
             itemBuilder: (context, i) {
               return Card(
-                margin: const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 32),
+                margin: const EdgeInsets.only(
+                    top: 8, left: 8, right: 8, bottom: 32),
                 shape: const RoundedRectangleBorder(borderRadius: customRadius),
                 shadowColor: Colors.transparent,
                 color: Theme.of(context).primaryColor.withOpacity(0.08),
@@ -245,7 +248,8 @@ class _CalendarState extends State<Calendar> {
                           vertical: 8,
                           horizontal: 8,
                         ),
-                        shape: const RoundedRectangleBorder(borderRadius: customRadius),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: customRadius),
                         shadowColor: Colors.transparent,
                         color: data[i][j].color.withOpacity(0.3),
                         child: Padding(
@@ -258,8 +262,10 @@ class _CalendarState extends State<Calendar> {
                                 shrinkWrap: true,
                                 itemCount: data[i][j].list.length,
                                 itemBuilder: (context, k) {
-                                  MapEntry<DateTime?, Task> entry = data[i][j].list[k];
-                                  String date = formatDate(entry.key, year: false, month: false);
+                                  MapEntry<DateTime?, Task> entry =
+                                      data[i][j].list[k];
+                                  String date = formatDate(entry.key,
+                                      year: false, month: false);
                                   return entry.value
                                       .toSetting(
                                         title: entry.value.path.prefix == ''
