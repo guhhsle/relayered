@@ -114,46 +114,6 @@ class _CalendarState extends State<Calendar> {
       cs: Theme.of(context).colorScheme,
     ));
     list.sort((a, b) => reverse * a.compareTo(b));
-
-/*
-
-
-    if (!task.hasDue) {
-      for (var monthContainer in list) {
-        if (monthContainer.name == task.path.name) {
-          monthContainer.list.add(MapEntry(null, task));
-          sortTasks(monthContainer.list, reverse);
-          return;
-        }
-      }
-      list.add(MonthContainer.from(
-        MapEntry(null, task),
-        cs: Theme.of(context).colorScheme,
-      ));
-    } else {
-      bool added = false;
-
-      print('-----');
-      for (var due in task.dues) {
-        print(due);
-        for (var monthContainer in list) {
-          if (monthContainer.during(due)) {
-            monthContainer.list.add(MapEntry(due, task));
-            sortTasks(monthContainer.list, reverse);
-            added = true;
-            break;
-          }
-        }
-        if (!added) {
-          list.add(MonthContainer.from(
-            MapEntry(due, task),
-            cs: Theme.of(context).colorScheme,
-          ));
-          //list.sort((a, b) => reverse * a.compareTo(b));
-      
-		  }
-      }
-    }*/
   }
 
   @override
@@ -192,27 +152,6 @@ class _CalendarState extends State<Calendar> {
             } else if (pf['showFolders']) {
               addTaskToList(MapEntry(null, task), list[3]);
             }
-          }
-
-          if (pf['showPinned'] && task.pinned && !task.hasDue) {
-            list[0][0].list.add(MapEntry(null, task));
-          }
-          if (!pf['showDone'] && task.done) {
-            continue;
-          } else if (task.hasDue) {
-            for (var date in task.dues) {
-              int comparation = date.compareTo(today());
-              if (comparation == 0) {
-                list[0][0].list.add(MapEntry(null, task)); //TODAY
-              }
-              addTaskToList(
-                MapEntry(date, task),
-                list[{-1: 2, 1: 1}[comparation] ?? 0],
-                reverse: comparation,
-              );
-            }
-          } else if (pf['showFolders']) {
-            addTaskToList(MapEntry(null, task), list[3]);
           }
         }
       }
@@ -310,35 +249,10 @@ class _CalendarState extends State<Calendar> {
   }
 }
 
-Future<DateTime?> pickDate(Task task, BuildContext context) async {
-  return await showDatePicker(
-    builder: (context, child2) => child2!,
-    context: context,
-    //initialDate: task.due!,
-    firstDate: DateTime(DateTime.now().year - 1),
-    lastDate: DateTime(DateTime.now().year + 5),
-  );
-
-  /*
-  FocusScope.of(context).unfocus();
-  task.due ??= DateTime.now();
-  /*
-  TimeOfDay tod = TimeOfDay.fromDateTime(task.due!);
-  showTimePicker(
-          builder: (context, child2) => child2!,
-          initialEntryMode: TimePickerEntryMode.dial,
-          context: context,
-          initialTime: TimeOfDay.fromDateTime(task.due!))
-      .then((date) => tod = date!);
-	*/
-  task.due = await showDatePicker(
-    builder: (context, child2) => child2!,
-    context: context,
-    initialDate: task.due!,
-    firstDate: DateTime(DateTime.now().year - 1),
-    lastDate: DateTime(DateTime.now().year + 5),
-  );
-  await task.update();
-
-	   */
-}
+Future<DateTime?> pickDate(Task task, BuildContext context) => showDatePicker(
+      builder: (context, child2) => child2!,
+      context: context,
+      //initialDate: task.due!,
+      firstDate: DateTime(DateTime.now().year - 1),
+      lastDate: DateTime(DateTime.now().year + 5),
+    );
