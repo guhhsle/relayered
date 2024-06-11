@@ -139,12 +139,15 @@ class _CalendarState extends State<Calendar> {
           if (task.hasDue) {
             for (int i = 0; i < task.dues.length; i++) {
               int comparation = task.dues[i].compareTo(today());
-              if (task.pinned && i == 0) comparation = 0;
-              addTaskToList(
-                MapEntry(task.dues[i], task),
-                list[{-1: 2, 1: 1}[comparation] ?? 0],
-                reverse: comparation,
-              );
+              if (comparation == 0 || (task.pinned && i == 0)) {
+                list[0][0].list.add(MapEntry(task.dues[i], task));
+              } else {
+                addTaskToList(
+                  MapEntry(task.dues[i], task),
+                  list[{-1: 2, 1: 1}[comparation] ?? 0],
+                  reverse: comparation,
+                );
+              }
             }
           } else {
             if (task.pinned) {

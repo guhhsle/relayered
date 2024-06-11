@@ -9,9 +9,9 @@ Future<Layer> folderOptions(dynamic id) async {
   Folder folder = structure[id] ?? Folder.defaultNew('/ERROR');
   return Layer(
     action: Setting(
-      '',
-      Icons.folder_rounded,
       folder.name,
+      Icons.edit_rounded,
+      '',
       (p0) async {
         folder.name = await getInput(
           folder.name,
