@@ -229,12 +229,11 @@ class _CalendarState extends State<Calendar> {
                                   if (entry.value.path.prefix != '') {
                                     prefix = '${entry.value.path.prefix} ';
                                   }
-                                  String date = formatDate(
+                                  String date = '${formatDate(
                                     entry.key,
                                     year: false,
                                     month: false,
-                                  );
-                                  if (date != '') date += '  ';
+                                  )}  ';
                                   return entry.value
                                       .toSetting(
                                         title:
