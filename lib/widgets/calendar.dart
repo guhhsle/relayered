@@ -234,6 +234,7 @@ class _CalendarState extends State<Calendar> {
                                     year: false,
                                     month: false,
                                   )}  ';
+                                  if (date == '  ') date += '  ';
                                   return entry.value
                                       .toSetting(
                                         title:
