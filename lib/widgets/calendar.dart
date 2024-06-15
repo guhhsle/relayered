@@ -225,13 +225,20 @@ class _CalendarState extends State<Calendar> {
                                 itemBuilder: (context, k) {
                                   MapEntry<DateTime?, Task> entry =
                                       data[i][j].list[k];
-                                  String date = formatDate(entry.key,
-                                      year: false, month: false);
+                                  String prefix = '';
+                                  if (entry.value.path.prefix != '') {
+                                    prefix = '${entry.value.path.prefix} ';
+                                  }
+                                  String date = formatDate(
+                                    entry.key,
+                                    year: false,
+                                    month: false,
+                                  );
+                                  if (date != '') date += '  ';
                                   return entry.value
                                       .toSetting(
-                                        title: entry.value.path.prefix == ''
-                                            ? '$date   ${entry.value.name}'
-                                            : '$date   ${entry.value.path.prefix} ${entry.value.name}',
+                                        title:
+                                            '$date$prefix${entry.value.name}',
                                       )
                                       .toTile(context);
                                 },
@@ -255,7 +262,6 @@ class _CalendarState extends State<Calendar> {
 Future<DateTime?> pickDate(Task task, BuildContext context) => showDatePicker(
       builder: (context, child2) => child2!,
       context: context,
-      //initialDate: task.due!,
       firstDate: DateTime(DateTime.now().year - 1),
       lastDate: DateTime(DateTime.now().year + 5),
     );
