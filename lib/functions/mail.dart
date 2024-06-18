@@ -13,21 +13,19 @@ class FirebaseService {
     String email,
     String password,
     BuildContext context,
-    bool existing,
   ) async {
     await FirebaseFirestore.instance.enableNetwork();
     try {
-      if (existing) {
-        await _auth.signInWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
-      } else {
+      try {
         await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
-        await user.sendEmailVerification();
+      } catch (e) {
+        await _auth.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
       }
     } catch (e) {
       crashDialog(context, '$e');

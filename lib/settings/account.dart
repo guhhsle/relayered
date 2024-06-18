@@ -5,41 +5,22 @@ import 'package:flutter/material.dart';
 import '../data.dart';
 import '../functions/mail.dart';
 import '../functions/task.dart';
-import '../template/custom_card.dart';
 import '../template/functions.dart';
 import '../template/layer.dart';
 import '../template/prefs.dart';
 
-String? mail, password;
+String mail = '', password = '';
 Future<Layer> accountSet(dynamic d) async {
   if (user.isAnonymous || user.email == null) {
     return Layer(
-      trailing: (c) => [
-        Expanded(
-          child: CustomCard(
-            Setting(
-              ' ',
-              Icons.person_add_rounded,
-              'Login',
-              (c) => FirebaseService().signIn(
-                mail!.trim(),
-                password!,
-                c,
-                true,
-              ),
-            ),
-          ),
-        )
-      ],
       action: Setting(
-        'Sign up',
-        Icons.person_add_rounded,
-        ' ',
+        'Continue',
+        Icons.keyboard_return_rounded,
+        '',
         (c) => FirebaseService().signIn(
-          mail!.trim(),
-          password!,
+          mail.trim(),
+          password,
           c,
-          false,
         ),
       ),
       list: [

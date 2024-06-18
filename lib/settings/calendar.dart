@@ -20,19 +20,25 @@ Future<Layer> calendar() async => Layer(
         Setting(
           'Show pinned',
           Icons.push_pin_rounded,
-          '${pf['showPinned']}',
+          pf['showPinned'],
           (c) => revPref('showPinned', refresh: true),
         ),
         Setting(
           'Show done',
           Icons.done_rounded,
-          '${pf['showDone']}',
+          pf['showDone'],
           (c) => revPref('showDone', refresh: true),
+        ),
+        Setting(
+          'Calendar field',
+          Icons.calendar_view_day_rounded,
+          pf['showCalendar'],
+          (c) => revPref('showCalendar', refresh: true),
         ),
         Setting(
           'Folder field',
           Icons.folder_copy_rounded,
-          '${pf['showFolders']}',
+          pf['showFolders'],
           (c) => revPref('showFolders', refresh: true),
         ),
         Setting(
@@ -63,7 +69,9 @@ Future<Layer> sourceFolders(dynamic none) async => Layer(
           ))
           Setting(
             folder.name,
-            pf['ignore'].contains(folder.name) ? Icons.radio_button_off : Icons.radio_button_on,
+            pf['ignore'].contains(folder.name)
+                ? Icons.radio_button_off
+                : Icons.radio_button_on,
             '',
             (c) => showSheet(
               func: openFolder,

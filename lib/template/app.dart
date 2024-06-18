@@ -1,7 +1,9 @@
 import 'package:flashy_flushbar/flashy_flushbar_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../data.dart';
 import 'data.dart';
+import 'functions.dart';
 import 'theme.dart';
 
 class App extends StatelessWidget {
@@ -13,13 +15,21 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: themeNotifier,
-      builder: (context, snap, chld) {
-        return MaterialApp(
+      builder: (context, snap, chld) => FutureBuilder(
+        future: loadLocale(),
+        builder: (context, data) => MaterialApp(
+          locale: Locale(pf['locale']),
           navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           title: title,
-          theme: theme(color(true, lightTheme: true), color(false, lightTheme: true)),
-          darkTheme: theme(color(true, lightTheme: false), color(false, lightTheme: false)),
+          theme: theme(
+            color(true, lightTheme: true),
+            color(false, lightTheme: true),
+          ),
+          darkTheme: theme(
+            color(true, lightTheme: false),
+            color(false, lightTheme: false),
+          ),
           builder: FlashyFlushbarProvider.init(),
           home: AnnotatedRegion<SystemUiOverlayStyle>(
             value: const SystemUiOverlayStyle(
@@ -38,8 +48,8 @@ class App extends StatelessWidget {
               },
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

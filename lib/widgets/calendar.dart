@@ -5,6 +5,7 @@ import '../data.dart';
 import '../functions/task.dart';
 import '../task.dart';
 import '../template/data.dart';
+import '../template/functions.dart';
 import '../template/layer.dart';
 
 class Calendar extends StatefulWidget {
@@ -136,7 +137,7 @@ class _CalendarState extends State<Calendar> {
         if (ignored) continue;
         for (var task in folder.items) {
           if (task.done && !pf['showDone'] && !task.pinned) continue;
-          if (task.hasDue) {
+          if (task.hasDue && pf['showCalendar']) {
             for (int i = 0; i < task.dues.length; i++) {
               int comparation = task.dues[i].compareTo(today());
               if (comparation == 0 || (task.pinned && i == 0)) {
@@ -217,7 +218,7 @@ class _CalendarState extends State<Calendar> {
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: Column(
                             children: [
-                              Text(data[i][j].name),
+                              Text(t(data[i][j].name)),
                               ListView.builder(
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,

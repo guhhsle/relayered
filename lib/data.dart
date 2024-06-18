@@ -7,6 +7,7 @@ import 'package:relayered/settings/account.dart';
 import 'settings/interface.dart';
 import 'task.dart';
 import 'template/layer.dart';
+import 'template/locale.dart';
 import 'template/theme.dart';
 
 Map pf = {
@@ -18,17 +19,18 @@ Map pf = {
   //INTERFACE
   'action': 'Floating',
   'defaultColor': 'Adaptive',
-  'primary': 'Ultramarine',
+  'primary': 'Purple',
   'background': 'Ivory',
-  'primaryDark': 'Ultramarine',
-  'backgroundDark': 'Ivory',
-  'appbar': 'Primary',
+  'primaryDark': 'Pink',
+  'backgroundDark': 'Gruv Dark',
+  'appbar': 'Black',
   'font': 'JetBrainsMono',
   'stackLayers': false,
   //CALENDAR
   'showDone': true,
   'showFolders': true,
   'showPinned': true,
+  'showCalendar': true,
   'ignore': <String>[],
 };
 
@@ -47,13 +49,35 @@ late bool web;
 
 final List<Setting> settings = [
   Setting(
-      'Interface', Icons.toggle_on, '', (c) => showSheet(func: interfaceSet)),
+    'Interface',
+    Icons.toggle_on,
+    '',
+    (c) => showSheet(func: interfaceSet),
+  ),
   Setting(
-      'Account', Icons.person_rounded, '', (c) => showSheet(func: accountSet)),
-  Setting('Primary', Icons.colorize_rounded, '',
-      (c) => showSheet(func: themeMap, param: true, scroll: true)),
-  Setting('Background', Icons.colorize_rounded, '',
-      (c) => showSheet(func: themeMap, param: false, scroll: true)),
+    'Account',
+    Icons.person_rounded,
+    '',
+    (c) => showSheet(func: accountSet),
+  ),
+  Setting(
+    'Primary',
+    Icons.colorize_rounded,
+    '',
+    (c) => showSheet(func: themeMap, param: true, scroll: true),
+  ),
+  Setting(
+    'Background',
+    Icons.colorize_rounded,
+    '',
+    (c) => showSheet(func: themeMap, param: false, scroll: true),
+  ),
+  Setting(
+    'More',
+    Icons.segment_rounded,
+    '',
+    (c) => showSheet(func: moreSet),
+  ),
 ];
 
 const customRadius = BorderRadius.only(
