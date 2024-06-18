@@ -57,8 +57,8 @@ class Setting {
 }
 
 class Layer {
-  final Setting action;
-  final List<Setting> list;
+  Setting action;
+  List<Setting> list;
   List<Widget> Function(BuildContext)? leading, trailing;
 
   Layer({
@@ -107,13 +107,15 @@ class LayerBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (func is Stream<Layer> Function(dynamic)) {
-      Stream<Layer> Function(dynamic) f = func as Stream<Layer> Function(dynamic);
+      Stream<Layer> Function(dynamic) f =
+          func as Stream<Layer> Function(dynamic);
       return StreamBuilder(
         stream: f.call(param),
         builder: (context, snap) => builder(context, snap),
       );
     } else if (func is Future<Layer> Function(dynamic)) {
-      Future<Layer> Function(dynamic) f = func as Future<Layer> Function(dynamic);
+      Future<Layer> Function(dynamic) f =
+          func as Future<Layer> Function(dynamic);
       return FutureBuilder(
         future: f.call(param),
         builder: builder,
