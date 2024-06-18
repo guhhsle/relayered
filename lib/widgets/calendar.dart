@@ -140,7 +140,8 @@ class _CalendarState extends State<Calendar> {
           if (task.hasDue && pf['showCalendar']) {
             for (int i = 0; i < task.dues.length; i++) {
               int comparation = task.dues[i].compareTo(today());
-              if (comparation == 0 || (task.pinned && i == 0)) {
+              if (pf['showPinned'] &&
+                  (comparation == 0 || (task.pinned && i == 0))) {
                 list[0][0].list.add(MapEntry(task.dues[i], task));
               } else {
                 addTaskToList(
@@ -151,7 +152,7 @@ class _CalendarState extends State<Calendar> {
               }
             }
           } else {
-            if (task.pinned) {
+            if (task.pinned && pf['showPinned']) {
               list[0][0].list.add(MapEntry(null, task));
             } else if (pf['showFolders']) {
               addTaskToList(MapEntry(null, task), list[3]);
