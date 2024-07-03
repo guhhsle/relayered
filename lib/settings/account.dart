@@ -25,7 +25,7 @@ Future<Layer> accountSet(dynamic d) async {
       ),
       list: [
         Setting(
-          'Email',
+          mail == '' ? 'Email' : mail,
           Icons.mail_outline_rounded,
           '',
           (c) async {
@@ -34,7 +34,7 @@ Future<Layer> accountSet(dynamic d) async {
           },
         ),
         Setting(
-          'Password',
+          password == '' ? 'Password' : password,
           Icons.password_rounded,
           '',
           (c) async {

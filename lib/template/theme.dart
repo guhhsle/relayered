@@ -12,10 +12,14 @@ Color color(bool primary, {bool? lightTheme}) {
 
   if (primary) {
     return colors[pf[lightTheme ? 'primary' : 'primaryDark']] ??
-        Color(int.tryParse('0xFF${pf[lightTheme ? 'primary' : 'primaryDark']}') ?? 0xFF170a1c);
+        Color(
+            int.tryParse('0xFF${pf[lightTheme ? 'primary' : 'primaryDark']}') ??
+                0xFF170a1c);
   } else {
     return colors[pf[lightTheme ? 'background' : 'backgroundDark']] ??
-        Color(int.tryParse('0xFF${pf[lightTheme ? 'background' : 'backgroundDark']}') ?? 0xFFf6f7eb);
+        Color(int.tryParse(
+                '0xFF${pf[lightTheme ? 'background' : 'backgroundDark']}') ??
+            0xFFf6f7eb);
   }
 }
 
@@ -30,7 +34,9 @@ Stream<Layer> themeMap(dynamic p) async* {
   bool light = dispatcher.platformBrightness == Brightness.light;
   Layer layer = Layer(
       action: Setting(
-        light ? pf[p ? 'primary' : 'background'] : pf[p ? 'primaryDark' : 'backgroundDark'],
+        light
+            ? pf[p ? 'primary' : 'background']
+            : pf[p ? 'primaryDark' : 'backgroundDark'],
         p ? Icons.colorize_rounded : Icons.tonality_rounded,
         '',
         (c) => fetchColor(p, light),
@@ -44,7 +50,9 @@ Stream<Layer> themeMap(dynamic p) async* {
         iconsTheme[name]!,
         '',
         (c) => setPref(
-          light ? (p ? 'primary' : 'background') : (p ? 'primaryDark' : 'backgroundDark'),
+          light
+              ? (p ? 'primary' : 'background')
+              : (p ? 'primaryDark' : 'backgroundDark'),
           name,
           refresh: true,
         ),
@@ -61,7 +69,9 @@ Future<void> fetchColor(bool p, bool light) async {
       ..replaceAll('#', '');
     int.parse('0xFF$val');
     setPref(
-      light ? (p ? 'primary' : 'background') : (p ? 'primaryDark' : 'backgroundDark'),
+      light
+          ? (p ? 'primary' : 'background')
+          : (p ? 'primaryDark' : 'backgroundDark'),
       val,
       refresh: true,
     );
@@ -92,20 +102,25 @@ ThemeData theme(Color p, Color b) {
     ),
     primaryColor: p,
     fontFamily: pf['font'],
-    scaffoldBackgroundColor: {'Black': Colors.black, 'Transparent': b}[pf['appbar']] ?? p,
+    scaffoldBackgroundColor:
+        {'Black': Colors.black, 'Transparent': b}[pf['appbar']] ?? p,
     appBarTheme: AppBarTheme(
-      backgroundColor: {'Black': Colors.black, 'Transparent': b}[pf['appbar']] ?? p,
-      foregroundColor: {'Black': lighterColor(p, b), 'Transparent': p}[pf['appbar']] ?? b,
+      backgroundColor:
+          {'Black': Colors.black, 'Transparent': b}[pf['appbar']] ?? p,
+      foregroundColor:
+          {'Black': lighterColor(p, b), 'Transparent': p}[pf['appbar']] ?? b,
       shadowColor: Colors.transparent,
       titleTextStyle: TextStyle(
         fontWeight: FontWeight.w600,
-        color: {'Black': lighterColor(p, b), 'Transparent': p}[pf['appbar']] ?? b,
-        fontFamily: 'JetBrainsMono',
+        color:
+            {'Black': lighterColor(p, b), 'Transparent': p}[pf['appbar']] ?? b,
+        fontFamily: pf['font'],
         fontSize: 18,
       ),
     ),
     textSelectionTheme: TextSelectionThemeData(
-      cursorColor: {'Black': lighterColor(p, b), 'Transparent': p}[pf['appbar']] ?? b,
+      cursorColor:
+          {'Black': lighterColor(p, b), 'Transparent': p}[pf['appbar']] ?? b,
     ),
     textTheme: TextTheme(
       titleMedium: TextStyle(fontWeight: FontWeight.w600, color: p),
@@ -121,8 +136,10 @@ ThemeData theme(Color p, Color b) {
       suffixIconColor: p,
       counterStyle: TextStyle(color: p, fontWeight: FontWeight.w600),
       labelStyle: TextStyle(color: p, fontWeight: FontWeight.w600),
-      enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: p, width: 2)),
-      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: p, width: 2)),
+      enabledBorder:
+          UnderlineInputBorder(borderSide: BorderSide(color: p, width: 2)),
+      focusedBorder:
+          UnderlineInputBorder(borderSide: BorderSide(color: p, width: 2)),
     ),
     progressIndicatorTheme: ProgressIndicatorThemeData(
       refreshBackgroundColor: b,
