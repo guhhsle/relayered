@@ -26,7 +26,7 @@ Future<void> main() async {
   if (FirebaseAuth.instance.currentUser == null) {
     await FirebaseAuth.instance.signInAnonymously();
   }
-  await FirebaseFirestore.instance.disableNetwork();
+  if (!kIsWeb) await FirebaseFirestore.instance.disableNetwork();
   user = FirebaseAuth.instance.currentUser!;
   noteStream = listenNotes();
   runApp(const App(
