@@ -15,14 +15,10 @@ void goToPage(Widget page) {
 }
 
 void showSnack(String text, bool good, {Function()? onTap}) {
+  Color back = good ? Colors.green.shade100 : Colors.red.shade100;
   FlashyFlushbar(
-    leadingWidget: Icon(
-      good ? Icons.check_rounded : Icons.error_outline,
-      color: Colors.black,
-      size: 24,
-    ),
-    margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 4),
-    backgroundColor: good ? Colors.green.shade100 : Colors.red.shade100,
+    margin: const EdgeInsets.all(16),
+    backgroundColor: back.withOpacity(0.9),
     animationDuration: const Duration(milliseconds: 64),
     message: text,
     duration: const Duration(seconds: 3),
