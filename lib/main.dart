@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'data.dart';
 import 'functions/task.dart';
-import 'pages/homepage.dart';
+import 'pages/home.dart';
 import 'template/app.dart';
 import 'template/prefs.dart';
 

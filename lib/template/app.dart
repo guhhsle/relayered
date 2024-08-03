@@ -32,16 +32,17 @@ class App extends StatelessWidget {
           ),
           builder: FlashyFlushbarProvider.init(),
           home: AnnotatedRegion<SystemUiOverlayStyle>(
-            value: const SystemUiOverlayStyle(
+            value: SystemUiOverlayStyle(
               statusBarColor: Colors.transparent,
-              systemNavigationBarColor: Colors.transparent,
               systemNavigationBarIconBrightness: Brightness.dark,
+              systemNavigationBarColor: color(false),
             ),
             child: Builder(
               builder: (context) {
                 SystemChrome.setSystemUIOverlayStyle(
-                  const SystemUiOverlayStyle(
+                  SystemUiOverlayStyle(
                     statusBarColor: Colors.transparent,
+                    systemNavigationBarColor: color(false),
                   ),
                 );
                 return child;

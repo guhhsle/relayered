@@ -7,6 +7,7 @@ class CustomChip extends StatelessWidget {
   final bool selected, showCheckmark;
   final String label;
   final Color? primary, background;
+  final Widget? avatar;
 
   const CustomChip({
     super.key,
@@ -17,6 +18,7 @@ class CustomChip extends StatelessWidget {
     this.showCheckmark = false,
     this.primary,
     this.background,
+    this.avatar,
   });
 
   @override
@@ -29,6 +31,7 @@ class CustomChip extends StatelessWidget {
         onLongPress: onHold,
         child: InputChip(
           showCheckmark: showCheckmark,
+          avatar: avatar,
           selected: selected,
           onSelected: onSelected,
           backgroundColor: bg,
