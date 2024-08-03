@@ -5,7 +5,6 @@ import '../template/functions.dart';
 import '../template/layer.dart';
 import '../widgets/calendar.dart';
 import '../widgets/frame.dart';
-import '../widgets/relation.dart';
 import '../data.dart';
 import '../functions/structure.dart';
 import '../settings/calendar.dart';

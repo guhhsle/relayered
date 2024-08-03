@@ -68,3 +68,13 @@ class OverviewState extends State<Overview> {
     );
   }
 }
+
+Color mixColors(Color color1, Color color2, double ratio) {
+  ratio = ratio.clamp(0.0, 1.0);
+  int mixedRed = ((1 - ratio) * color1.red + ratio * color2.red).round();
+  int mixedGreen = ((1 - ratio) * color1.green + ratio * color2.green).round();
+  int mixedBlue = ((1 - ratio) * color1.blue + ratio * color2.blue).round();
+  int mixedAlpha = ((1 - ratio) * color1.alpha + ratio * color2.alpha).round();
+
+  return Color.fromARGB(mixedAlpha, mixedRed, mixedGreen, mixedBlue);
+}
