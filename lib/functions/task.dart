@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../classes/folder.dart';
+import '../classes/task.dart';
 import '../data.dart';
-import '../task.dart';
 import '../template/layer.dart';
 
 StreamSubscription<QuerySnapshot<Map<String, dynamic>>> listenNotes() {
-  streamNote = coll();
+  streamNote = coll;
   return streamNote.snapshots().listen((data) {
     structure.clear();
 
@@ -43,7 +44,8 @@ StreamSubscription<QuerySnapshot<Map<String, dynamic>>> listenNotes() {
       });
     }
     structure = Map.fromEntries(
-      structure.entries.toList()..sort((e1, e2) => e1.value.name.compareTo(e2.value.name)),
+      structure.entries.toList()
+        ..sort((e1, e2) => e1.value.name.compareTo(e2.value.name)),
     );
   });
 }
@@ -62,7 +64,8 @@ String formatDate(
 }) {
   if (dt == null) return '';
   String years = year ? '.${dt.year}' : '';
-  String months = month ? (dt.month < 10 ? '.0${dt.month}' : '.${dt.month}') : '';
+  String months =
+      month ? (dt.month < 10 ? '.0${dt.month}' : '.${dt.month}') : '';
   String days = dt.day < 10 ? '0${dt.day}' : '${dt.day}';
   return '$days$months$years';
 }
@@ -82,7 +85,7 @@ List<Setting> foldersIn(String id) {
 
   for (String nodeId in structure[id]!.nodes) {
     for (Folder node in structure.values.where((e) => e.id == nodeId)) {
-      list.add(node.toSetting());
+      list.add(node.toSetting);
     }
   }
 

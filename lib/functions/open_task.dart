@@ -1,16 +1,20 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:relayered/functions/task.dart';
+import '../classes/folder.dart';
 import '../data.dart';
 import '../pages/task.dart';
-import '../task.dart';
+import '../classes/task.dart';
 import '../template/functions.dart';
 import '../template/layer.dart';
 import '../widgets/calendar.dart';
 import 'open_folder.dart';
 
 Future<Layer> openTask(dynamic id) async {
-  Task task = Task.defaultNew(Folder.defaultNew('/ERROR'), name: 'ERROR');
+  Task task = Task.defaultNew(
+    Folder.defaultNew('/ERROR'),
+    name: 'ERROR',
+  );
   for (var map in structure.entries) {
     for (Task current in map.value.items) {
       if (current.id == id) task = current;
@@ -25,7 +29,7 @@ Future<Layer> openTask(dynamic id) async {
     ),
     trailing: (c) => [
       IconButton(
-        icon: Icon(task.checked()),
+        icon: Icon(task.checkedIcon),
         onPressed: () => (task..done = !task.done).update(),
       ),
     ],
@@ -33,7 +37,7 @@ Future<Layer> openTask(dynamic id) async {
       Setting(
         '',
         Icons.short_text_rounded,
-        task.shortDesc().substring(0, task.shortDesc().length > 20 ? 20 : null),
+        task.shortDesc,
         (p0) => goToPage(TaskPage(task: task)),
       ),
       Setting(
@@ -52,16 +56,15 @@ Future<Layer> openTask(dynamic id) async {
                 '',
                 (p0) {},
               ),
-              list: [
-                for (MapEntry<String, Color?> col in taskColors.entries)
-                  Setting(
-                    '',
-                    Icons.circle,
-                    col.key,
-                    (p0) => (task..color = col.key).update(),
-                    iconColor: col.value,
-                  )
-              ],
+              list: taskColors.entries.map((col) {
+                return Setting(
+                  '',
+                  Icons.circle,
+                  col.key,
+                  (p0) => (task..color = col.key).update(),
+                  iconColor: col.value,
+                );
+              }).toList(),
             );
           },
         ),
@@ -87,22 +90,21 @@ Future<Layer> openTask(dynamic id) async {
                     }
                   },
                 ),
-                list: [
-                  for (var due in task.dues)
-                    Setting(
-                      formatDate(due, year: false),
-                      Icons.event_busy_rounded,
-                      '',
-                      (c) {
-                        task.dues.remove(due);
-                        task.update();
-                      },
-                      secondary: (c) {
-                        task.dues.remove(due);
-                        task.update();
-                      },
-                    )
-                ],
+                list: task.dues.map((due) {
+                  return Setting(
+                    formatDate(due, year: false),
+                    Icons.event_busy_rounded,
+                    '',
+                    (c) {
+                      task.dues.remove(due);
+                      task.update();
+                    },
+                    secondary: (c) {
+                      task.dues.remove(due);
+                      task.update();
+                    },
+                  );
+                }).toList(),
               );
             },
           );
@@ -110,7 +112,7 @@ Future<Layer> openTask(dynamic id) async {
       ),
       Setting(
         '',
-        task.pinned ? Icons.push_pin_rounded : Icons.push_pin_outlined,
+        task.pinnedIcon,
         'Pin${task.pinned ? 'ned' : ''}',
         (p0) => (task..pinned = !task.pinned).update(),
       ),
@@ -137,10 +139,10 @@ Future<Layer> openTask(dynamic id) async {
               },
             ),
             list: structure.values
-                .map((e) => e.toSetting()
+                .map((e) => e.toSetting
                   ..onTap = (c) async {
                     Navigator.of(c).pop();
-                    Map json = task.toJson();
+                    Map json = task.toJson;
                     await Future.wait([
                       task.delete(),
                       moveTask(json, e.id),

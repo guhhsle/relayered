@@ -2,8 +2,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../classes/database.dart';
 import '../data.dart';
-import '../functions/mail.dart';
 import '../functions/task.dart';
 import '../template/functions.dart';
 import '../template/layer.dart';
@@ -17,7 +17,7 @@ Future<Layer> accountSet(dynamic d) async {
         'Continue',
         Icons.keyboard_return_rounded,
         '',
-        (c) => FirebaseService().signIn(
+        (c) => Database.signIn(
           mail.trim(),
           password,
           c,
@@ -81,7 +81,7 @@ Future<Layer> accountSet(dynamic d) async {
           'Change password',
           Icons.password_rounded,
           '',
-          (c) => FirebaseService().resetPassword(user.email!, c),
+          (c) => Database.resetPassword(user.email!, c),
         ),
         Setting(
           'Log out',

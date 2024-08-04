@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import '../classes/folder.dart';
 import '../functions/folder_options.dart';
 import '../functions/open_folder.dart';
 import '../data.dart';
 import '../functions/task.dart';
-import '../task.dart';
+import '../classes/task.dart';
 import '../template/data.dart';
 import '../template/functions.dart';
 import '../template/layer.dart';

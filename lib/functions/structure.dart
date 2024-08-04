@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data.dart';
-import '../task.dart';
+import '../classes/folder.dart';
 import '../template/functions.dart';
 import '../template/layer.dart';
 import 'task.dart';
@@ -16,7 +16,7 @@ Future<Layer> pinnedFolders(dynamic nothing) async {
     list: (structure.values
             .where((e) => e.pin)
             .map(
-              (e) => e.toSetting(),
+              (e) => e.toSetting,
             )
             .toList()) +
         (pinnedTasks().map((e) => e.toSetting()).toList()),
@@ -57,7 +57,7 @@ Future<Layer> allFolders(dynamic id) async {
           await newFolder.upload();
         },
       ),
-      list: structure.values.map((e) => e.toSetting()).toList(),
+      list: structure.values.map((e) => e.toSetting).toList(),
     );
   } else {
     return Layer(
@@ -74,8 +74,10 @@ Future<Layer> allFolders(dynamic id) async {
         },
       ),
       list: structure.values
-          .map((e) => e.toSetting()
-            ..icon = folder.nodes.contains(e.id) ? Icons.folder_rounded : Icons.folder_outlined
+          .map((e) => e.toSetting
+            ..icon = folder.nodes.contains(e.id)
+                ? Icons.folder_rounded
+                : Icons.folder_outlined
             ..onTap = (c) async {
               if (folder.nodes.contains(e.id)) {
                 folder.nodes.remove(e.id);

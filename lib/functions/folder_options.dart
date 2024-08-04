@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data.dart';
-import '../task.dart';
+import '../classes/folder.dart';
 import '../template/functions.dart';
 import '../template/layer.dart';
 import 'structure.dart';
@@ -37,16 +37,15 @@ Future<Layer> folderOptions(dynamic id) async {
                 '',
                 (p0) {},
               ),
-              list: [
-                for (MapEntry<String, Color?> col in taskColors.entries)
-                  Setting(
-                    '',
-                    Icons.circle,
-                    col.key,
-                    (p0) => (folder..color = col.key).update(),
-                    iconColor: col.value,
-                  )
-              ],
+              list: taskColors.entries.map((col) {
+                return Setting(
+                  '',
+                  Icons.circle,
+                  col.key,
+                  (p0) => (folder..color = col.key).update(),
+                  iconColor: col.value,
+                );
+              }).toList(),
             );
           },
         ),

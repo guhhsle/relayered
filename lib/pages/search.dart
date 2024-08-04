@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import '../classes/folder.dart';
+import '../classes/task.dart';
 import '../data.dart';
-import '../task.dart';
 import '../template/data.dart';
 import '../template/functions.dart';
 import '../widgets/frame.dart';

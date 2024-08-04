@@ -2,10 +2,9 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:relayered/settings/account.dart';
-
+import 'classes/folder.dart';
+import 'settings/account.dart';
 import 'settings/interface.dart';
-import 'task.dart';
 import 'template/layer.dart';
 import 'template/locale.dart';
 import 'template/theme.dart';

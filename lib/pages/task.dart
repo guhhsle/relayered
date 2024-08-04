@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import '../functions/open_task.dart';
-import '../task.dart';
+import '../classes/task.dart';
 import '../template/functions.dart';
 import '../template/layer.dart';
 import '../widgets/frame.dart';

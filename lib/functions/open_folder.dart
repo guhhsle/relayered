@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import '../classes/folder.dart';
 import '../data.dart';
-import '../task.dart';
 import '../template/functions.dart';
 import '../template/layer.dart';
 import 'folder_options.dart';
+import '../classes/task.dart';
 import 'task.dart';
 
 Future<Layer> openFolder(dynamic id) async {
