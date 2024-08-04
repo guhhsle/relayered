@@ -20,13 +20,13 @@ class OverviewState extends State<Overview> {
     Color background = Theme.of(context).colorScheme.surface;
     return StreamBuilder(
       stream: streamNote.snapshots(),
-      builder: (context, snap) => Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: 8,
-          horizontal: 20,
-        ),
+      builder: (context, snap) => SizedBox(
         height: 64,
         child: ListView.builder(
+          padding: const EdgeInsets.symmetric(
+            vertical: 8,
+            horizontal: 16,
+          ),
           physics: scrollPhysics,
           scrollDirection: Axis.horizontal,
           itemCount: structure.length,
