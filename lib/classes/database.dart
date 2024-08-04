@@ -13,13 +13,11 @@ import '../template/functions.dart';
 
 class Database {
   static final Database instance = Database.internal();
-  static final FirebaseAuth auth = FirebaseAuth.instance;
+  static late FirebaseAuth auth;
 
   factory Database() => instance;
 
-  Database.internal() {
-    init();
-  }
+  Database.internal();
 
   Future<void> init() async {
     web = kIsWeb;
@@ -30,11 +28,10 @@ class Database {
     FirebaseFirestore.instance.settings = const Settings(
       cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
     );
-    if (FirebaseAuth.instance.currentUser == null) {
-      await FirebaseAuth.instance.signInAnonymously();
-    }
+    auth = FirebaseAuth.instance;
+    if (auth.currentUser == null) await auth.signInAnonymously();
     if (!kIsWeb) await FirebaseFirestore.instance.disableNetwork();
-    user = FirebaseAuth.instance.currentUser!;
+    user = auth.currentUser!;
     noteStream = listenNotes();
   }
 
