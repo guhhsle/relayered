@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../classes/database.dart';
 import '../functions/task.dart';
 import '../template/data.dart';
 import '../template/functions.dart';
@@ -75,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                 : Container(),
             web
                 ? const IconButton(
-                    onPressed: sync,
+                    onPressed: Database.sync,
                     icon: Icon(Icons.refresh_rounded),
                   )
                 : Container(),

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'encrypt.dart';
@@ -130,11 +129,4 @@ class Task extends Crypt {
       return '${formatDate(dues[0], year: year, month: month)}...';
     }
   }
-}
-
-CollectionReference<Map<String, dynamic>> get coll {
-  return FirebaseFirestore.instance
-      .collection('users')
-      .doc(user.uid)
-      .collection('folders');
 }

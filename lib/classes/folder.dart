@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:relayered/classes/database.dart';
 import '../functions/folder_options.dart';
 import '../functions/open_folder.dart';
 import '../template/layer.dart';
@@ -60,7 +61,7 @@ class Folder extends Crypt {
   }
 
   Future<void> upload() async {
-    await coll.add(toJson);
+    await Database.folders.add(toJson);
     refreshLayer();
   }
 
@@ -86,7 +87,7 @@ class Folder extends Crypt {
 
   Future update() async {
     if (id != null) {
-      await coll.doc(id).update(toJson);
+      await Database.folders.doc(id).update(toJson);
       refreshLayer();
     } else {
       await upload();
@@ -94,7 +95,7 @@ class Folder extends Crypt {
   }
 
   Future delete() async {
-    await coll.doc(id).delete();
+    await Database.folders.doc(id).delete();
     refreshLayer();
   }
 }

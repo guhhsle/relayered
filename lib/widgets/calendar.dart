@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../classes/database.dart';
 import '../classes/folder.dart';
 import '../functions/folder_options.dart';
 import '../functions/open_folder.dart';
@@ -171,9 +172,9 @@ class _CalendarState extends State<Calendar> {
     }
 
     return RefreshIndicator(
-      onRefresh: sync,
+      onRefresh: Database.sync,
       child: StreamBuilder(
-        stream: streamNote.snapshots(),
+        stream: Database.stream,
         builder: (context, snap) {
           List<List<MonthContainer>> data = fetchAllTasks();
           return ListView.builder(
@@ -183,7 +184,11 @@ class _CalendarState extends State<Calendar> {
             itemBuilder: (context, i) {
               return Card(
                 margin: const EdgeInsets.only(
-                    top: 8, left: 8, right: 8, bottom: 32),
+                  top: 8,
+                  left: 8,
+                  right: 8,
+                  bottom: 32,
+                ),
                 shape: const RoundedRectangleBorder(borderRadius: customRadius),
                 shadowColor: Colors.transparent,
                 color: Theme.of(context).primaryColor.withOpacity(0.08),
@@ -213,7 +218,8 @@ class _CalendarState extends State<Calendar> {
                           horizontal: 8,
                         ),
                         shape: const RoundedRectangleBorder(
-                            borderRadius: customRadius),
+                          borderRadius: customRadius,
+                        ),
                         shadowColor: Colors.transparent,
                         color: data[i][j].color.withOpacity(0.3),
                         child: Padding(

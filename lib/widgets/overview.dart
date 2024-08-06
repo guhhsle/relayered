@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:relayered/classes/database.dart';
 import 'package:relayered/data.dart';
 import 'package:relayered/functions/folder_options.dart';
 import 'package:relayered/functions/open_folder.dart';
-
 import '../template/data.dart';
 import '../template/layer.dart';
 
@@ -19,7 +19,7 @@ class OverviewState extends State<Overview> {
     Color primary = Theme.of(context).primaryColor;
     Color background = Theme.of(context).colorScheme.surface;
     return StreamBuilder(
-      stream: streamNote.snapshots(),
+      stream: Database.stream,
       builder: (context, snap) => SizedBox(
         height: 64,
         child: ListView.builder(

@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'classes/folder.dart';
 import 'settings/account.dart';
@@ -86,7 +83,6 @@ const customRadius = BorderRadius.only(
   bottomRight: Radius.circular(16),
 );
 
-late CollectionReference<Map<String, dynamic>> streamNote;
-late User user;
-late StreamSubscription noteStream;
+//late CollectionReference<Map<String, dynamic>> streamNote;
+//late User user;
 Map<String, Folder> structure = {};
