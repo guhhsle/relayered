@@ -44,7 +44,7 @@ Layer accountLayer(dynamic non) {
           'Change password',
           Icons.password_rounded,
           '',
-          (c) => Database.resetPassword(Database.user.email!, c),
+          (c) => Database.resetPassword(Database.user.email!),
         ),
         Setting(
           'Log out',
@@ -64,11 +64,7 @@ Layer accountLayer(dynamic non) {
         'Continue',
         Icons.keyboard_return_rounded,
         '',
-        (c) => Database.signIn(
-          mail.trim(),
-          password,
-          c,
-        ),
+        (c) => Database.signIn(mail.trim(), password),
       ),
       list: [
         Setting(
