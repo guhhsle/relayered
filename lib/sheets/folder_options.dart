@@ -5,7 +5,7 @@ import '../template/functions.dart';
 import '../template/layer.dart';
 import 'structure.dart';
 
-Future<Layer> folderOptions(dynamic id) async {
+Layer folderOptions(dynamic id) {
   Folder folder = structure[id] ?? Folder.defaultNew('/ERROR');
   return Layer(
     action: Setting(

@@ -4,7 +4,6 @@ import '../classes/schedule.dart';
 import '../classes/database.dart';
 import '../data.dart';
 import '../functions/task.dart';
-import '../classes/task.dart';
 import '../template/data.dart';
 import '../template/functions.dart';
 
@@ -48,8 +47,8 @@ class _CalendarState extends State<Calendar> {
                     MonthContainer field = fields[j];
                     return InkWell(
                       borderRadius: customRadius,
-                      onTap: field.onPress,
-                      onLongPress: field.onHold,
+                      onTap: field.folder?.open ?? () {},
+                      onLongPress: field.folder?.options ?? () {},
                       child: Card(
                         margin: const EdgeInsets.symmetric(
                           vertical: 8,
@@ -103,10 +102,3 @@ class _CalendarState extends State<Calendar> {
     );
   }
 }
-
-Future<DateTime?> pickDate(Task task, BuildContext context) => showDatePicker(
-      builder: (context, child2) => child2!,
-      context: context,
-      firstDate: DateTime(DateTime.now().year - 1),
-      lastDate: DateTime(DateTime.now().year + 5),
-    );

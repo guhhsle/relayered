@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import '../classes/database.dart';
 import '../functions/task.dart';
+import '../sheets/all_tasks.dart';
+import '../sheets/structure.dart';
 import '../template/data.dart';
 import '../template/functions.dart';
 import '../template/layer.dart';
 import '../widgets/calendar.dart';
 import '../widgets/frame.dart';
 import '../data.dart';
-import '../functions/structure.dart';
 import '../settings/calendar.dart';
 import '../widgets/overview.dart';
-import 'search.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -59,10 +59,7 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               tooltip: t('Search'),
               icon: const Icon(Icons.fiber_manual_record_outlined),
-              onPressed: () {
-                goToPage(const Search());
-                //showSearch(context: context, delegate: Delegate());
-              },
+              onPressed: () => showSheet(func: allTasks, scroll: true),
             ),
             pf['action'] == 'Top'
                 ? IconButton(

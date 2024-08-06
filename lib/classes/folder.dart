@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:relayered/classes/database.dart';
-import '../functions/folder_options.dart';
-import '../functions/open_folder.dart';
+import '../sheets/folder_options.dart';
+import '../sheets/open_folder.dart';
 import '../template/layer.dart';
 import '../data.dart';
 import 'encrypt.dart';
 import 'task.dart';
+import 'database.dart';
 
 class Folder extends Crypt {
   String name;
@@ -70,18 +70,26 @@ class Folder extends Crypt {
       name,
       Icons.folder_outlined,
       '',
-      (p0) => showSheet(
-        func: openFolder,
-        param: id,
-        scroll: true,
-        hidePrev: pf['stackLayers'] ? null : p0,
-      ),
+      (p0) => open(context: p0),
       secondary: (c) {},
-      onHold: (c) => showSheet(
-        func: folderOptions,
-        param: id,
-      ),
+      onHold: (c) => options(),
       iconColor: taskColors[color],
+    );
+  }
+
+  void options() {
+    showSheet(
+      func: folderOptions,
+      param: id,
+    );
+  }
+
+  void open({BuildContext? context}) {
+    showSheet(
+      func: openFolder,
+      param: id,
+      scroll: true,
+      hidePrev: pf['stackLayers'] ? null : context,
     );
   }
 

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import '../classes/folder.dart';
 import '../data.dart';
+import '../functions/task.dart';
 import '../template/functions.dart';
 import '../template/layer.dart';
-import 'folder_options.dart';
 import '../classes/task.dart';
-import 'task.dart';
 
-Future<Layer> openFolder(dynamic id) async {
+Layer openFolder(dynamic id) {
   id as String;
   Folder folder = structure[id] ?? Folder.defaultNew('/ERROR');
   return Layer(
@@ -30,10 +29,7 @@ Future<Layer> openFolder(dynamic id) async {
       folder.name,
       Icons.folder_rounded,
       ' ',
-      (c) => showSheet(
-        func: folderOptions,
-        param: id,
-      ),
+      (c) => folder.options(),
     ),
     list: tasksIn(id, false) + foldersIn(id) + tasksIn(id, true),
   );

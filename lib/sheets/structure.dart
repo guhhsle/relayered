@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../data.dart';
 import '../classes/folder.dart';
+import '../functions/task.dart';
 import '../template/functions.dart';
 import '../template/layer.dart';
-import 'task.dart';
 
 Future<Layer> pinnedFolders(dynamic nothing) async {
   return Layer(

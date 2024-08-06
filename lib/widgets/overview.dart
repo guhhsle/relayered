@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:relayered/classes/database.dart';
-import 'package:relayered/data.dart';
-import 'package:relayered/functions/folder_options.dart';
-import 'package:relayered/functions/open_folder.dart';
+import '../classes/database.dart';
+import '../data.dart';
 import '../template/data.dart';
-import '../template/layer.dart';
 
 class Overview extends StatefulWidget {
   const Overview({super.key});
@@ -33,20 +30,13 @@ class OverviewState extends State<Overview> {
           itemBuilder: (context, i) {
             final folder = structure.values.elementAt(i);
             return InkWell(
-              onLongPress: () => showSheet(
-                func: folderOptions,
-                param: folder.id,
-              ),
+              onLongPress: folder.options,
               child: Padding(
                 padding: const EdgeInsets.only(right: 8, top: 4),
                 child: InputChip(
                   showCheckmark: false,
                   selected: folder.pin || folder.color != null,
-                  onSelected: (sel) => showSheet(
-                    func: openFolder,
-                    param: folder.id,
-                    scroll: true,
-                  ),
+                  onSelected: (sel) => folder.open(),
                   selectedColor: folder.color == null
                       ? null
                       : mixColors(background, taskColors[folder.color]!, 0.5),

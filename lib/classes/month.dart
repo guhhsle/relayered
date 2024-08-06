@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-
 import '../data.dart';
-import '../functions/folder_options.dart';
-import '../functions/open_folder.dart';
-import '../template/layer.dart';
 import 'folder.dart';
 import 'task.dart';
 
@@ -72,14 +68,4 @@ class MonthContainer {
   }
 
   Map<int, MonthContainer> toMap() => {year * 100 + month: this};
-
-  void onPress() {
-    if (folder == null) return;
-    showSheet(func: openFolder, param: folder!.id, scroll: true);
-  }
-
-  void onHold() {
-    if (folder == null) return;
-    showSheet(func: folderOptions, param: folder!.id, scroll: true);
-  }
 }

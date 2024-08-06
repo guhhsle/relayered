@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
+import '../sheets/open_task.dart';
 import 'encrypt.dart';
 import '../data.dart';
 import 'folder.dart';
-import '../functions/open_task.dart';
 import '../functions/task.dart';
 import '../pages/task.dart';
 import '../template/functions.dart';
@@ -54,16 +54,15 @@ class Task extends Crypt {
     );
   }
 
+  void open() => showSheet(func: openTask, param: id);
+
   Setting toSetting({String? title}) {
     title ??= '$name   ${date(month: true)}';
     return Setting(
       title,
       checkedIcon,
       '',
-      (p0) => showSheet(
-        func: openTask,
-        param: id,
-      ),
+      (p0) => open(),
       iconColor: taskColors[color],
       secondary: (c) {
         done = !done;
@@ -129,4 +128,11 @@ class Task extends Crypt {
       return '${formatDate(dues[0], year: year, month: month)}...';
     }
   }
+
+  Future<DateTime?> pickDate(BuildContext context) => showDatePicker(
+        builder: (context, child2) => child2!,
+        context: context,
+        firstDate: DateTime(DateTime.now().year - 1),
+        lastDate: DateTime(DateTime.now().year + 5),
+      );
 }
