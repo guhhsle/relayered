@@ -22,7 +22,7 @@ class Setting {
     this.iconColor,
   });
 
-  ListTile toTile(BuildContext context) {
+  Widget toTile(BuildContext context) {
     Widget? lead, trail;
     if (secondary == null) {
       lead = Icon(icon, color: iconColor);
@@ -38,20 +38,23 @@ class Setting {
       );
     }
 
-    return ListTile(
-      leading: lead,
-      title: Text(t(title)),
-      trailing: trail,
-      onTap: () {
-        onTap(context);
-        refreshLayer();
-      },
-      onLongPress: onHold == null
-          ? null
-          : () {
-              onHold!(context);
-              refreshLayer();
-            },
+    return Semantics(
+      label: t(trailing),
+      child: ListTile(
+        leading: lead,
+        title: Text(t(title)),
+        trailing: trail,
+        onTap: () {
+          onTap(context);
+          refreshLayer();
+        },
+        onLongPress: onHold == null
+            ? null
+            : () {
+                onHold!(context);
+                refreshLayer();
+              },
+      ),
     );
   }
 }
@@ -81,6 +84,7 @@ void showSheet({
 }) {
   if (hidePrev != null) Navigator.of(hidePrev).pop();
   showModalBottomSheet(
+    barrierLabel: 'Barrier',
     context: navigatorKey.currentContext!,
     isScrollControlled: true,
     barrierColor: Colors.black.withOpacity(0.3),

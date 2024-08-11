@@ -22,7 +22,7 @@ Layer openTask(dynamic id) {
       task.name,
       Icons.edit,
       '',
-      (p0) async => (task..name = await getInput(task.name)).update(),
+      (p0) async => (task..name = await getInput(task.name, 'Name')).update(),
     ),
     trailing: (c) => [
       IconButton(
@@ -125,7 +125,7 @@ Layer openTask(dynamic id) {
               Icons.add_rounded,
               '',
               (c) async {
-                String newName = await getInput('', hintText: 'New folder');
+                String newName = await getInput('', 'New folder');
                 Folder newFolder = Folder.defaultNew(newName);
                 await newFolder.upload();
               },

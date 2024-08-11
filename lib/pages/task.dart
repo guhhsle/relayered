@@ -34,7 +34,7 @@ class TaskPageState extends State<TaskPage> {
   Widget build(BuildContext context) {
     bool k = MediaQuery.of(context).viewInsets.bottom != 0;
     return PopScope(
-      onPopInvoked: (b) => updateNote(),
+      onPopInvokedWithResult: (b, d) => updateNote(),
       child: Frame(
         leading: IconButton(
           icon: const Icon(Icons.menu),

@@ -14,54 +14,62 @@ class SheetScrollModel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.of(context).pop(),
-      child: Container(
-        color: Colors.transparent,
-        child: DraggableScrollableSheet(
-          initialChildSize: 0.6,
-          maxChildSize: 0.8,
-          minChildSize: 0.2,
-          builder: (context, controller) => Card(
-            margin: const EdgeInsets.all(8),
-            color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: ValueListenableBuilder(
-                valueListenable: refreshLay,
-                builder: (context, non, child) => LayerBuilder(
-                  func: func,
-                  param: param,
-                  builder: (context, snap) {
-                    if (!snap.hasData) return Container();
-                    Layer layer = snap.data!;
-                    List<Setting> list = layer.list;
-                    return Column(
-                      children: [
-                        Row(
-                          children: (layer.leading == null ? <Widget>[] : layer.leading!(context)) +
-                              [
-                                Expanded(
-                                  child: CustomCard(layer.action),
-                                )
-                              ] +
-                              (layer.trailing == null ? [] : layer.trailing!(context)),
-                        ),
-                        Expanded(
-                          child: Scrollbar(
-                            controller: controller,
-                            child: ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              padding: const EdgeInsets.only(bottom: 8),
+    return Semantics(
+      label: 'Scrollable bottom sheet',
+      child: GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
+        child: Container(
+          color: Colors.transparent,
+          child: DraggableScrollableSheet(
+            initialChildSize: 0.6,
+            maxChildSize: 0.8,
+            minChildSize: 0.2,
+            builder: (context, controller) => Card(
+              margin: const EdgeInsets.all(8),
+              color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: ValueListenableBuilder(
+                  valueListenable: refreshLay,
+                  builder: (context, non, child) => LayerBuilder(
+                    func: func,
+                    param: param,
+                    builder: (context, snap) {
+                      if (!snap.hasData) return Container();
+                      Layer layer = snap.data!;
+                      List<Setting> list = layer.list;
+                      return Column(
+                        children: [
+                          Row(
+                            children: (layer.leading == null
+                                    ? <Widget>[]
+                                    : layer.leading!(context)) +
+                                [
+                                  Expanded(
+                                    child: CustomCard(layer.action),
+                                  )
+                                ] +
+                                (layer.trailing == null
+                                    ? []
+                                    : layer.trailing!(context)),
+                          ),
+                          Expanded(
+                            child: Scrollbar(
                               controller: controller,
-                              itemCount: list.length,
-                              itemBuilder: (context, i) => list[i].toTile(context),
+                              child: ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                padding: const EdgeInsets.only(bottom: 8),
+                                controller: controller,
+                                itemCount: list.length,
+                                itemBuilder: (context, i) =>
+                                    list[i].toTile(context),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    );
-                  },
+                        ],
+                      );
+                    },
+                  ),
                 ),
               ),
             ),

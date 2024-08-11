@@ -21,7 +21,7 @@ Layer accountLayer(dynamic non) {
         Icons.mail_outline_rounded,
         '',
         (c) async => Database.user.verifyBeforeUpdateEmail(
-          await getInput(Database.user.email),
+          await getInput(Database.user.email, 'New email'),
         ),
       ),
       list: [
@@ -72,7 +72,7 @@ Layer accountLayer(dynamic non) {
           Icons.mail_outline_rounded,
           '',
           (c) async {
-            mail = await getInput(mail, hintText: 'Email');
+            mail = await getInput(mail, 'Email');
             refreshLayer();
           },
         ),
@@ -81,7 +81,7 @@ Layer accountLayer(dynamic non) {
           Icons.password_rounded,
           '',
           (c) async {
-            password = await getInput(password, hintText: 'Password');
+            password = await getInput(password, 'Password');
             refreshLayer();
           },
         ),
@@ -100,7 +100,7 @@ Layer accountLayer(dynamic non) {
 }
 
 Future<void> getKey(String init) async {
-  String next = await getInput(init);
+  String next = await getInput(init, 'Encryption key');
   next = next.padRight(16, '0').substring(0, 16);
   setPref('encryptKey', next);
 }

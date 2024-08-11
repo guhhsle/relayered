@@ -20,7 +20,7 @@ Layer openFolder(dynamic id) {
           }
           Task.defaultNew(
             folder,
-            name: await getInput('', hintText: 'New task'),
+            name: await getInput('', 'New task'),
           ).upload();
         },
       ),

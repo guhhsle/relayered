@@ -27,20 +27,23 @@ class CustomChip extends StatelessWidget {
     Color bg = background ?? Theme.of(context).colorScheme.surface;
     return Padding(
       padding: const EdgeInsets.only(right: 8),
-      child: InkWell(
-        onLongPress: onHold,
-        child: InputChip(
-          showCheckmark: showCheckmark,
-          avatar: avatar,
-          selected: selected,
-          onSelected: onSelected,
-          backgroundColor: bg,
-          selectedColor: pr,
-          label: Text(
-            t(label),
-            style: TextStyle(
-              color: selected ? bg : pr,
-              fontWeight: FontWeight.bold,
+      child: Semantics(
+        label: label,
+        child: InkWell(
+          onLongPress: onHold,
+          child: InputChip(
+            showCheckmark: showCheckmark,
+            avatar: avatar,
+            selected: selected,
+            onSelected: onSelected,
+            backgroundColor: bg,
+            selectedColor: pr,
+            label: Text(
+              t(label),
+              style: TextStyle(
+                color: selected ? bg : pr,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),

@@ -15,7 +15,7 @@ Layer folderOptions(dynamic id) {
       (p0) async {
         folder.name = await getInput(
           folder.name,
-          hintText: 'Rename folder',
+          'Rename folder',
         );
         folder.update();
       },
@@ -82,7 +82,7 @@ Layer folderOptions(dynamic id) {
         (c) async {
           folder.prefix = await getInput(
             folder.prefix,
-            hintText: 'Prefix',
+            'Prefix',
           );
           await folder.update();
         },

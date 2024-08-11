@@ -72,7 +72,7 @@ Stream<Layer> themeMap(dynamic p) async* {
 
 Future<void> fetchColor(bool p, bool light) async {
   try {
-    String val = await getInput('', hintText: 'HEX value')
+    String val = await getInput('', 'HEX value')
       ..replaceAll('#', '');
     int.parse('0xFF$val');
     setPref(

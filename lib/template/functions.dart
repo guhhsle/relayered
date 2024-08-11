@@ -32,7 +32,7 @@ void showSnack(String text, bool good, {Function()? onTap}) {
   ).show();
 }
 
-Future<String> getInput(dynamic init, {String? hintText}) async {
+Future<String> getInput(dynamic init, String hintText) async {
   if (navigatorKey.currentContext == null) return '';
   Completer<String> completer = Completer();
   TextEditingController controller = TextEditingController(text: '$init');
@@ -40,13 +40,14 @@ Future<String> getInput(dynamic init, {String? hintText}) async {
   showModalBottomSheet(
     context: context,
     barrierColor: Colors.black.withOpacity(0.8),
-    builder: (c) {
-      return Padding(
-        padding: MediaQuery.of(context).viewInsets,
+    builder: (c) => Padding(
+      padding: MediaQuery.of(context).viewInsets,
+      child: Semantics(
+        label: t(hintText),
         child: TextField(
           cursorColor: Colors.white,
           decoration: InputDecoration(
-            labelText: t(hintText ?? ''),
+            labelText: t(hintText),
             border: InputBorder.none,
             focusedBorder: InputBorder.none,
             enabledBorder: InputBorder.none,
@@ -64,8 +65,8 @@ Future<String> getInput(dynamic init, {String? hintText}) async {
             completer.complete(text);
           },
         ),
-      );
-    },
+      ),
+    ),
   );
   return completer.future;
 }

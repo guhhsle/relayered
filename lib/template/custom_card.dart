@@ -17,56 +17,59 @@ class CustomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
-      child: Card(
-        elevation: 6,
-        shadowColor: Theme.of(context).colorScheme.primary,
-        margin: margin,
-        color: Theme.of(context).colorScheme.primary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: InkWell(
-          onTap: () => setting.onTap(context),
-          customBorder: RoundedRectangleBorder(
+    return Semantics(
+      label: t(setting.title),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Card(
+          elevation: 6,
+          shadowColor: Theme.of(context).colorScheme.primary,
+          margin: margin,
+          color: Theme.of(context).colorScheme.primary,
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          child: SizedBox(
-            width: double.infinity,
-            height: 50,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 22),
-                    child: Text(
-                      t(setting.title),
-                      overflow: TextOverflow.clip,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        fontWeight: FontWeight.bold,
+          child: InkWell(
+            onTap: () => setting.onTap(context),
+            customBorder: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 22),
+                      child: Text(
+                        t(setting.title),
+                        overflow: TextOverflow.clip,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 16),
-                  child: setting.trailing == ''
-                      ? Icon(
-                          setting.icon,
-                          color: Theme.of(context).colorScheme.surface,
-                        )
-                      : Text(
-                          t(setting.trailing),
-                          overflow: TextOverflow.clip,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16),
+                    child: setting.trailing == ''
+                        ? Icon(
+                            setting.icon,
+                            color: Theme.of(context).colorScheme.surface,
+                          )
+                        : Text(
+                            t(setting.trailing),
+                            overflow: TextOverflow.clip,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

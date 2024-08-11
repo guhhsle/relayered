@@ -32,7 +32,7 @@ Future<Layer> pinnedFolders(dynamic nothing) async {
       ),
       IconButton(
         onPressed: () async {
-          String newName = await getInput('', hintText: 'New folder');
+          String newName = await getInput('', 'New folder');
           Folder newFolder = Folder.defaultNew(newName)..pin = true;
           await newFolder.upload();
         },
@@ -52,7 +52,7 @@ Future<Layer> allFolders(dynamic id) async {
         Icons.add_rounded,
         '',
         (c) async {
-          String newName = await getInput('', hintText: 'New folder');
+          String newName = await getInput('', 'New folder');
           Folder newFolder = Folder.defaultNew(newName);
           await newFolder.upload();
         },
@@ -66,7 +66,7 @@ Future<Layer> allFolders(dynamic id) async {
         Icons.add_rounded,
         '',
         (c) async {
-          String newName = await getInput('', hintText: 'New folder');
+          String newName = await getInput('', 'New folder');
           Folder newFolder = Folder.defaultNew(newName, node: id);
           await newFolder.upload();
           folder.nodes.add(newFolder.id!);
