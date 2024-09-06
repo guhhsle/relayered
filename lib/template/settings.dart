@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../data.dart';
 import '../template/functions.dart';
 import '../widgets/frame.dart';
+import '../data.dart';
 
 class PageSettings extends StatelessWidget {
   const PageSettings({super.key});
@@ -15,7 +15,7 @@ class PageSettings extends StatelessWidget {
         padding: const EdgeInsets.only(top: 16),
         shrinkWrap: true,
         itemCount: settings.length,
-        itemBuilder: (context, i) => settings[i].toTile(context),
+        itemBuilder: (c, i) => settings[i].toTile(c),
       ),
     );
   }

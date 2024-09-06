@@ -1,11 +1,11 @@
-import 'dart:async';
-import 'dart:convert';
 import 'package:flashy_flushbar/flashy_flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../data.dart';
-import '../template/data.dart';
+import 'dart:convert';
+import 'dart:async';
 import 'theme.dart';
+import '../template/data.dart';
+import '../data.dart';
 
 void goToPage(Widget page) {
   if (navigatorKey.currentContext == null) return;
@@ -14,16 +14,26 @@ void goToPage(Widget page) {
   );
 }
 
-void showSnack(String text, bool good, {Function()? onTap}) {
+void showSnack(
+  String text,
+  bool good, {
+  Function()? onTap,
+  int? duration,
+  bool debug = false,
+}) {
+  if (debug && !pf['debug']) return;
   Color back = good ? Colors.green.shade100 : Colors.red.shade100;
   FlashyFlushbar(
     margin: const EdgeInsets.all(16),
     backgroundColor: back.withOpacity(0.9),
     animationDuration: const Duration(milliseconds: 64),
-    message: text,
-    duration: const Duration(seconds: 3),
+    message: t(text),
+    duration: Duration(seconds: duration ?? 3),
     isDismissible: true,
-    onTap: onTap ?? () {},
+    onTap: () {
+      onTap?.call();
+      FlashyFlushbar.cancel();
+    },
     messageStyle: TextStyle(
       color: Colors.black,
       fontWeight: FontWeight.bold,
@@ -75,11 +85,17 @@ void refreshInterface() {
   themeNotifier.value = theme(color(true), color(false));
 }
 
-Future<void> loadLocale() async {
-  final String response = await rootBundle.loadString(
-    'assets/translations/${pf['locale']}.json',
-  );
-  l = await jsonDecode(response);
+Future<Map> loadLocale() async {
+  try {
+    final String response = await rootBundle.loadString(
+      'assets/translations/${pf['locale']}.json',
+    );
+    l = await jsonDecode(response);
+  } catch (e) {
+    debugPrint(e.toString());
+    l = {};
+  }
+  return l;
 }
 
 String t(dynamic d) {

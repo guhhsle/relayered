@@ -3,21 +3,21 @@ import 'functions.dart';
 
 class CustomChip extends StatelessWidget {
   final void Function(bool value) onSelected;
-  final void Function()? onHold;
   final bool selected, showCheckmark;
-  final String label;
   final Color? primary, background;
+  final void Function()? onHold;
   final Widget? avatar;
+  final String label;
 
   const CustomChip({
     super.key,
+    this.showCheckmark = false,
     required this.onSelected,
     required this.selected,
     required this.label,
-    this.onHold,
-    this.showCheckmark = false,
-    this.primary,
     this.background,
+    this.primary,
+    this.onHold,
     this.avatar,
   });
 

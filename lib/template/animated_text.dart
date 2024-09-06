@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AnimatedText extends StatefulWidget {
-  final String text;
   final TextStyle style;
   final Duration speed;
+  final String text;
   const AnimatedText({
     super.key,
     required this.text,

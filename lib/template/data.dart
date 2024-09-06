@@ -1,43 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const Map<String, Color> colors = {
-  'White': Colors.white,
-  'Ivory': Color(0xFFf6f7eb),
-  //'Beige': const Color(0xFFf5f5dc),
-  'Pink': Color(0xFFFEDBD0),
-  'Gruv Light': Color(0xFFC8A58A),
-  'Light Green': Color(0xFFcbe2d4),
-  'PinkRed': Color(0xFFee7674),
-  'BlueGrey': Colors.blueGrey,
-  'Dark BlueGrey': Color(0xFF263238),
-  'Dark Green': Color(0xFF25291C),
-  'Purple Grey': Color(0xFF282a36),
-  'Ultramarine': Color(0xFF01161E),
-  'Dark Pink': Color(0xFF442C2E),
-  'Purple': Color(0xFF170a1c),
-  'Gruv Dark': Color(0xFF0F0A0A),
-  'Anchor': Color(0xFF11150D),
-  'Black': Colors.black,
-};
-
-const Map<String, IconData> iconsTheme = {
-  'White': Icons.ac_unit_rounded,
-  'Ivory': Icons.ac_unit_rounded,
-  'Pink': Icons.spa_outlined,
-  'Gruv Light': Icons.local_cafe_outlined,
-  'Light Green': Icons.nature_outlined,
-  'PinkRed': Icons.spa_outlined,
-  'BlueGrey': Icons.filter_drama_rounded,
-  'Dark BlueGrey': Icons.filter_drama_rounded,
-  'Dark Green': Icons.nature_outlined,
-  'Purple Grey': Icons.light,
-  'Ultramarine': Icons.water_rounded,
-  'Dark Pink': Icons.spa_outlined,
-  'Purple': Icons.star_purple500_rounded,
-  'Gruv Dark': Icons.local_cafe_outlined,
-  'Anchor': Icons.anchor_outlined,
-  'Black': Icons.nights_stay_outlined,
+const Map<String, IconData> colorMap = {
+  'FFFFFF': Icons.ac_unit_rounded,
+  'F6F7EB': Icons.ac_unit_rounded,
+  'F0F8FF': Icons.water_rounded,
+  'FEDBD0': Icons.spa_outlined,
+  'C8A58A': Icons.local_cafe_rounded,
+  'CBE2D4': Icons.nature_outlined,
+  'EE7674': Icons.spa_outlined,
+  '6A89A7': Icons.filter_drama_rounded,
+  '263238': Icons.filter_drama_rounded,
+  '25291C': Icons.nature_outlined,
+  '282A36': Icons.light,
+  '01161E': Icons.tsunami_rounded,
+  '442C2E': Icons.spa_outlined,
+  '170A1C': Icons.star_purple500_rounded,
+  '0F0A0A': Icons.local_cafe_rounded,
+  '11150D': Icons.anchor_outlined,
+  '000000': Icons.nights_stay_outlined,
 };
 
 late final SharedPreferences prefs;

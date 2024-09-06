@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'data.dart';
-import 'functions.dart';
-import 'sheet_model.dart';
 import 'sheet_scroll.dart';
+import 'sheet_model.dart';
+import 'functions.dart';
+import 'data.dart';
 
 class Setting {
-  dynamic title, trailing;
-  IconData icon;
-  Color? iconColor;
-  void Function(BuildContext) onTap;
   void Function(BuildContext)? secondary;
   void Function(BuildContext)? onHold;
+  void Function(BuildContext) onTap;
+  dynamic title, trailing;
+  Color? iconColor;
+  IconData icon;
 
   Setting(
     this.title,
@@ -48,32 +48,33 @@ class Setting {
           onTap(context);
           refreshLayer();
         },
-        onLongPress: onHold == null
-            ? null
-            : () {
-                onHold!(context);
-                refreshLayer();
-              },
+        onLongPress: () {
+          if (onHold == null) return;
+          onHold!(context);
+          refreshLayer();
+        },
       ),
     );
   }
 }
 
 class Layer {
-  Setting action;
-  List<Setting> list;
   List<Widget> Function(BuildContext)? leading, trailing;
+  List<Setting> list;
+  Setting action;
 
   Layer({
     required this.action,
     required this.list,
-    this.leading,
     this.trailing,
+    this.leading,
   });
 }
 
 void refreshLayer() {
-  refreshLay.value = !refreshLay.value;
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    refreshLay.value = !refreshLay.value;
+  });
 }
 
 void showSheet({
@@ -98,34 +99,32 @@ void showSheet({
 }
 
 class LayerBuilder extends StatelessWidget {
+  final Widget Function(BuildContext, AsyncSnapshot<Layer>) builder;
   final Function(dynamic) func;
   final dynamic param;
-  final Widget Function(BuildContext, AsyncSnapshot<Layer>) builder;
   const LayerBuilder({
     super.key,
-    required this.func,
     required this.builder,
+    required this.func,
     this.param,
   });
 
   @override
   Widget build(BuildContext context) {
     if (func is Stream<Layer> Function(dynamic)) {
-      Stream<Layer> Function(dynamic) f =
-          func as Stream<Layer> Function(dynamic);
+      final f = func as Stream<Layer> Function(dynamic);
       return StreamBuilder(
         stream: f.call(param),
         builder: (context, snap) => builder(context, snap),
       );
     } else if (func is Future<Layer> Function(dynamic)) {
-      Future<Layer> Function(dynamic) f =
-          func as Future<Layer> Function(dynamic);
+      final f = func as Future<Layer> Function(dynamic);
       return FutureBuilder(
         future: f.call(param),
         builder: builder,
       );
     } else {
-      Layer Function(dynamic) f = func as Layer Function(dynamic);
+      final f = func as Layer Function(dynamic);
       return builder(
         context,
         AsyncSnapshot.withData(

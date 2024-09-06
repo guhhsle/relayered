@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import '../data.dart';
-import 'data.dart';
 import 'functions.dart';
 import 'layer.dart';
 import 'prefs.dart';
+import 'dart:math';
+import 'data.dart';
+import '../data.dart';
 
-Color color(bool primary, {bool? lightTheme}) {
+Color color(bool primary, {bool? light}) {
   var dispatcher = SchedulerBinding.instance.platformDispatcher;
-  lightTheme ??= dispatcher.platformBrightness == Brightness.light;
+  light ??= dispatcher.platformBrightness == Brightness.light;
 
-  if (primary) {
-    return colors[pf[lightTheme ? 'primary' : 'primaryDark']] ??
-        Color(
-            int.tryParse('0xFF${pf[lightTheme ? 'primary' : 'primaryDark']}') ??
-                0xFF170a1c);
-  } else {
-    return colors[pf[lightTheme ? 'background' : 'backgroundDark']] ??
-        Color(int.tryParse(
-                '0xFF${pf[lightTheme ? 'background' : 'backgroundDark']}') ??
-            0xFFf6f7eb);
+  try {
+    return colorFromHex(pf[pfString(primary, light)]);
+  } catch (e) {
+    if (primary) return Colors.black;
+    return Colors.white;
   }
 }
 
@@ -28,57 +24,83 @@ Color lighterColor(Color p, Color q) {
   return q;
 }
 
-Stream<Layer> themeMap(dynamic p) async* {
-  p is bool;
+String pfString(bool primary, bool light) {
+  return {
+    (false, false): 'backgroundDark',
+    (false, true): 'background',
+    (true, false): 'primaryDark',
+    (true, true): 'primary'
+  }[(primary, light)]!;
+}
+
+Color colorFromHex(String hex) {
+  return Color(int.parse('0xFF$hex'));
+}
+
+Stream<Layer> themeMap(dynamic primary) async* {
+  primary is bool;
   var dispatcher = SchedulerBinding.instance.platformDispatcher;
   bool light = dispatcher.platformBrightness == Brightness.light;
   Layer layer = Layer(
     action: Setting(
-      light
-          ? pf[p ? 'primary' : 'background']
-          : pf[p ? 'primaryDark' : 'backgroundDark'],
-      p ? Icons.colorize_rounded : Icons.tonality_rounded,
+      pf[pfString(primary, light)],
+      primary ? Icons.colorize_rounded : Icons.tonality_rounded,
       '',
-      (c) => fetchColor(p, light),
+      (c) => fetchColor(primary, light),
     ),
     trailing: (c) => [
       IconButton(
+        icon: const Icon(Icons.shuffle_rounded),
+        onPressed: () => randomColor(primary, light),
+      ),
+      IconButton(
         icon: const Icon(Icons.add_rounded),
-        onPressed: () => fetchColor(p, light),
+        onPressed: () => fetchColor(primary, light),
       ),
     ],
-    list: [],
-  );
-  for (int i = 0; i < colors.length; i++) {
-    String name = colors.keys.toList()[i];
-    layer.list.add(
-      Setting(
-        name,
-        iconsTheme[name]!,
+    list: colorMap.entries.map((color) {
+      return Setting(
+        color.key,
+        color.value,
         '',
-        (c) => setPref(
-          light
-              ? (p ? 'primary' : 'background')
-              : (p ? 'primaryDark' : 'backgroundDark'),
-          name,
-          refresh: true,
-        ),
-        iconColor: colors.values.elementAt(i),
-      ),
-    );
-  }
+        (c) {
+          setPref(
+            pfString(primary, light),
+            color.key,
+            refresh: true,
+          );
+        },
+        iconColor: colorFromHex(color.key),
+      );
+    }).toList(),
+  );
   yield layer;
 }
 
-Future<void> fetchColor(bool p, bool light) async {
+void randomColor(bool primary, bool light) {
+  String result = '';
+  for (int i = 0; i < 6; i++) {
+    int random = Random().nextInt(16);
+    if (random < 10) {
+      result += '$random';
+    } else {
+      result += String.fromCharCode(random + 55);
+    }
+  }
+  setPref(
+    pfString(primary, light),
+    result,
+    refresh: true,
+  );
+}
+
+Future<void> fetchColor(bool primary, bool light) async {
   try {
-    String val = await getInput('', 'HEX value')
-      ..replaceAll('#', '');
+    String val = await getInput('', 'HEX value');
+    val = val.replaceAll('#', '');
     int.parse('0xFF$val');
     setPref(
-      light
-          ? (p ? 'primary' : 'background')
-          : (p ? 'primaryDark' : 'backgroundDark'),
+      pfString(primary, light),
       val,
       refresh: true,
     );
@@ -143,10 +165,12 @@ ThemeData theme(Color p, Color b) {
       suffixIconColor: p,
       counterStyle: TextStyle(color: p, fontWeight: FontWeight.w600),
       labelStyle: TextStyle(color: p, fontWeight: FontWeight.w600),
-      enabledBorder:
-          UnderlineInputBorder(borderSide: BorderSide(color: p, width: 2)),
-      focusedBorder:
-          UnderlineInputBorder(borderSide: BorderSide(color: p, width: 2)),
+      enabledBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: p, width: 2),
+      ),
+      focusedBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: p, width: 2),
+      ),
     ),
     progressIndicatorTheme: ProgressIndicatorThemeData(
       refreshBackgroundColor: b,
@@ -201,7 +225,9 @@ ThemeData theme(Color p, Color b) {
       ),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
     ),
   );
 }

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'custom_card.dart';
-import 'data.dart';
 import 'layer.dart';
+import 'data.dart';
 
 class SheetScrollModel extends StatelessWidget {
   final Function(dynamic) func;
   final dynamic param;
   const SheetScrollModel({
     super.key,
-    required this.func,
     required this.param,
+    required this.func,
   });
 
   @override
@@ -41,17 +41,13 @@ class SheetScrollModel extends StatelessWidget {
                       return Column(
                         children: [
                           Row(
-                            children: (layer.leading == null
-                                    ? <Widget>[]
-                                    : layer.leading!(context)) +
-                                [
-                                  Expanded(
-                                    child: CustomCard(layer.action),
-                                  )
-                                ] +
-                                (layer.trailing == null
-                                    ? []
-                                    : layer.trailing!(context)),
+                            children: [
+                              if (layer.leading != null)
+                                ...layer.leading!(context),
+                              Expanded(child: CustomCard(layer.action)),
+                              if (layer.trailing != null)
+                                ...layer.trailing!(context),
+                            ],
                           ),
                           Expanded(
                             child: Scrollbar(
@@ -61,8 +57,7 @@ class SheetScrollModel extends StatelessWidget {
                                 padding: const EdgeInsets.only(bottom: 8),
                                 controller: controller,
                                 itemCount: list.length,
-                                itemBuilder: (context, i) =>
-                                    list[i].toTile(context),
+                                itemBuilder: (c, i) => list[i].toTile(c),
                               ),
                             ),
                           ),

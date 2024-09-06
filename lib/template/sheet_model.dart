@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'custom_card.dart';
-import 'data.dart';
 import 'layer.dart';
+import 'data.dart';
 
 class SheetModel extends StatelessWidget {
   final Function(dynamic) func;
   final dynamic param;
+
   const SheetModel({
     super.key,
-    required this.func,
     required this.param,
+    required this.func,
   });
 
   @override
@@ -17,8 +18,8 @@ class SheetModel extends StatelessWidget {
     return Semantics(
       label: 'Static bottom sheet',
       child: Card(
-        margin: const EdgeInsets.all(8),
         color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
+        margin: const EdgeInsets.all(8),
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: ValueListenableBuilder(
@@ -35,23 +36,17 @@ class SheetModel extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
                     Row(
-                      children: (layer.leading == null
-                              ? <Widget>[]
-                              : layer.leading!(context)) +
-                          [
-                            Expanded(
-                              child: CustomCard(layer.action),
-                            )
-                          ] +
-                          (layer.trailing == null
-                              ? []
-                              : layer.trailing!(context)),
+                      children: [
+                        if (layer.leading != null) ...layer.leading!(context),
+                        Expanded(child: CustomCard(layer.action)),
+                        if (layer.trailing != null) ...layer.trailing!(context),
+                      ],
                     ),
                     ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
                       itemCount: list.length,
-                      itemBuilder: (context, i) => list[i].toTile(context),
+                      shrinkWrap: true,
+                      itemBuilder: (c, i) => list[i].toTile(c),
                     ),
                   ],
                 );
