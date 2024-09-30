@@ -6,24 +6,23 @@ import '../pages/task.dart';
 import '../classes/task.dart';
 import '../template/functions.dart';
 import '../template/layer.dart';
+import '../template/tile.dart';
 
-Layer openTask(dynamic id) {
+Layer openTask(Map map) {
   Task task = Task.defaultNew(
     Folder.defaultNew('/ERROR'),
     name: 'ERROR',
   );
-  for (var map in structure.entries) {
-    for (Task current in map.value.items) {
-      if (current.id == id) task = current;
+  for (var folder in structure.values) {
+    for (Task current in folder.items) {
+      if (current.id == map['id']) task = current;
     }
   }
   return Layer(
-    action: Setting(
-      task.name,
-      Icons.edit,
-      '',
-      (p0) async => (task..name = await getInput(task.name, 'Name')).update(),
-    ),
+    action: Tile(task.name, Icons.edit, '', onTap: (c) async {
+      final next = await getInput(task.name, 'Name');
+      (task..name = next).update();
+    }),
     trailing: (c) => [
       IconButton(
         icon: Icon(task.checkedIcon),
@@ -31,128 +30,107 @@ Layer openTask(dynamic id) {
       ),
     ],
     list: [
-      Setting(
-        '',
-        Icons.short_text_rounded,
-        task.shortDesc,
-        (p0) => goToPage(TaskPage(task: task)),
-      ),
-      Setting(
+      Tile('', Icons.short_text_rounded, task.shortDesc, onTap: (c) {
+        goToPage(TaskPage(task: task));
+      }),
+      Tile(
         '',
         Icons.colorize_rounded,
         task.color,
-        (p0) => showSheet(
-          scroll: true,
-          param: task,
-          func: (task) async {
-            task as Task;
+        iconColor: taskColors[task.color],
+        onTap: (c) => showScrollSheet(
+          (Map map) async {
+            Task task = map['task'];
             return Layer(
-              action: Setting(
-                task.color,
-                Icons.colorize_rounded,
-                '',
-                (p0) {},
-              ),
+              action: Tile(task.color, Icons.colorize_rounded, ''),
               list: taskColors.entries.map((col) {
-                return Setting(
+                return Tile(
                   '',
                   Icons.circle,
                   col.key,
-                  (p0) => (task..color = col.key).update(),
                   iconColor: col.value,
+                  onTap: (p0) => (task..color = col.key).update(),
+                );
+              }).toList(),
+            );
+          },
+          {'task': task},
+        ),
+      ),
+      Tile(
+        '',
+        Icons.calendar_today_rounded,
+        task.date(year: true, month: true),
+        onTap: (c) => showSheet(
+          (Map non) async {
+            return Layer(
+              action: Tile(
+                'Add date',
+                Icons.insert_invitation_rounded,
+                '',
+                onTap: (c) => task.pickDate(c).then((due) {
+                  if (due == null) return;
+                  task.dues.add(due);
+                  task.update();
+                }),
+              ),
+              list: task.dues.map((due) {
+                return Tile(
+                  formatDate(due, year: false),
+                  Icons.event_busy_rounded,
+                  '',
+                  onTap: (c) {
+                    task.dues.remove(due);
+                    task.update();
+                  },
+                  secondary: (c) {
+                    task.dues.remove(due);
+                    task.update();
+                  },
                 );
               }).toList(),
             );
           },
         ),
-        iconColor: taskColors[task.color],
       ),
-      Setting(
-        '',
-        Icons.calendar_today_rounded,
-        task.date(year: true, month: true),
-        (p0) {
-          showSheet(
-            func: (non) async {
-              return Layer(
-                action: Setting(
-                  'Add date',
-                  Icons.insert_invitation_rounded,
-                  '',
-                  (context) async {
-                    var due = await task.pickDate(context);
-                    if (due != null) {
-                      task.dues.add(due);
-                      await task.update();
-                    }
-                  },
-                ),
-                list: task.dues.map((due) {
-                  return Setting(
-                    formatDate(due, year: false),
-                    Icons.event_busy_rounded,
-                    '',
-                    (c) {
-                      task.dues.remove(due);
-                      task.update();
-                    },
-                    secondary: (c) {
-                      task.dues.remove(due);
-                      task.update();
-                    },
-                  );
-                }).toList(),
-              );
-            },
-          );
-        },
-      ),
-      Setting(
+      Tile(
         '',
         task.pinnedIcon,
         'Pin${task.pinned ? 'ned' : ''}',
-        (p0) => (task..pinned = !task.pinned).update(),
+        onTap: (c) => (task..pinned = !task.pinned).update(),
       ),
-      Setting(
+      Tile(
         '',
         Icons.folder_outlined,
         task.path.name,
-        (p0) => task.path.open(context: p0),
-        onHold: (p0) => showSheet(
-          func: (dynamic d) async => Layer(
-            action: Setting(
-              'New',
-              Icons.add_rounded,
-              '',
-              (c) async {
+        onTap: (c) => task.path.open(context: c),
+        onHold: (c) {
+          Navigator.of(c).pop();
+          showScrollSheet(
+            (dynamic d) async => Layer(
+              action: Tile('New', Icons.add_rounded, '', onTap: (c) async {
                 String newName = await getInput('', 'New folder');
                 Folder newFolder = Folder.defaultNew(newName);
                 await newFolder.upload();
-              },
+              }),
+              list: structure.values
+                  .map((e) => e.toTile
+                    ..onTap = (c) async {
+                      Navigator.of(c).pop();
+                      Map json = task.toJson;
+                      await Future.wait([
+                        task.delete(),
+                        moveTask(json, e.id),
+                      ]);
+                    })
+                  .toList(),
             ),
-            list: structure.values
-                .map((e) => e.toSetting
-                  ..onTap = (c) async {
-                    Navigator.of(c).pop();
-                    Map json = task.toJson;
-                    await Future.wait([
-                      task.delete(),
-                      moveTask(json, e.id),
-                    ]);
-                  })
-                .toList(),
-          ),
-          param: null,
-          scroll: true,
-          hidePrev: p0,
-        ),
+          );
+        },
       ),
-      Setting(
-        '',
-        Icons.delete_forever_rounded,
-        'Delete',
-        (p0) => task.delete(),
-      )
+      Tile('', Icons.delete_forever_rounded, 'Delete', onTap: (p0) {
+        task.delete();
+      })
     ],
   );
 }

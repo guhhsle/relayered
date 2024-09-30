@@ -11,11 +11,11 @@ class PageSettings extends StatelessWidget {
     return Frame(
       title: Text(t('Settings')),
       child: ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.only(top: 16),
-        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (c, i) => settings[i].toWidget(c),
         itemCount: settings.length,
-        itemBuilder: (c, i) => settings[i].toTile(c),
+        shrinkWrap: true,
       ),
     );
   }

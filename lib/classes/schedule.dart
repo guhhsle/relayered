@@ -58,16 +58,16 @@ class Schedule {
 
     for (var folder in structure.values) {
       bool ignored = false;
-      for (var str in pf['ignore']) {
+      for (var str in Pref.ignore.value) {
         if (folder.name.startsWith(str)) ignored = true;
       }
       if (ignored) continue;
       for (var task in folder.items) {
-        if (task.done && !pf['showDone'] && !task.pinned) continue;
-        if (task.hasDue && pf['showCalendar']) {
+        if (task.done && !Pref.showDone.value && !task.pinned) continue;
+        if (task.hasDue && Pref.showCalendar.value) {
           for (int i = 0; i < task.dues.length; i++) {
             int comparation = task.dues[i].compareTo(today());
-            if (pf['showPinned'] &&
+            if (Pref.showPinned.value &&
                 (comparation == 0 || (task.pinned && i == 0))) {
               list[0][0].list.add(MapEntry(task.dues[i], task));
             } else {
@@ -79,9 +79,9 @@ class Schedule {
             }
           }
         } else {
-          if (task.pinned && pf['showPinned']) {
+          if (task.pinned && Pref.showPinned.value) {
             list[0][0].list.add(MapEntry(null, task));
-          } else if (pf['showFolders']) {
+          } else if (Pref.showFolders.value) {
             addTaskToList(MapEntry(null, task), list[3]);
           }
         }

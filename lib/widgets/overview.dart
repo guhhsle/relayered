@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../classes/database.dart';
-import '../data.dart';
 import '../template/data.dart';
+import '../data.dart';
 
 class Overview extends StatefulWidget {
   const Overview({super.key});
@@ -20,10 +20,7 @@ class OverviewState extends State<Overview> {
       builder: (context, snap) => SizedBox(
         height: 64,
         child: ListView.builder(
-          padding: const EdgeInsets.symmetric(
-            vertical: 8,
-            horizontal: 16,
-          ),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           physics: scrollPhysics,
           scrollDirection: Axis.horizontal,
           itemCount: structure.length,

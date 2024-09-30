@@ -1,48 +1,47 @@
 import 'package:flutter/material.dart';
 import 'functions.dart';
+import 'prefs.dart';
+import 'tile.dart';
 
 class CustomChip extends StatelessWidget {
-  final void Function(bool value) onSelected;
   final bool selected, showCheckmark;
   final Color? primary, background;
-  final void Function()? onHold;
-  final Widget? avatar;
-  final String label;
+  final Tile tile;
 
   const CustomChip({
     super.key,
     this.showCheckmark = false,
-    required this.onSelected,
     required this.selected,
-    required this.label,
+    required this.tile,
     this.background,
     this.primary,
-    this.onHold,
-    this.avatar,
   });
 
   @override
   Widget build(BuildContext context) {
     Color pr = primary ?? Theme.of(context).primaryColor;
     Color bg = background ?? Theme.of(context).colorScheme.surface;
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: Semantics(
-        label: label,
-        child: InkWell(
-          onLongPress: onHold,
-          child: InputChip(
-            showCheckmark: showCheckmark,
-            avatar: avatar,
-            selected: selected,
-            onSelected: onSelected,
-            backgroundColor: bg,
-            selectedColor: pr,
-            label: Text(
-              t(label),
-              style: TextStyle(
-                color: selected ? bg : pr,
-                fontWeight: FontWeight.bold,
+    return ListenableBuilder(
+      listenable: Preferences(),
+      builder: (context, child) => Padding(
+        padding: const EdgeInsets.only(right: 8),
+        child: Semantics(
+          label: tile.title,
+          child: InkWell(
+            onLongPress: () => tile.onHold?.call(context),
+            child: InputChip(
+              showCheckmark: showCheckmark,
+              avatar: Icon(tile.icon, color: selected ? bg : pr),
+              onSelected: (val) => tile.onTap?.call(context),
+              selected: selected,
+              backgroundColor: bg,
+              selectedColor: pr,
+              label: Text(
+                t(tile.title),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: selected ? bg : pr,
+                ),
               ),
             ),
           ),

@@ -22,18 +22,17 @@ class _AnimatedTextState extends State<AnimatedText> {
   @override
   Widget build(BuildContext context) {
     Stream titleStream = Stream.periodic(widget.speed);
-    if (paused) {
-      return Text(title, style: widget.style);
-    }
+    if (paused) return Text(title, style: widget.style);
     return StreamBuilder(
       stream: titleStream,
       builder: (context, snapshot) {
         if (title == widget.text) {
-          Future.delayed(const Duration(milliseconds: 1), () {
-            setState(() => paused = true);
-          });
+          Future.delayed(
+            const Duration(milliseconds: 1),
+            () => setState(() => paused = true),
+          );
         } else {
-          title = title + widget.text[title.length];
+          title += widget.text[title.length];
         }
         return Text(title, style: widget.style);
       },

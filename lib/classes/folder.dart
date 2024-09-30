@@ -3,6 +3,7 @@ import '../sheets/folder_options.dart';
 import '../sheets/open_folder.dart';
 import '../template/layer.dart';
 import '../data.dart';
+import '../template/tile.dart';
 import 'encrypt.dart';
 import 'task.dart';
 import 'database.dart';
@@ -62,41 +63,34 @@ class Folder extends Crypt {
 
   Future<void> upload() async {
     await Database.folders.add(toJson);
-    refreshLayer();
+    Database.notify();
   }
 
-  Setting get toSetting {
-    return Setting(
+  Tile get toTile {
+    return Tile(
       name,
       Icons.folder_outlined,
       '',
-      (p0) => open(context: p0),
+      onTap: (c) => open(context: c),
       secondary: (c) {},
       onHold: (c) => options(),
       iconColor: taskColors[color],
     );
   }
 
-  void options() {
-    showSheet(
-      func: folderOptions,
-      param: id,
-    );
-  }
+  void options() => showSheet(folderOptions, {'id': id});
 
   void open({BuildContext? context}) {
-    showSheet(
-      func: openFolder,
-      param: id,
-      scroll: true,
-      hidePrev: pf['stackLayers'] ? null : context,
-    );
+    if (Pref.stackLayers.value && context != null) {
+      Navigator.of(context).pop();
+    }
+    showScrollSheet(openFolder, {'id': id});
   }
 
   Future update() async {
     if (id != null) {
       await Database.folders.doc(id).update(toJson);
-      refreshLayer();
+      Database.notify();
     } else {
       await upload();
     }
@@ -104,6 +98,6 @@ class Folder extends Crypt {
 
   Future delete() async {
     await Database.folders.doc(id).delete();
-    refreshLayer();
+    Database.notify();
   }
 }

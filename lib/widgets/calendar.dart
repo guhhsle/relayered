@@ -83,8 +83,8 @@ class _CalendarState extends State<Calendar> {
                                   String title =
                                       '$date$prefix${entry.value.name}';
                                   return entry.value
-                                      .toSetting(title: title)
-                                      .toTile(context);
+                                      .toTile(title: title)
+                                      .toWidget(context);
                                 },
                               ),
                             ],

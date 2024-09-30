@@ -2,12 +2,10 @@ import '../data.dart';
 import 'package:encrypt/encrypt.dart';
 
 class Crypt {
-  static IV get iv {
-    return IV.fromUtf8(pf['encryptKey']);
-  }
+  static final iv = IV.fromUtf8(Pref.encryptKey.value);
 
   static Encrypter get encrypter {
-    Key key = Key.fromUtf8(pf['encryptKey']);
+    Key key = Key.fromUtf8(Pref.encryptKey.value);
     return Encrypter(AES(key));
   }
 

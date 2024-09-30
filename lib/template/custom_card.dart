@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 import 'functions.dart';
-import 'layer.dart';
+import 'tile.dart';
 
 class CustomCard extends StatelessWidget {
-  final Setting setting;
+  final Tile tile;
   final EdgeInsets margin;
+  final double height;
 
   const CustomCard(
-    this.setting, {
+    this.tile, {
     super.key,
     this.margin = const EdgeInsets.symmetric(
       vertical: 16,
       horizontal: 8,
     ),
+    this.height = 50,
   });
 
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: t(setting.title),
+      label: t(tile.title),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Card(
@@ -30,20 +32,20 @@ class CustomCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           child: InkWell(
-            onTap: () => setting.onTap(context),
+            onTap: () => tile.onTap?.call(context),
             customBorder: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
             child: SizedBox(
               width: double.infinity,
-              height: 50,
+              height: height,
               child: Row(
                 children: [
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 22),
                       child: Text(
-                        t(setting.title),
+                        t(tile.title),
                         overflow: TextOverflow.clip,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onPrimary,
@@ -54,13 +56,13 @@ class CustomCard extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 16),
-                    child: setting.trailing == ''
+                    child: tile.trailing == ''
                         ? Icon(
-                            setting.icon,
+                            tile.icon,
                             color: Theme.of(context).colorScheme.surface,
                           )
                         : Text(
-                            t(setting.trailing),
+                            t(tile.trailing),
                             overflow: TextOverflow.clip,
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.onPrimary,

@@ -3,9 +3,9 @@ import '../classes/database.dart';
 import '../functions/task.dart';
 import '../sheets/all_tasks.dart';
 import '../sheets/structure.dart';
-import '../template/data.dart';
 import '../template/functions.dart';
 import '../template/layer.dart';
+import '../template/prefs.dart';
 import '../widgets/calendar.dart';
 import '../widgets/frame.dart';
 import '../data.dart';
@@ -36,20 +36,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: refreshLay,
-      builder: (context, snap, child) {
+    return ListenableBuilder(
+      listenable: Listenable.merge([Database(), Preferences()]),
+      builder: (context, child) {
         return Frame(
-          floatingActionButton: pf['action'] == 'Floating'
+          floatingActionButton: Pref.action.value == 'Floating'
               ? Padding(
                   padding: const EdgeInsets.all(8),
                   child: FloatingActionButton(
                     child: const Icon(Icons.folder_rounded),
-                    onPressed: () => showSheet(
-                      func: pinnedFolders,
-                      param: null,
-                      scroll: true,
-                    ),
+                    onPressed: () => showScrollSheet(pinnedFolders),
                   ),
                 )
               : null,
@@ -59,16 +55,12 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               tooltip: t('Search'),
               icon: const Icon(Icons.fiber_manual_record_outlined),
-              onPressed: () => showSheet(func: allTasks, scroll: true),
+              onPressed: () => showScrollSheet(allTasks),
             ),
-            pf['action'] == 'Top'
+            Pref.action.value == 'Top'
                 ? IconButton(
                     icon: const Icon(Icons.folder_rounded),
-                    onPressed: () => showSheet(
-                      func: pinnedFolders,
-                      param: null,
-                      scroll: true,
-                    ),
+                    onPressed: () => showScrollSheet(pinnedFolders),
                   )
                 : Container(),
             web
@@ -79,15 +71,12 @@ class _HomePageState extends State<HomePage> {
                 : Container(),
             IconButton(
               icon: const Icon(Icons.menu),
-              onPressed: () => showSheet(
-                param: 0,
-                func: (i) => calendar(),
-              ),
+              onPressed: () => showSheet(calendar),
             ),
           ],
           child: Column(
             children: [
-              pf['showFolders'] ? const Overview() : Container(),
+              Pref.showFolders.value ? const Overview() : Container(),
               const Expanded(child: Calendar()),
             ],
           ),

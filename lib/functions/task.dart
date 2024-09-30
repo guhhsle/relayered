@@ -1,7 +1,7 @@
 import '../classes/folder.dart';
 import '../classes/task.dart';
 import '../data.dart';
-import '../template/layer.dart';
+import '../template/tile.dart';
 
 String formatDate(
   DateTime? dt, {
@@ -25,26 +25,26 @@ DateTime today() {
   );
 }
 
-List<Setting> foldersIn(String id) {
+List<Tile> foldersIn(String id) {
   if (structure[id] == null) return [];
-  List<Setting> list = [];
+  List<Tile> list = [];
 
   for (String nodeId in structure[id]!.nodes) {
     for (Folder node in structure.values.where((e) => e.id == nodeId)) {
-      list.add(node.toSetting);
+      list.add(node.toTile);
     }
   }
 
   return list;
 }
 
-List<Setting> tasksIn(String id, bool done) {
+List<Tile> tasksIn(String id, bool done) {
   if (structure[id] == null) return [];
-  List<Setting> list = [];
+  List<Tile> list = [];
 
   for (Task task in structure[id]!.items) {
     if (task.done == done) {
-      list.add(task.toSetting());
+      list.add(task.toTile());
     }
   }
 

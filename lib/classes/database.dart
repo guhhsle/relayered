@@ -6,10 +6,9 @@ import 'package:flutter/foundation.dart';
 import '../firebase_options.dart';
 import '../data.dart';
 import '../template/functions.dart';
-import '../template/layer.dart';
 import 'folder.dart';
 
-class Database {
+class Database extends ChangeNotifier {
   Database.internal();
 
   static final Database instance = Database.internal();
@@ -26,6 +25,8 @@ class Database {
     if (user.email == null) return false;
     return true;
   }
+
+  static void notify() => instance.notifyListeners();
 
   Future<void> init() async {
     web = kIsWeb;
@@ -121,13 +122,13 @@ class Database {
           return e1.value.name.compareTo(e2.value.name);
         }),
     );
-    refreshLayer();
+    notify();
   }
 
   static Future sync() async {
     if (user.isAnonymous) return;
     await firestore.enableNetwork();
-    await Future.delayed(Duration(seconds: pf['syncTimeout']));
+    await Future.delayed(Duration(seconds: Pref.syncTimeout.value));
     await firestore.disableNetwork();
   }
 }

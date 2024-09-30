@@ -5,9 +5,10 @@ import '../functions/task.dart';
 import '../template/functions.dart';
 import '../template/layer.dart';
 import '../classes/task.dart';
+import '../template/tile.dart';
 
-Layer openFolder(dynamic id) {
-  id as String;
+Layer openFolder(Map map) {
+  String id = map['id'];
   Folder folder = structure[id] ?? Folder.defaultNew('/ERROR');
   return Layer(
     trailing: (c) => [
@@ -25,12 +26,9 @@ Layer openFolder(dynamic id) {
         },
       ),
     ],
-    action: Setting(
-      folder.name,
-      Icons.folder_rounded,
-      ' ',
-      (c) => folder.options(),
-    ),
+    action: Tile(folder.name, Icons.folder_rounded, ' ', onTap: (c) {
+      folder.options();
+    }),
     list: tasksIn(id, false) + foldersIn(id) + tasksIn(id, true),
   );
 }

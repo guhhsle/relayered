@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 const Map<String, IconData> colorMap = {
   'FFFFFF': Icons.ac_unit_rounded,
@@ -21,12 +20,9 @@ const Map<String, IconData> colorMap = {
   '000000': Icons.nights_stay_outlined,
 };
 
-late final SharedPreferences prefs;
 const ScrollPhysics scrollPhysics = BouncingScrollPhysics(
   parent: AlwaysScrollableScrollPhysics(),
 );
 
 Map l = {};
 final navigatorKey = GlobalKey<NavigatorState>();
-final ValueNotifier<ThemeData> themeNotifier = ValueNotifier(ThemeData());
-final ValueNotifier<bool> refreshLay = ValueNotifier(true);

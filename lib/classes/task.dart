@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import '../sheets/open_task.dart';
+import '../template/tile.dart';
 import 'encrypt.dart';
 import '../data.dart';
 import 'folder.dart';
@@ -34,7 +35,7 @@ class Task extends Crypt {
       name: name ?? 'NOVO',
       desc: r'[{"insert":"\n"}]',
       path: path,
-      color: pf['defaultColor'],
+      color: Pref.defaultColor.value,
       dues: [],
     );
   }
@@ -54,15 +55,15 @@ class Task extends Crypt {
     );
   }
 
-  void open() => showSheet(func: openTask, param: id);
+  void open() => showSheet(openTask, {'id': id});
 
-  Setting toSetting({String? title}) {
+  Tile toTile({String? title}) {
     title ??= '$name   ${date(month: true)}';
-    return Setting(
+    return Tile(
       title,
       checkedIcon,
       '',
-      (p0) => open(),
+      onTap: (c) => open(),
       iconColor: taskColors[color],
       secondary: (c) {
         done = !done;
@@ -102,10 +103,7 @@ class Task extends Crypt {
     return Icons.push_pin_outlined;
   }
 
-  IconData get checkedIcon {
-    if (done) return Icons.radio_button_checked;
-    return Icons.radio_button_unchecked;
-  }
+  IconData get checkedIcon => checked(done);
 
   bool get hasDue => dues.isNotEmpty;
 

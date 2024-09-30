@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'custom_card.dart';
 import 'layer.dart';
-import 'data.dart';
+import '../../template/prefs.dart';
 
 class SheetModel extends StatelessWidget {
-  final Function(dynamic) func;
-  final dynamic param;
+  final Function(Map) func;
+  final Map? param;
 
   const SheetModel({
     super.key,
@@ -22,31 +22,30 @@ class SheetModel extends StatelessWidget {
         margin: const EdgeInsets.all(8),
         child: Padding(
           padding: const EdgeInsets.all(8),
-          child: ValueListenableBuilder(
-            valueListenable: refreshLay,
-            builder: (context, non, child) => LayerBuilder(
+          child: ListenableBuilder(
+            listenable: Preferences(),
+            builder: (context, child) => LayerBuilder(
               func: func,
               param: param,
-              builder: (context, snap) {
+              builder: (c, snap) {
                 if (!snap.hasData) return Container();
-                Layer layer = snap.data!;
-                final list = layer.list;
+                Layer ly = snap.data!;
                 return ListView(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
                     Row(
                       children: [
-                        if (layer.leading != null) ...layer.leading!(context),
-                        Expanded(child: CustomCard(layer.action)),
-                        if (layer.trailing != null) ...layer.trailing!(context),
+                        if (ly.leading != null) ...ly.leading!(c),
+                        Expanded(child: CustomCard(ly.action)),
+                        if (ly.trailing != null) ...ly.trailing!(c),
                       ],
                     ),
                     ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: list.length,
+                      itemCount: ly.list.length,
                       shrinkWrap: true,
-                      itemBuilder: (c, i) => list[i].toTile(c),
+                      itemBuilder: (c, i) => ly.list[i].toWidget(c),
                     ),
                   ],
                 );

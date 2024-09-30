@@ -1,103 +1,82 @@
 import 'package:flutter/material.dart';
-import '../data.dart';
-import '../classes/folder.dart';
 import '../template/functions.dart';
+import '../classes/folder.dart';
 import '../template/layer.dart';
+import '../template/tile.dart';
 import 'structure.dart';
+import '../data.dart';
 
-Layer folderOptions(dynamic id) {
-  Folder folder = structure[id] ?? Folder.defaultNew('/ERROR');
+Layer folderOptions(Map map) {
+  Folder folder = structure[map['id']] ?? Folder.defaultNew('/ERROR');
   return Layer(
-    action: Setting(
+    action: Tile(
       folder.name,
       Icons.edit_rounded,
       '',
-      (p0) async {
-        folder.name = await getInput(
-          folder.name,
-          'Rename folder',
-        );
+      onTap: (c) => getInput(folder.name, 'Rename folder').then((i) {
+        folder.name = i;
         folder.update();
-      },
+      }),
     ),
     list: [
-      Setting(
+      Tile(
         '',
         Icons.colorize_rounded,
         folder.color ?? 'Adaptive',
-        (p0) => showSheet(
-          scroll: true,
-          param: folder,
-          func: (folder) async {
-            folder as Folder;
-            return Layer(
-              action: Setting(
-                folder.color ?? 'Adaptive',
-                Icons.colorize_rounded,
-                '',
-                (p0) {},
-              ),
-              list: taskColors.entries.map((col) {
-                return Setting(
-                  '',
-                  Icons.circle,
-                  col.key,
-                  (p0) => (folder..color = col.key).update(),
-                  iconColor: col.value,
-                );
-              }).toList(),
-            );
-          },
-        ),
         iconColor: taskColors[folder.color],
+        onTap: (p0) {
+          showScrollSheet(
+            (Map map) {
+              Folder folder = map['folder'];
+              return Layer(
+                action: Tile(
+                  folder.color ?? 'Adaptive',
+                  Icons.colorize_rounded,
+                  '',
+                ),
+                list: taskColors.entries.map((col) {
+                  return Tile(
+                    '',
+                    Icons.circle,
+                    col.key,
+                    iconColor: col.value,
+                    onTap: (c) {
+                      (folder..color = col.key).update();
+                    },
+                  );
+                }).toList(),
+              );
+            },
+            {'folder': folder},
+          );
+        },
       ),
       folder.pin
-          ? Setting(
-              'Pinned',
-              Icons.push_pin_rounded,
-              '',
-              (c) => (folder..pin = false).update(),
-            )
-          : Setting(
-              'Pin',
-              Icons.push_pin_outlined,
-              '',
-              (c) => (folder..pin = true).update(),
-            ),
-      Setting(
+          ? Tile('Pinned', Icons.push_pin_rounded, '', onTap: (c) {
+              (folder..pin = false).update();
+            })
+          : Tile('Pin', Icons.push_pin_outlined, '', onTap: (c) {
+              (folder..pin = true).update();
+            }),
+      Tile(
         'Connect',
         Icons.line_style_rounded,
         '${folder.nodes.length}',
-        (c) => showSheet(
-          func: allFolders,
-          param: id,
-          scroll: true,
-          hidePrev: c,
-        ),
-      ),
-      Setting(
-        'Prefix',
-        Icons.read_more_rounded,
-        folder.prefix,
-        (c) async {
-          folder.prefix = await getInput(
-            folder.prefix,
-            'Prefix',
-          );
-          await folder.update();
+        onTap: (c) {
+          Navigator.of(c).pop();
+          showScrollSheet(allFolders, {'id': map['id']});
         },
       ),
-      Setting(
-        '${folder.items.length}',
-        Icons.numbers_rounded,
-        'Items',
-        (c) {},
-      ),
-      Setting(
+      Tile('Prefix', Icons.read_more_rounded, folder.prefix, onTap: (c) async {
+        folder.prefix = await getInput(folder.prefix, 'Prefix');
+        await folder.update();
+      }),
+      Tile('${folder.items.length}', Icons.numbers_rounded, 'Items'),
+      Tile(
         '',
         Icons.folder_off_rounded,
         folder.items.isEmpty ? 'Delete' : '**Delete**',
-        (c) {
+        onTap: (c) {
           Navigator.of(c).pop();
           folder.delete();
         },

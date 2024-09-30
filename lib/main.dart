@@ -6,10 +6,7 @@ import 'template/prefs.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initPrefs();
+  await Preferences().init();
   await Database().init();
-  runApp(const App(
-    title: 'Relayered',
-    child: HomePage(),
-  ));
+  runApp(const App(title: 'Relayered', child: HomePage()));
 }

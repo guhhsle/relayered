@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'dart:async';
-import 'theme.dart';
 import '../template/data.dart';
 import '../data.dart';
 
@@ -18,17 +17,17 @@ void showSnack(
   String text,
   bool good, {
   Function()? onTap,
-  int? duration,
+  int duration = 3,
   bool debug = false,
 }) {
-  if (debug && !pf['debug']) return;
+  if (debug && !Pref.debug.value) return;
   Color back = good ? Colors.green.shade100 : Colors.red.shade100;
   FlashyFlushbar(
     margin: const EdgeInsets.all(16),
     backgroundColor: back.withOpacity(0.9),
     animationDuration: const Duration(milliseconds: 64),
     message: t(text),
-    duration: Duration(seconds: duration ?? 3),
+    duration: Duration(seconds: duration),
     isDismissible: true,
     onTap: () {
       onTap?.call();
@@ -37,10 +36,12 @@ void showSnack(
     messageStyle: TextStyle(
       color: Colors.black,
       fontWeight: FontWeight.bold,
-      fontFamily: pf['font'],
+      fontFamily: Pref.font.value,
     ),
   ).show();
 }
+
+Future<String> getPrefInput(Pref pref) => getInput(pref.value, pref.title);
 
 Future<String> getInput(dynamic init, String hintText) async {
   if (navigatorKey.currentContext == null) return '';
@@ -81,14 +82,10 @@ Future<String> getInput(dynamic init, String hintText) async {
   return completer.future;
 }
 
-void refreshInterface() {
-  themeNotifier.value = theme(color(true), color(false));
-}
-
 Future<Map> loadLocale() async {
   try {
     final String response = await rootBundle.loadString(
-      'assets/translations/${pf['locale']}.json',
+      'assets/translations/${Pref.locale.value}.json',
     );
     l = await jsonDecode(response);
   } catch (e) {
@@ -101,4 +98,9 @@ Future<Map> loadLocale() async {
 String t(dynamic d) {
   String s = '$d';
   return l[s] ?? s;
+}
+
+IconData checked(bool check) {
+  if (check) return Icons.radio_button_checked;
+  return Icons.radio_button_unchecked;
 }

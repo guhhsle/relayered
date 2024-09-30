@@ -26,10 +26,7 @@ class Frame extends StatelessWidget {
         title: title,
         leading: leading,
         automaticallyImplyLeading: automaticallyImplyLeading,
-        actions: [
-          ...actions,
-          const SizedBox(width: 8),
-        ],
+        actions: [...actions, const SizedBox(width: 8)],
       ),
       body: SizedBox(
         height: double.infinity,
@@ -43,9 +40,7 @@ class Frame extends StatelessWidget {
             margin: EdgeInsets.zero,
             shadowColor: Colors.transparent,
             shape: const RoundedRectangleBorder(),
-            child: ClipRRect(
-              child: child,
-            ),
+            child: ClipRRect(child: child),
           ),
         ),
       ),

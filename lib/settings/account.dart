@@ -6,6 +6,7 @@ import '../data.dart';
 import '../template/functions.dart';
 import '../template/layer.dart';
 import '../template/prefs.dart';
+import '../template/tile.dart';
 
 String mail = '', password = '';
 Stream<Layer> accountSet(dynamic d) async* {
@@ -16,91 +17,67 @@ Stream<Layer> accountSet(dynamic d) async* {
 Layer accountLayer(dynamic non) {
   if (Database.logged) {
     return Layer(
-      action: Setting(
+      action: Tile(
         Database.user.email ?? 'ERROR',
         Icons.mail_outline_rounded,
         '',
-        (c) async => Database.user.verifyBeforeUpdateEmail(
-          await getInput(Database.user.email, 'New email'),
-        ),
+        onTap: (c) => getInput(Database.user.email, 'New email').then((i) {
+          Database.user.verifyBeforeUpdateEmail(i);
+        }),
       ),
       list: [
-        Setting(
-          'Encryption key',
-          Icons.key_rounded,
-          '',
-          (c) async {
-            Navigator.of(c).pop();
-            await getKey(pf['encryptKey']);
-          },
-        ),
-        Setting(
-          'Sync timeout',
-          Icons.cloud_sync_rounded,
-          pf['syncTimeout'],
-          (c) => setPref('syncTimeout', (pf['syncTimeout'] + 2) % 20),
-        ),
-        Setting(
-          'Change password',
-          Icons.password_rounded,
-          '',
-          (c) => Database.resetPassword(Database.user.email!),
-        ),
-        Setting(
-          'Log out',
-          Icons.person_remove_rounded,
-          '',
-          (c) async {
-            await FirebaseFirestore.instance.enableNetwork();
-            await FirebaseAuth.instance.signInAnonymously();
-            await FirebaseFirestore.instance.disableNetwork();
-          },
-        ),
+        Tile('Encryption key', Icons.key_rounded, '', onTap: (c) {
+          Navigator.of(c).pop();
+          getKey();
+        }),
+        Tile.fromPref(Pref.syncTimeout),
+        Tile('Change password', Icons.password_rounded, '', onTap: (c) {
+          Database.resetPassword(Database.user.email!);
+        }),
+        Tile('Log out', Icons.person_remove_rounded, '', onTap: (c) async {
+          await FirebaseFirestore.instance.enableNetwork();
+          await FirebaseAuth.instance.signInAnonymously();
+          await FirebaseFirestore.instance.disableNetwork();
+        }),
       ],
     );
   } else {
     return Layer(
-      action: Setting(
-        'Continue',
-        Icons.keyboard_return_rounded,
-        '',
-        (c) => Database.signIn(mail.trim(), password),
-      ),
+      action: Tile('Continue', Icons.keyboard_return_rounded, '', onTap: (c) {
+        Database.signIn(mail.trim(), password);
+      }),
       list: [
-        Setting(
+        Tile(
           mail == '' ? 'Email' : mail,
           Icons.mail_outline_rounded,
           '',
-          (c) async {
+          onTap: (c) async {
             mail = await getInput(mail, 'Email');
-            refreshLayer();
+            Preferences.notify();
           },
         ),
-        Setting(
+        Tile(
           password == '' ? 'Password' : password,
           Icons.password_rounded,
           '',
-          (c) async {
+          onTap: (c) async {
             password = await getInput(password, 'Password');
-            refreshLayer();
+            Preferences.notify();
           },
         ),
-        Setting(
+        Tile(
           'Encryption key',
           Icons.key_rounded,
           '',
-          (c) async {
-            await getKey(pf['encryptKey']);
-            refreshLayer();
-          },
+          onTap: (c) => getKey(),
         ),
       ],
     );
   }
 }
 
-Future<void> getKey(String init) async {
-  String next = await getInput(init, 'Encryption key');
+Future<void> getKey() async {
+  String next = await getPrefInput(Pref.encryptKey);
   next = next.padRight(16, '0').substring(0, 16);
-  setPref('encryptKey', next);
+  Pref.encryptKey.set(next);
 }

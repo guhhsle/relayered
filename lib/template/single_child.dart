@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'custom_card.dart';
-import '../data.dart';
-import 'layer.dart';
 import 'data.dart';
+import 'tile.dart';
+import '../data.dart';
 
 Future<void> singleChildSheet({
-  required Setting action,
+  required Tile action,
   required Widget child,
   double initialSize = 0.4,
 }) async {
@@ -23,11 +23,11 @@ Future<void> singleChildSheet({
             margin: const EdgeInsets.all(8),
             color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
             shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
               side: BorderSide(
                 color: Theme.of(context).colorScheme.primary,
                 width: 2,
               ),
-              borderRadius: BorderRadius.circular(24),
             ),
             child: Padding(
               padding: const EdgeInsets.all(8),
@@ -46,10 +46,10 @@ Future<void> singleChildSheet({
                         child: DefaultTextStyle(
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 14,
                             color: Theme.of(context).colorScheme.primary,
-                            fontFamily: pf['font'],
+                            fontFamily: Pref.font.value,
                             fontWeight: FontWeight.bold,
+                            fontSize: 14,
                           ),
                           child: child,
                         ),

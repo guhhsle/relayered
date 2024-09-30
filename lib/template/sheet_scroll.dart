@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'custom_card.dart';
 import 'layer.dart';
-import 'data.dart';
+import '../../template/prefs.dart';
 
 class SheetScrollModel extends StatelessWidget {
-  final Function(dynamic) func;
-  final dynamic param;
+  final Function(Map) func;
+  final Map? param;
   const SheetScrollModel({
     super.key,
     required this.param,
@@ -29,24 +29,21 @@ class SheetScrollModel extends StatelessWidget {
               color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
               child: Padding(
                 padding: const EdgeInsets.all(8),
-                child: ValueListenableBuilder(
-                  valueListenable: refreshLay,
-                  builder: (context, non, child) => LayerBuilder(
+                child: ListenableBuilder(
+                  listenable: Preferences(),
+                  builder: (context, child) => LayerBuilder(
                     func: func,
                     param: param,
-                    builder: (context, snap) {
+                    builder: (c, snap) {
                       if (!snap.hasData) return Container();
-                      Layer layer = snap.data!;
-                      List<Setting> list = layer.list;
+                      Layer ly = snap.data!;
                       return Column(
                         children: [
                           Row(
                             children: [
-                              if (layer.leading != null)
-                                ...layer.leading!(context),
-                              Expanded(child: CustomCard(layer.action)),
-                              if (layer.trailing != null)
-                                ...layer.trailing!(context),
+                              if (ly.leading != null) ...ly.leading!(c),
+                              Expanded(child: CustomCard(ly.action)),
+                              if (ly.trailing != null) ...ly.trailing!(c),
                             ],
                           ),
                           Expanded(
@@ -56,8 +53,8 @@ class SheetScrollModel extends StatelessWidget {
                                 physics: const BouncingScrollPhysics(),
                                 padding: const EdgeInsets.only(bottom: 8),
                                 controller: controller,
-                                itemCount: list.length,
-                                itemBuilder: (c, i) => list[i].toTile(c),
+                                itemCount: ly.list.length,
+                                itemBuilder: (c, i) => ly.list[i].toWidget(c),
                               ),
                             ),
                           ),
