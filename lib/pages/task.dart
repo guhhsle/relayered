@@ -1,9 +1,9 @@
-import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import '../classes/task.dart';
+import 'package:flutter/material.dart';
+import 'dart:convert';
 import '../template/functions.dart';
 import '../widgets/frame.dart';
+import '../classes/task.dart';
 
 class TaskPage extends StatefulWidget {
   final Task task;
@@ -32,7 +32,7 @@ class TaskPageState extends State<TaskPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool k = MediaQuery.of(context).viewInsets.bottom != 0;
+    bool keyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return PopScope(
       onPopInvokedWithResult: (b, d) => updateNote(),
       child: Frame(
@@ -77,28 +77,26 @@ class TaskPageState extends State<TaskPage> {
             Expanded(
               child: NoteTemplate(controller: controller),
             ),
-            k
-                ? QuillToolbar.simple(
-                    configurations: QuillSimpleToolbarConfigurations(
-                      controller: controller,
-                      sectionDividerColor:
-                          Theme.of(context).colorScheme.surface,
-                      color: Colors.transparent,
-                      multiRowsDisplay: false,
-                      showFontFamily: false,
-                      showBoldButton: false,
-                      toolbarSize: 38,
-                      sectionDividerSpace: 0,
-                    ),
-                  )
-                : Container(),
+            if (keyboard)
+              QuillToolbar.simple(
+                configurations: QuillSimpleToolbarConfigurations(
+                  controller: controller,
+                  sectionDividerColor: Theme.of(context).colorScheme.surface,
+                  color: Colors.transparent,
+                  multiRowsDisplay: false,
+                  showFontFamily: false,
+                  showBoldButton: false,
+                  toolbarSize: 38,
+                  sectionDividerSpace: 0,
+                ),
+              ),
           ],
         ),
       ),
     );
   }
 
-  Future updateNote() async {
+  void updateNote() {
     task.desc = jsonEncode(controller.document.toDelta().toJson());
     task.update();
   }

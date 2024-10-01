@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:relayered/settings/other.dart';
 import 'classes/folder.dart';
 import 'settings/account.dart';
 import 'settings/interface.dart';
@@ -17,6 +18,7 @@ const initTaskColors = [
   ...['Purple', 'Green', 'Blue', 'Yellow'],
 ];
 const timeouts = [0, 4, 8, 12, 16, 20];
+const actionPos = ['Top', 'Floating'];
 
 enum Pref {
   //TEMPLATE
@@ -31,11 +33,9 @@ enum Pref {
   //INTERFACE
   syncTimeout('Sync timeout', 6, Icons.cloud_sync_rounded, all: timeouts),
   encryptKey('Encryption key', '0000000000000000', Icons.key_rounded),
-  action('Action button', 'Floating', Icons.folder_rounded,
-      all: ['Top', 'Floating']),
+  action('Action button', 'Floating', Icons.folder_rounded, all: actionPos),
   stackLayers('Stack layers', false, Icons.layers_rounded),
-  defaultColor('Default color', 'Adaptive', Icons.colorize_rounded,
-      all: initTaskColors),
+  defaultColor('Default color', 'Adaptive', Icons.colorize_rounded),
   showPinned('Show pinned', true, Icons.push_pin_rounded, ui: true),
   showDone('Show done', true, Icons.done_rounded, ui: true),
   showCalendar('Calendar field', true, Icons.calendar_view_day_rounded,
@@ -90,7 +90,7 @@ List<Tile> get settings {
         onTap: (c) => showScrollSheet(ThemePref.toLayer, {'primary': true})),
     Tile('Background', Icons.tonality_rounded, '',
         onTap: (c) => showScrollSheet(ThemePref.toLayer, {'primary': false})),
-    //TODO Tile('More', Icons.segment_rounded, '', onTap: (c) => showSheet(moreSet)),
+    Tile('More', Icons.segment_rounded, '', onTap: (c) => showSheet(otherSet)),
   ];
 }
 

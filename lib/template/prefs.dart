@@ -8,7 +8,7 @@ import 'tile.dart';
 
 class Preferences extends ChangeNotifier {
   static final Preferences instance = Preferences.internal();
-  static late final SharedPreferences prefs;
+  static late SharedPreferences prefs;
 
   factory Preferences() => instance;
 
@@ -16,7 +16,9 @@ class Preferences extends ChangeNotifier {
 
   static void notify() => instance.notifyListeners();
 
-  Future init() => SharedPreferences.getInstance();
+  Future<void> init() async {
+    prefs = await SharedPreferences.getInstance();
+  }
 
   static Future rev(Pref pref) => set(pref, !pref.value);
 

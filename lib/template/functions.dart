@@ -44,8 +44,7 @@ void showSnack(
 Future<String> getPrefInput(Pref pref) => getInput(pref.value, pref.title);
 
 Future<String> getInput(dynamic init, String hintText) async {
-  if (navigatorKey.currentContext == null) return '';
-  Completer<String> completer = Completer();
+  final completer = Completer<String>();
   TextEditingController controller = TextEditingController(text: '$init');
   BuildContext context = navigatorKey.currentContext!;
   showModalBottomSheet(

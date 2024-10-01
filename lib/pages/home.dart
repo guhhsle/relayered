@@ -57,18 +57,16 @@ class _HomePageState extends State<HomePage> {
               icon: const Icon(Icons.fiber_manual_record_outlined),
               onPressed: () => showScrollSheet(allTasks),
             ),
-            Pref.action.value == 'Top'
-                ? IconButton(
-                    icon: const Icon(Icons.folder_rounded),
-                    onPressed: () => showScrollSheet(pinnedFolders),
-                  )
-                : Container(),
-            web
-                ? const IconButton(
-                    onPressed: Database.sync,
-                    icon: Icon(Icons.refresh_rounded),
-                  )
-                : Container(),
+            if (Pref.action.value == 'Top')
+              IconButton(
+                icon: const Icon(Icons.folder_rounded),
+                onPressed: () => showScrollSheet(pinnedFolders),
+              ),
+            if (web)
+              const IconButton(
+                onPressed: Database.sync,
+                icon: Icon(Icons.refresh_rounded),
+              ),
             IconButton(
               icon: const Icon(Icons.menu),
               onPressed: () => showSheet(calendar),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:relayered/functions.dart';
 import '../functions/task.dart';
 import '../classes/folder.dart';
 import '../data.dart';
@@ -9,10 +10,7 @@ import '../template/layer.dart';
 import '../template/tile.dart';
 
 Layer openTask(Map map) {
-  Task task = Task.defaultNew(
-    Folder.defaultNew('/ERROR'),
-    name: 'ERROR',
-  );
+  Task task = Task.defaultNew(Folder.defaultNew('/ERROR'), name: 'ERROR');
   for (var folder in structure.values) {
     for (Task current in folder.items) {
       if (current.id == map['id']) task = current;
@@ -38,24 +36,9 @@ Layer openTask(Map map) {
         Icons.colorize_rounded,
         task.color,
         iconColor: taskColors[task.color],
-        onTap: (c) => showScrollSheet(
-          (Map map) async {
-            Task task = map['task'];
-            return Layer(
-              action: Tile(task.color, Icons.colorize_rounded, ''),
-              list: taskColors.entries.map((col) {
-                return Tile(
-                  '',
-                  Icons.circle,
-                  col.key,
-                  iconColor: col.value,
-                  onTap: (p0) => (task..color = col.key).update(),
-                );
-              }).toList(),
-            );
-          },
-          {'task': task},
-        ),
+        onTap: (c) => getCustomColor(task.color).then((col) {
+          (task..color = col).update();
+        }),
       ),
       Tile(
         '',
@@ -113,28 +96,24 @@ Layer openTask(Map map) {
                 Folder newFolder = Folder.defaultNew(newName);
                 await newFolder.upload();
               }),
-              list: structure.values
-                  .map((e) => e.toTile
-                    ..onTap = (c) async {
-                      Navigator.of(c).pop();
-                      Map json = task.toJson;
-                      await Future.wait([
-                        task.delete(),
-                        moveTask(json, e.id),
-                      ]);
-                    })
-                  .toList(),
+              list: structure.values.map((e) => e.toTile
+                ..onTap = (c) {
+                  Navigator.of(c).pop();
+                  Map json = task.toJson;
+                  task.delete();
+                  moveTask(json, e.id);
+                }),
             ),
           );
         },
       ),
-      Tile('', Icons.delete_forever_rounded, 'Delete', onTap: (p0) {
+      Tile('', Icons.delete_forever_rounded, 'Delete', onTap: (c) {
         task.delete();
       })
     ],
   );
 }
 
-Future<void> moveTask(Map taskMap, String? folderID) async {
-  await Task.fromJson(taskMap, structure[folderID]!).upload();
+void moveTask(Map taskMap, String? folderID) {
+  Task.fromJson(taskMap, structure[folderID]!).upload();
 }

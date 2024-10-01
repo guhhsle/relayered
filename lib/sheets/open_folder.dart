@@ -14,15 +14,13 @@ Layer openFolder(Map map) {
     trailing: (c) => [
       IconButton(
         icon: const Icon(Icons.add_rounded),
-        onPressed: () async {
+        onPressed: () {
           if (!structure.containsKey(id)) {
-            Folder folder = Folder.defaultNew('');
-            await folder.upload();
+            Folder.defaultNew('').upload();
           }
-          Task.defaultNew(
-            folder,
-            name: await getInput('', 'New task'),
-          ).upload();
+          getInput('', 'New task').then((name) {
+            Task.defaultNew(folder, name: name).upload();
+          });
         },
       ),
     ],

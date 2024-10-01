@@ -7,15 +7,15 @@ import '../template/tile.dart';
 import '../classes/task.dart';
 import '../data.dart';
 
-Stream<Layer> allTasks(dynamic non) async* {
-  yield allTasksLayer(0);
-  yield* Database.stream.map(allTasksLayer);
+Stream<Layer> allTasks(Map non) async* {
+  yield allTasksLayer({});
+  yield* Database.stream.map((e) => allTasksLayer({}));
 }
 
 const filters = ['All', 'Pending', 'Done'];
 String selFilter = 'All';
 
-Layer allTasksLayer(dynamic non) {
+Layer allTasksLayer(Map non) {
   List<Task> allTasks = [];
   for (Folder folder in structure.values) {
     for (Task task in folder.items) {
@@ -30,6 +30,6 @@ Layer allTasksLayer(dynamic non) {
       selFilter = filters[(filters.indexOf(selFilter) + 1) % 3];
       Preferences.notify();
     }),
-    list: allTasks.map((task) => task.toTile()).toList(),
+    list: allTasks.map((task) => task.toTile()),
   );
 }

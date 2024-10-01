@@ -45,7 +45,7 @@ class SheetModel extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: ly.list.length,
                       shrinkWrap: true,
-                      itemBuilder: (c, i) => ly.list[i].toWidget(c),
+                      itemBuilder: (c, i) => ly.list.elementAt(i).toWidget(c),
                     ),
                   ],
                 );

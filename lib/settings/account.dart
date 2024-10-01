@@ -9,12 +9,12 @@ import '../template/prefs.dart';
 import '../template/tile.dart';
 
 String mail = '', password = '';
-Stream<Layer> accountSet(dynamic d) async* {
-  yield accountLayer(0);
-  yield* Database.stream.map(accountLayer);
+Stream<Layer> accountSet(Map non) async* {
+  yield accountLayer({});
+  yield* Database.stream.map((e) => accountLayer({}));
 }
 
-Layer accountLayer(dynamic non) {
+Layer accountLayer(Map non) {
   if (Database.logged) {
     return Layer(
       action: Tile(
@@ -65,12 +65,9 @@ Layer accountLayer(dynamic non) {
             Preferences.notify();
           },
         ),
-        Tile(
-          'Encryption key',
-          Icons.key_rounded,
-          '',
-          onTap: (c) => getKey(),
-        ),
+        Tile('Encryption key', Icons.key_rounded, '', onTap: (c) {
+          getKey();
+        }),
       ],
     );
   }

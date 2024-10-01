@@ -1,7 +1,7 @@
 import '../classes/folder.dart';
+import '../template/tile.dart';
 import '../classes/task.dart';
 import '../data.dart';
-import '../template/tile.dart';
 
 String formatDate(
   DateTime? dt, {
@@ -18,11 +18,7 @@ String formatDate(
 
 DateTime today() {
   DateTime now = DateTime.now();
-  return DateTime(
-    now.year,
-    now.month,
-    now.day,
-  );
+  return DateTime(now.year, now.month, now.day);
 }
 
 List<Tile> foldersIn(String id) {

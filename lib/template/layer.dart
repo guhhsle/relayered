@@ -5,8 +5,8 @@ import 'data.dart';
 import 'tile.dart';
 
 class Layer {
-  List<Widget> Function(BuildContext)? leading, trailing;
-  List<Tile> list;
+  Iterable<Widget> Function(BuildContext)? leading, trailing;
+  Iterable<Tile> list;
   Tile action;
 
   Layer({

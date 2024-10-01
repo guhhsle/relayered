@@ -54,7 +54,8 @@ class SheetScrollModel extends StatelessWidget {
                                 padding: const EdgeInsets.only(bottom: 8),
                                 controller: controller,
                                 itemCount: ly.list.length,
-                                itemBuilder: (c, i) => ly.list[i].toWidget(c),
+                                itemBuilder: (c, i) =>
+                                    ly.list.elementAt(i).toWidget(c),
                               ),
                             ),
                           ),

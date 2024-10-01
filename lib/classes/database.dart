@@ -1,12 +1,12 @@
-import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
+import 'dart:async';
+import 'folder.dart';
+import '../template/functions.dart';
 import '../firebase_options.dart';
 import '../data.dart';
-import '../template/functions.dart';
-import 'folder.dart';
 
 class Database extends ChangeNotifier {
   Database.internal();

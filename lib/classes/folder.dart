@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'database.dart';
+import 'encrypt.dart';
+import 'task.dart';
 import '../sheets/folder_options.dart';
 import '../sheets/open_folder.dart';
 import '../template/layer.dart';
-import '../data.dart';
 import '../template/tile.dart';
-import 'encrypt.dart';
-import 'task.dart';
-import 'database.dart';
+import '../data.dart';
 
 class Folder extends Crypt {
   String name;
@@ -57,8 +57,7 @@ class Folder extends Crypt {
   }
 
   static Folder defaultNew(String name, {String? node}) {
-    return Folder(
-        name: name, items: [], nodes: node != null ? [node] : <String>[]);
+    return Folder(name: name, items: [], nodes: node != null ? [node] : []);
   }
 
   Future<void> upload() async {

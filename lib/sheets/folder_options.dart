@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:relayered/functions.dart';
 import '../template/functions.dart';
 import '../classes/folder.dart';
 import '../template/layer.dart';
@@ -24,32 +25,9 @@ Layer folderOptions(Map map) {
         Icons.colorize_rounded,
         folder.color ?? 'Adaptive',
         iconColor: taskColors[folder.color],
-        onTap: (p0) {
-          showScrollSheet(
-            (Map map) {
-              Folder folder = map['folder'];
-              return Layer(
-                action: Tile(
-                  folder.color ?? 'Adaptive',
-                  Icons.colorize_rounded,
-                  '',
-                ),
-                list: taskColors.entries.map((col) {
-                  return Tile(
-                    '',
-                    Icons.circle,
-                    col.key,
-                    iconColor: col.value,
-                    onTap: (c) {
-                      (folder..color = col.key).update();
-                    },
-                  );
-                }).toList(),
-              );
-            },
-            {'folder': folder},
-          );
-        },
+        onTap: (c) => getCustomColor(folder.color ?? 'Adaptive').then((col) {
+          (folder..color = col).update();
+        }),
       ),
       folder.pin
           ? Tile('Pinned', Icons.push_pin_rounded, '', onTap: (c) {
