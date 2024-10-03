@@ -20,7 +20,7 @@ const Map<String, IconData> colorMap = {
   '000000': Icons.nights_stay_outlined,
 };
 
-const ScrollPhysics scrollPhysics = BouncingScrollPhysics(
+const scrollPhysics = BouncingScrollPhysics(
   parent: AlwaysScrollableScrollPhysics(),
 );
 

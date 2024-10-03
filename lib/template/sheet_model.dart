@@ -4,13 +4,11 @@ import 'layer.dart';
 import '../../template/prefs.dart';
 
 class SheetModel extends StatelessWidget {
-  final Function(Map) func;
-  final Map? param;
+  final Layer template;
 
   const SheetModel({
     super.key,
-    required this.param,
-    required this.func,
+    required this.template,
   });
 
   @override
@@ -25,27 +23,27 @@ class SheetModel extends StatelessWidget {
           child: ListenableBuilder(
             listenable: Preferences(),
             builder: (context, child) => LayerBuilder(
-              func: func,
-              param: param,
-              builder: (c, snap) {
+              template: template,
+              builder: (context, snap) {
                 if (!snap.hasData) return Container();
                 Layer ly = snap.data!;
+                ly.dirtyContext = context;
                 return ListView(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
                     Row(
                       children: [
-                        if (ly.leading != null) ...ly.leading!(c),
+                        ...ly.leading ?? [],
                         Expanded(child: CustomCard(ly.action)),
-                        if (ly.trailing != null) ...ly.trailing!(c),
+                        ...ly.trailing ?? [],
                       ],
                     ),
                     ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: ly.list.length,
                       shrinkWrap: true,
-                      itemBuilder: (c, i) => ly.list.elementAt(i).toWidget(c),
+                      itemBuilder: (c, i) => ly.list.elementAt(i).toWidget,
                     ),
                   ],
                 );

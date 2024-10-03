@@ -9,68 +9,65 @@ import '../template/prefs.dart';
 import '../template/tile.dart';
 
 String mail = '', password = '';
-Stream<Layer> accountSet(Map non) async* {
-  yield accountLayer({});
-  yield* Database.stream.map((e) => accountLayer({}));
+Stream<Layer> accountSet(Layer l) async* {
+  yield accountLayer(l);
+  yield* Database.stream.map((e) => accountLayer(l));
 }
 
-Layer accountLayer(Map non) {
+Layer accountLayer(Layer l) {
   if (Database.logged) {
-    return Layer(
-      action: Tile(
-        Database.user.email ?? 'ERROR',
+    l.action = Tile(
+      Database.user.email ?? 'ERROR',
+      Icons.mail_outline_rounded,
+      '',
+      () => getInput(Database.user.email, 'New email').then((i) {
+        Database.user.verifyBeforeUpdateEmail(i);
+      }),
+    );
+    l.list = [
+      Tile('Encryption key', Icons.key_rounded, '', () {
+        Navigator.of(l.context).pop();
+        getKey();
+      }),
+      Tile.fromPref(Pref.syncTimeout),
+      Tile('Change password', Icons.password_rounded, '', () {
+        Database.resetPassword(Database.user.email!);
+      }),
+      Tile('Log out', Icons.person_remove_rounded, '', () async {
+        await FirebaseFirestore.instance.enableNetwork();
+        await FirebaseAuth.instance.signInAnonymously();
+        await FirebaseFirestore.instance.disableNetwork();
+      }),
+    ];
+  } else {
+    l.action = Tile('Continue', Icons.keyboard_return_rounded, '', () {
+      Database.signIn(mail.trim(), password);
+    });
+    l.list = [
+      Tile(
+        mail == '' ? 'Email' : mail,
         Icons.mail_outline_rounded,
         '',
-        onTap: (c) => getInput(Database.user.email, 'New email').then((i) {
-          Database.user.verifyBeforeUpdateEmail(i);
-        }),
+        () async {
+          mail = await getInput(mail, 'Email');
+          Preferences.notify();
+        },
       ),
-      list: [
-        Tile('Encryption key', Icons.key_rounded, '', onTap: (c) {
-          Navigator.of(c).pop();
-          getKey();
-        }),
-        Tile.fromPref(Pref.syncTimeout),
-        Tile('Change password', Icons.password_rounded, '', onTap: (c) {
-          Database.resetPassword(Database.user.email!);
-        }),
-        Tile('Log out', Icons.person_remove_rounded, '', onTap: (c) async {
-          await FirebaseFirestore.instance.enableNetwork();
-          await FirebaseAuth.instance.signInAnonymously();
-          await FirebaseFirestore.instance.disableNetwork();
-        }),
-      ],
-    );
-  } else {
-    return Layer(
-      action: Tile('Continue', Icons.keyboard_return_rounded, '', onTap: (c) {
-        Database.signIn(mail.trim(), password);
+      Tile(
+        password == '' ? 'Password' : password,
+        Icons.password_rounded,
+        '',
+        () async {
+          password = await getInput(password, 'Password');
+          Preferences.notify();
+        },
+      ),
+      Tile('Encryption key', Icons.key_rounded, '', () {
+        getKey();
       }),
-      list: [
-        Tile(
-          mail == '' ? 'Email' : mail,
-          Icons.mail_outline_rounded,
-          '',
-          onTap: (c) async {
-            mail = await getInput(mail, 'Email');
-            Preferences.notify();
-          },
-        ),
-        Tile(
-          password == '' ? 'Password' : password,
-          Icons.password_rounded,
-          '',
-          onTap: (c) async {
-            password = await getInput(password, 'Password');
-            Preferences.notify();
-          },
-        ),
-        Tile('Encryption key', Icons.key_rounded, '', onTap: (c) {
-          getKey();
-        }),
-      ],
-    );
+    ];
   }
+  return l;
 }
 
 Future<void> getKey() async {

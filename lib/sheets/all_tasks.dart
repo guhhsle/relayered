@@ -7,15 +7,15 @@ import '../template/tile.dart';
 import '../classes/task.dart';
 import '../data.dart';
 
-Stream<Layer> allTasks(Map non) async* {
-  yield allTasksLayer({});
-  yield* Database.stream.map((e) => allTasksLayer({}));
+Stream<Layer> allTasks(Layer l) async* {
+  yield allTasksLayer(l);
+  yield* Database.stream.map((e) => allTasksLayer(l));
 }
 
 const filters = ['All', 'Pending', 'Done'];
 String selFilter = 'All';
 
-Layer allTasksLayer(Map non) {
+Layer allTasksLayer(Layer l) {
   List<Task> allTasks = [];
   for (Folder folder in structure.values) {
     for (Task task in folder.items) {
@@ -25,11 +25,10 @@ Layer allTasksLayer(Map non) {
     }
   }
   allTasks.sort((a, b) => a.name.compareTo(b.name));
-  return Layer(
-    action: Tile('$selFilter tasks', Icons.filter_list_rounded, '', onTap: (c) {
-      selFilter = filters[(filters.indexOf(selFilter) + 1) % 3];
-      Preferences.notify();
-    }),
-    list: allTasks.map((task) => task.toTile()),
-  );
+  l.action = Tile('$selFilter tasks', Icons.filter_list_rounded, '', () {
+    selFilter = filters[(filters.indexOf(selFilter) + 1) % 3];
+    Preferences.notify();
+  });
+  l.list = allTasks.map((task) => task.toTile());
+  return l;
 }

@@ -13,7 +13,7 @@ class PageSettings extends StatelessWidget {
       child: ListView.builder(
         padding: const EdgeInsets.only(top: 16),
         physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (c, i) => settings[i].toWidget(c),
+        itemBuilder: (c, i) => settings[i].toWidget,
         itemCount: settings.length,
         shrinkWrap: true,
       ),

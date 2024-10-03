@@ -5,6 +5,7 @@ import 'tile.dart';
 
 class CustomChip extends StatelessWidget {
   final bool selected, showCheckmark;
+  final bool showAvatar;
   final Color? primary, background;
   final Tile tile;
 
@@ -14,6 +15,7 @@ class CustomChip extends StatelessWidget {
     required this.selected,
     required this.tile,
     this.background,
+    this.showAvatar = true,
     this.primary,
   });
 
@@ -28,11 +30,13 @@ class CustomChip extends StatelessWidget {
         child: Semantics(
           label: tile.title,
           child: InkWell(
-            onLongPress: () => tile.onHold?.call(context),
+            onLongPress: () => tile.onHold?.call(),
             child: InputChip(
               showCheckmark: showCheckmark,
-              avatar: Icon(tile.icon, color: selected ? bg : pr),
-              onSelected: (val) => tile.onTap?.call(context),
+              avatar: showAvatar
+                  ? Icon(tile.icon, color: selected ? bg : pr)
+                  : null,
+              onSelected: (val) => tile.onTap.call(),
               selected: selected,
               backgroundColor: bg,
               selectedColor: pr,

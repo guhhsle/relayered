@@ -84,7 +84,7 @@ class _CalendarState extends State<Calendar> {
                                       '$date$prefix${entry.value.name}';
                                   return entry.value
                                       .toTile(title: title)
-                                      .toWidget(context);
+                                      .toWidget;
                                 },
                               ),
                             ],

@@ -1,26 +1,43 @@
 import 'package:flutter/material.dart';
-import '../data.dart';
+import 'data.dart';
 import 'functions.dart';
+import '../data.dart';
 
 class Tile {
-  void Function(BuildContext)? secondary;
-  void Function(BuildContext)? onHold;
-  void Function(BuildContext)? onTap;
+  void Function()? secondary;
+  void Function()? onHold;
+  void Function() onTap;
   dynamic title, trailing;
   Color? iconColor;
   IconData icon;
+  BuildContext dirtyContext = navigatorKey.currentContext!;
 
-  Tile(
+  Tile([
+    this.title = '',
+    this.icon = Icons.moped_rounded,
+    this.trailing = '',
+    void Function()? onTap,
+  ]) : onTap = (onTap ?? () {});
+
+  Tile.complex(
     this.title,
     this.icon,
-    this.trailing, {
-    this.onTap,
+    this.trailing,
+    this.onTap, {
     this.secondary,
     this.onHold,
     this.iconColor,
   });
 
-  Widget toWidget(BuildContext context) {
+  BuildContext get context {
+    if (dirtyContext.mounted) {
+      return dirtyContext;
+    } else {
+      return navigatorKey.currentContext!;
+    }
+  }
+
+  Widget get toWidget {
     Widget? lead, trail;
     if (secondary == null) {
       lead = Icon(icon, color: iconColor);
@@ -29,9 +46,7 @@ class Tile {
       trail = InkWell(
         borderRadius: BorderRadius.circular(10),
         child: Icon(icon, color: iconColor),
-        onTap: () {
-          secondary!(context);
-        },
+        onTap: () => secondary?.call(),
       );
     }
 
@@ -41,8 +56,8 @@ class Tile {
         leading: lead,
         title: Text(t(title)),
         trailing: trail,
-        onTap: () => onTap?.call(context),
-        onLongPress: () => onHold?.call(context),
+        onTap: () => onTap.call(),
+        onLongPress: () => onHold?.call(),
       ),
     );
   }
@@ -50,19 +65,19 @@ class Tile {
   static Tile fromPref(
     Pref pref, {
     void Function(String)? onPrefInput,
-    void Function(BuildContext)? onTap,
+    void Function()? onTap,
     String suffix = '',
     String prefix = '',
   }) {
     if (onPrefInput != null) {
-      onTap = (c) => getPrefInput(pref).then((i) => onPrefInput.call(i));
+      onTap = () => getPrefInput(pref).then((i) => onPrefInput.call(i));
     } else if (onTap == null) {
       if (pref.all != null) {
-        onTap = (c) => pref.nextByLayer();
+        onTap = () => pref.nextByLayer();
       } else if (pref.initial is bool) {
-        onTap = (c) => pref.rev();
+        onTap = () => pref.rev();
       }
-      onTap ??= (c) {};
+      onTap ??= () {};
     }
     prefix = t(prefix);
     suffix = t(suffix);
@@ -70,7 +85,7 @@ class Tile {
       pref.title,
       pref.icon,
       '$prefix${t(pref.value)}$suffix',
-      onTap: onTap,
+      onTap,
     );
   }
 }

@@ -20,6 +20,7 @@ void showSnack(
   int duration = 3,
   bool debug = false,
 }) {
+  if (debug) debugPrint(text);
   if (debug && !Pref.debug.value) return;
   Color back = good ? Colors.green.shade100 : Colors.red.shade100;
   FlashyFlushbar(

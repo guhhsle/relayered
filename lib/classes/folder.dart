@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:relayered/template/data.dart';
 import 'database.dart';
 import 'encrypt.dart';
 import 'task.dart';
@@ -66,13 +67,13 @@ class Folder extends Crypt {
   }
 
   Tile get toTile {
-    return Tile(
+    return Tile.complex(
       name,
       Icons.folder_outlined,
       '',
-      onTap: (c) => open(context: c),
-      secondary: (c) {},
-      onHold: (c) => options(),
+      () => open(context: navigatorKey.currentContext!),
+      secondary: () {},
+      onHold: () => options(),
       iconColor: taskColors[color],
     );
   }

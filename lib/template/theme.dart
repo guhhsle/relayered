@@ -45,35 +45,34 @@ class ThemePref extends ChangeNotifier {
 
   static Color colorFromHex(String hex) => Color(int.parse('0xFF$hex'));
 
-  static Layer toLayer(Map map) {
-    bool primary = map['primary'];
-    return Layer(
-      action: Tile(
-        themePref(primary, currentlyLight).value,
-        primary ? Icons.colorize_rounded : Icons.tonality_rounded,
-        '',
-        onTap: (c) => fetchColor(primary, currentlyLight),
-      ),
-      trailing: (c) => [
-        IconButton(
-          icon: const Icon(Icons.shuffle_rounded),
-          onPressed: () => randomColor(primary, currentlyLight),
-        ),
-        IconButton(
-          icon: const Icon(Icons.add_rounded),
-          onPressed: () => fetchColor(primary, currentlyLight),
-        ),
-      ],
-      list: colorMap.entries.map((color) {
-        return Tile(
-          color.key,
-          color.value,
-          '',
-          iconColor: colorFromHex(color.key),
-          onTap: (c) => themePref(primary, currentlyLight).set(color.key),
-        );
-      }).toList(),
+  static Layer toLayer(Layer l) {
+    bool primary = l.parameters['primary'];
+    l.action = Tile(
+      themePref(primary, currentlyLight).value,
+      primary ? Icons.colorize_rounded : Icons.tonality_rounded,
+      '',
+      () => fetchColor(primary, currentlyLight),
     );
+    l.trailing = [
+      IconButton(
+        icon: const Icon(Icons.shuffle_rounded),
+        onPressed: () => randomColor(primary, currentlyLight),
+      ),
+      IconButton(
+        icon: const Icon(Icons.add_rounded),
+        onPressed: () => fetchColor(primary, currentlyLight),
+      ),
+    ];
+    l.list = colorMap.entries.map((color) {
+      return Tile.complex(
+        color.key,
+        color.value,
+        '',
+        () => themePref(primary, currentlyLight).set(color.key),
+        iconColor: colorFromHex(color.key),
+      );
+    });
+    return l;
   }
 
   static void randomColor(bool primary, bool light) {

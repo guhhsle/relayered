@@ -82,15 +82,13 @@ late bool web;
 
 List<Tile> get settings {
   return [
-    Tile('Interface', Icons.toggle_on, '',
-        onTap: (c) => showSheet(interfaceSet)),
-    Tile('Account', Icons.person_rounded, '',
-        onTap: (c) => showSheet(accountSet)),
+    Tile('Interface', Icons.toggle_on, '', () => showSheet(interfaceSet)),
+    Tile('Account', Icons.person_rounded, '', () => showSheet(accountSet)),
     Tile('Primary', Icons.colorize_rounded, '',
-        onTap: (c) => showScrollSheet(ThemePref.toLayer, {'primary': true})),
+        () => showScrollSheet(ThemePref.toLayer, {'primary': true})),
     Tile('Background', Icons.tonality_rounded, '',
-        onTap: (c) => showScrollSheet(ThemePref.toLayer, {'primary': false})),
-    Tile('More', Icons.segment_rounded, '', onTap: (c) => showSheet(otherSet)),
+        () => showScrollSheet(ThemePref.toLayer, {'primary': false})),
+    Tile('More', Icons.segment_rounded, '', () => showSheet(otherSet)),
   ];
 }
 

@@ -9,109 +9,100 @@ import '../template/functions.dart';
 import '../template/layer.dart';
 import '../template/tile.dart';
 
-Layer openTask(Map map) {
+Layer openTask(Layer l) {
   Task task = Task.defaultNew(Folder.defaultNew('/ERROR'), name: 'ERROR');
   for (var folder in structure.values) {
     for (Task current in folder.items) {
-      if (current.id == map['id']) task = current;
+      if (current.id == l.parameters['id']) task = current;
     }
   }
-  return Layer(
-    action: Tile(task.name, Icons.edit, '', onTap: (c) async {
-      final next = await getInput(task.name, 'Name');
-      (task..name = next).update();
+  l.action = Tile(task.name, Icons.edit, '', () async {
+    final next = await getInput(task.name, 'Name');
+    (task..name = next).update();
+  });
+  l.trailing = [
+    IconButton(
+      icon: Icon(task.checkedIcon),
+      onPressed: () => (task..done = !task.done).update(),
+    ),
+  ];
+  l.list = [
+    Tile('', Icons.short_text_rounded, task.shortDesc, () {
+      goToPage(TaskPage(task: task));
     }),
-    trailing: (c) => [
-      IconButton(
-        icon: Icon(task.checkedIcon),
-        onPressed: () => (task..done = !task.done).update(),
-      ),
-    ],
-    list: [
-      Tile('', Icons.short_text_rounded, task.shortDesc, onTap: (c) {
-        goToPage(TaskPage(task: task));
+    Tile.complex(
+      '',
+      Icons.colorize_rounded,
+      task.color,
+      () => getCustomColor(task.color).then((col) {
+        (task..color = col).update();
       }),
-      Tile(
-        '',
-        Icons.colorize_rounded,
-        task.color,
-        iconColor: taskColors[task.color],
-        onTap: (c) => getCustomColor(task.color).then((col) {
-          (task..color = col).update();
-        }),
-      ),
-      Tile(
-        '',
-        Icons.calendar_today_rounded,
-        task.date(year: true, month: true),
-        onTap: (c) => showSheet(
-          (Map non) async {
-            return Layer(
-              action: Tile(
-                'Add date',
-                Icons.insert_invitation_rounded,
-                '',
-                onTap: (c) => task.pickDate(c).then((due) {
-                  if (due == null) return;
-                  task.dues.add(due);
-                  task.update();
-                }),
-              ),
-              list: task.dues.map((due) {
-                return Tile(
-                  formatDate(due, year: false),
-                  Icons.event_busy_rounded,
-                  '',
-                  onTap: (c) {
-                    task.dues.remove(due);
-                    task.update();
-                  },
-                  secondary: (c) {
-                    task.dues.remove(due);
-                    task.update();
-                  },
-                );
-              }).toList(),
-            );
-          },
-        ),
-      ),
-      Tile(
-        '',
-        task.pinnedIcon,
-        'Pin${task.pinned ? 'ned' : ''}',
-        onTap: (c) => (task..pinned = !task.pinned).update(),
-      ),
-      Tile(
-        '',
-        Icons.folder_outlined,
-        task.path.name,
-        onTap: (c) => task.path.open(context: c),
-        onHold: (c) {
-          Navigator.of(c).pop();
-          showScrollSheet(
-            (dynamic d) async => Layer(
-              action: Tile('New', Icons.add_rounded, '', onTap: (c) async {
-                String newName = await getInput('', 'New folder');
-                Folder newFolder = Folder.defaultNew(newName);
-                await newFolder.upload();
-              }),
-              list: structure.values.map((e) => e.toTile
-                ..onTap = (c) {
-                  Navigator.of(c).pop();
-                  Map json = task.toJson;
-                  task.delete();
-                  moveTask(json, e.id);
-                }),
-            ),
+      iconColor: taskColors[task.color],
+    ),
+    Tile(
+      '',
+      Icons.calendar_today_rounded,
+      task.date(year: true, month: true),
+      () => showSheet(
+        (Layer l) async {
+          l.action = Tile(
+            'Add date',
+            Icons.insert_invitation_rounded,
+            '',
+            () => task.pickDate(l.context).then((due) {
+              if (due == null) return;
+              task.dues.add(due);
+              task.update();
+            }),
           );
+          l.list = task.dues.map((due) {
+            return Tile.complex(
+              formatDate(due, year: false),
+              Icons.event_busy_rounded,
+              '',
+              () {
+                task.dues.remove(due);
+                task.update();
+              },
+              secondary: () {
+                task.dues.remove(due);
+                task.update();
+              },
+            );
+          });
+          return l;
         },
       ),
-      Tile('', Icons.delete_forever_rounded, 'Delete', onTap: (c) {
-        task.delete();
-      })
-    ],
-  );
+    ),
+    Tile('', task.pinnedIcon, 'Pin${task.pinned ? 'ned' : ''}', () {
+      (task..pinned = !task.pinned).update();
+    }),
+    Tile.complex(
+      '',
+      Icons.folder_outlined,
+      task.path.name,
+      () => task.path.open(context: l.context),
+      onHold: () {
+        Navigator.of(l.context).pop();
+        showScrollSheet((Layer l) {
+          l.action = Tile('New', Icons.add_rounded, '', () async {
+            String newName = await getInput('', 'New folder');
+            Folder newFolder = Folder.defaultNew(newName);
+            newFolder.upload();
+          });
+          l.list = structure.values.map((e) => e.toTile
+            ..onTap = () {
+              Navigator.of(l.context).pop();
+              Map json = task.toJson;
+              task.delete();
+              moveTask(json, e.id);
+            });
+        });
+      },
+    ),
+    Tile('', Icons.delete_forever_rounded, 'Delete', () => task.delete()),
+  ];
+  return l;
 }
 
 void moveTask(Map taskMap, String? folderID) {

@@ -59,17 +59,17 @@ class Task extends Crypt {
 
   Tile toTile({String? title}) {
     title ??= '$name   ${date(month: true)}';
-    return Tile(
+    return Tile.complex(
       title,
       checkedIcon,
       '',
-      onTap: (c) => open(),
+      () => open(),
       iconColor: taskColors[color],
-      secondary: (c) {
+      secondary: () {
         done = !done;
         update();
       },
-      onHold: (c) => goToPage(TaskPage(task: this)),
+      onHold: () => goToPage(TaskPage(task: this)),
     );
   }
 
