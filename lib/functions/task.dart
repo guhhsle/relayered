@@ -21,24 +21,21 @@ DateTime today() {
   return DateTime(now.year, now.month, now.day);
 }
 
-List<Tile> foldersIn(String id) {
-  if (structure[id] == null) return [];
+List<Tile> foldersIn(Folder folder) {
   List<Tile> list = [];
 
-  for (String nodeId in structure[id]!.nodes) {
+  for (String nodeId in folder.nodes) {
     for (Folder node in structure.values.where((e) => e.id == nodeId)) {
-      list.add(node.toTile);
+      list.add(node.toTile());
     }
   }
 
   return list;
 }
 
-List<Tile> tasksIn(String id, bool done) {
-  if (structure[id] == null) return [];
+List<Tile> tasksIn(Folder folder, bool done) {
   List<Tile> list = [];
-
-  for (Task task in structure[id]!.items) {
+  for (Task task in folder.items) {
     if (task.done == done) {
       list.add(task.toTile());
     }

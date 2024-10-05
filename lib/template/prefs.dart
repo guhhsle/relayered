@@ -47,22 +47,24 @@ class Preferences extends ChangeNotifier {
     notify();
     return value;
   }
+}
 
-  static void nextByLayer(Pref pref, {String suffix = ''}) {
-    Layer layerFunc(Layer l) {
-      l.action = Tile(pref.title, Icons.memory_rounded, '${pref.value}$suffix');
-      l.list = pref.all!.map((e) {
-        return Tile('$e$suffix', checked(e == pref.value), '', () {
-          pref.set(e);
-        });
+class NextByLayer extends Layer {
+  Pref pref;
+  String suffix;
+  NextByLayer(this.pref, {this.suffix = ''});
+  @override
+  void construct() {
+    scroll = pref.all!.length > 5;
+    action = Tile(
+      pref.title,
+      Icons.memory_rounded,
+      '${pref.value}$suffix',
+    );
+    list = pref.all!.map((e) {
+      return Tile('$e$suffix', checked(e == pref.value), '', () {
+        pref.set(e);
       });
-      return l;
-    }
-
-    if (pref.all!.length > 5) {
-      showScrollSheet(layerFunc);
-    } else {
-      showSheet(layerFunc);
-    }
+    });
   }
 }

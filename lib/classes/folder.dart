@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:relayered/template/data.dart';
 import 'database.dart';
 import 'encrypt.dart';
 import 'task.dart';
 import '../sheets/folder_options.dart';
 import '../sheets/open_folder.dart';
-import '../template/layer.dart';
 import '../template/tile.dart';
 import '../data.dart';
 
@@ -66,34 +64,28 @@ class Folder extends Crypt {
     Database.notify();
   }
 
-  Tile get toTile {
+  Tile toTile({VoidCallback? onTap}) {
     return Tile.complex(
       name,
       Icons.folder_outlined,
       '',
-      () => open(context: navigatorKey.currentContext!),
-      secondary: () {},
-      onHold: () => options(),
+      onTap ?? FolderLayer(id).show,
+      onHold: FolderOptions(id).show,
       iconColor: taskColors[color],
     );
-  }
-
-  void options() => showSheet(folderOptions, {'id': id});
-
-  void open({BuildContext? context}) {
-    if (Pref.stackLayers.value && context != null) {
-      Navigator.of(context).pop();
-    }
-    showScrollSheet(openFolder, {'id': id});
   }
 
   Future update() async {
     if (id != null) {
       await Database.folders.doc(id).update(toJson);
-      Database.notify();
     } else {
       await upload();
     }
+    Database.notify();
+  }
+
+  static Folder fromID(String? id) {
+    return structure[id] ?? Folder.defaultNew('/ERROR');
   }
 
   Future delete() async {

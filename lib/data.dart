@@ -3,7 +3,6 @@ import 'package:relayered/settings/other.dart';
 import 'classes/folder.dart';
 import 'settings/account.dart';
 import 'settings/interface.dart';
-import 'template/layer.dart';
 import 'template/prefs.dart';
 import 'template/theme.dart';
 import 'template/tile.dart';
@@ -60,8 +59,9 @@ enum Pref {
 
   Future next() => Preferences.next(this);
 
-  void nextByLayer({String suffix = ''}) =>
-      Preferences.nextByLayer(this, suffix: suffix);
+  void nextByLayer({String suffix = ''}) {
+    NextByLayer(this, suffix: suffix).show();
+  }
 
   @override
   String toString() => name;
@@ -82,13 +82,11 @@ late bool web;
 
 List<Tile> get settings {
   return [
-    Tile('Interface', Icons.toggle_on, '', () => showSheet(interfaceSet)),
-    Tile('Account', Icons.person_rounded, '', () => showSheet(accountSet)),
-    Tile('Primary', Icons.colorize_rounded, '',
-        () => showScrollSheet(ThemePref.toLayer, {'primary': true})),
-    Tile('Background', Icons.tonality_rounded, '',
-        () => showScrollSheet(ThemePref.toLayer, {'primary': false})),
-    Tile('More', Icons.segment_rounded, '', () => showSheet(otherSet)),
+    Tile('Interface', Icons.toggle_on, '', InterfaceLayer().show),
+    Tile('Account', Icons.person_rounded, '', AccountLayer().show),
+    Tile('Primary', Icons.colorize_rounded, '', ThemeLayer(true).show),
+    Tile('Background', Icons.tonality_rounded, '', ThemeLayer(false).show),
+    Tile('More', Icons.segment_rounded, '', OtherLayer().show),
   ];
 }
 

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import '../classes/database.dart';
-import '../functions/task.dart';
-import '../sheets/all_tasks.dart';
-import '../sheets/structure.dart';
 import '../template/functions.dart';
-import '../template/layer.dart';
-import '../template/prefs.dart';
+import '../settings/calendar.dart';
+import '../classes/database.dart';
+import '../sheets/structure.dart';
+import '../sheets/all_tasks.dart';
+import '../widgets/overview.dart';
 import '../widgets/calendar.dart';
+import '../functions/task.dart';
+import '../template/prefs.dart';
 import '../widgets/frame.dart';
 import '../data.dart';
-import '../settings/calendar.dart';
-import '../widgets/overview.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -44,8 +43,8 @@ class _HomePageState extends State<HomePage> {
               ? Padding(
                   padding: const EdgeInsets.all(8),
                   child: FloatingActionButton(
+                    onPressed: PinnedFolders().show,
                     child: const Icon(Icons.folder_rounded),
-                    onPressed: () => showScrollSheet(pinnedFolders),
                   ),
                 )
               : null,
@@ -55,12 +54,12 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               tooltip: t('Search'),
               icon: const Icon(Icons.fiber_manual_record_outlined),
-              onPressed: () => showScrollSheet(allTasks),
+              onPressed: AllTasks().show,
             ),
             if (Pref.action.value == 'Top')
               IconButton(
                 icon: const Icon(Icons.folder_rounded),
-                onPressed: () => showScrollSheet(pinnedFolders),
+                onPressed: PinnedFolders().show,
               ),
             if (web)
               const IconButton(
@@ -69,7 +68,7 @@ class _HomePageState extends State<HomePage> {
               ),
             IconButton(
               icon: const Icon(Icons.menu),
-              onPressed: () => showSheet(calendar),
+              onPressed: CalendarSettings().show,
             ),
           ],
           child: Column(

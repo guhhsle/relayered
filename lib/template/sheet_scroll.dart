@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'custom_card.dart';
 import 'layer.dart';
-import '../../template/prefs.dart';
 
 class SheetScrollModel extends StatelessWidget {
-  final Layer template;
+  final Layer layer;
   const SheetScrollModel({
     super.key,
-    required this.template,
+    required this.layer,
   });
 
   @override
@@ -28,39 +27,35 @@ class SheetScrollModel extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: ListenableBuilder(
-                  listenable: Preferences(),
-                  builder: (context, child) => LayerBuilder(
-                    template: template,
-                    builder: (context, snap) {
-                      if (!snap.hasData) return Container();
-                      Layer ly = snap.data!;
-                      ly.dirtyContext = context;
-                      return Column(
-                        children: [
-                          Row(
-                            children: [
-                              ...ly.leading ?? [],
-                              Expanded(child: CustomCard(ly.action)),
-                              ...ly.trailing ?? [],
-                            ],
-                          ),
-                          Expanded(
-                            child: Scrollbar(
+                  listenable: layer,
+                  builder: (context, snap) {
+                    layer.dirtyContext = context;
+                    layer.construct();
+                    return Column(
+                      children: [
+                        Row(
+                          children: [
+                            ...layer.leading,
+                            Expanded(child: CustomCard(layer.action)),
+                            ...layer.trailing,
+                          ],
+                        ),
+                        Expanded(
+                          child: Scrollbar(
+                            controller: controller,
+                            child: ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              padding: const EdgeInsets.only(bottom: 8),
                               controller: controller,
-                              child: ListView.builder(
-                                physics: const BouncingScrollPhysics(),
-                                padding: const EdgeInsets.only(bottom: 8),
-                                controller: controller,
-                                itemCount: ly.list.length,
-                                itemBuilder: (c, i) =>
-                                    ly.list.elementAt(i).toWidget,
-                              ),
+                              itemCount: layer.list.length,
+                              itemBuilder: (c, i) =>
+                                  layer.list.elementAt(i).toWidget,
                             ),
                           ),
-                        ],
-                      );
-                    },
-                  ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
             ),

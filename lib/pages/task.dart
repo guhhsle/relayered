@@ -2,6 +2,7 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import '../template/functions.dart';
+import '../sheets/open_task.dart';
 import '../widgets/frame.dart';
 import '../classes/task.dart';
 
@@ -38,7 +39,7 @@ class TaskPageState extends State<TaskPage> {
       child: Frame(
         leading: IconButton(
           icon: const Icon(Icons.menu),
-          onPressed: task.open,
+          onPressed: TaskLayer(task.id).show,
         ),
         actions: [
           Padding(

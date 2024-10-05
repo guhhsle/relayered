@@ -32,7 +32,7 @@ class CustomCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           child: InkWell(
-            onTap: () => tile.onTap.call(),
+            onTap: tile.onTap,
             customBorder: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),

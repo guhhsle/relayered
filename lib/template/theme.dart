@@ -7,6 +7,45 @@ import 'data.dart';
 import 'tile.dart';
 import '../data.dart';
 
+class ThemeLayer extends Layer {
+  bool primary;
+  ThemeLayer(this.primary);
+  @override
+  void construct() {
+    scroll = true;
+    action = Tile(
+      ThemePref.themePref(primary, currentlyLight).value,
+      primary ? Icons.colorize_rounded : Icons.tonality_rounded,
+      '',
+      () => ThemePref.fetchColor(primary, currentlyLight),
+    );
+    trailing = [
+      IconButton(
+        icon: const Icon(Icons.shuffle_rounded),
+        onPressed: () => ThemePref.randomColor(primary, currentlyLight),
+      ),
+      IconButton(
+        icon: const Icon(Icons.add_rounded),
+        onPressed: () => ThemePref.fetchColor(primary, currentlyLight),
+      ),
+    ];
+    list = colorMap.entries.map((color) {
+      return Tile.complex(
+        color.key,
+        color.value,
+        '',
+        () => ThemePref.themePref(primary, currentlyLight).set(color.key),
+        iconColor: ThemePref.colorFromHex(color.key),
+      );
+    });
+  }
+}
+
+bool get currentlyLight {
+  var dispatcher = SchedulerBinding.instance.platformDispatcher;
+  return dispatcher.platformBrightness == Brightness.light;
+}
+
 class ThemePref extends ChangeNotifier {
   static final ThemePref instance = ThemePref.internal();
 
@@ -15,11 +54,6 @@ class ThemePref extends ChangeNotifier {
   ThemePref.internal();
 
   static void notify() => instance.notifyListeners();
-
-  static bool get currentlyLight {
-    var dispatcher = SchedulerBinding.instance.platformDispatcher;
-    return dispatcher.platformBrightness == Brightness.light;
-  }
 
   static Color color(bool primary, {bool? light}) {
     try {
@@ -44,36 +78,6 @@ class ThemePref extends ChangeNotifier {
   }
 
   static Color colorFromHex(String hex) => Color(int.parse('0xFF$hex'));
-
-  static Layer toLayer(Layer l) {
-    bool primary = l.parameters['primary'];
-    l.action = Tile(
-      themePref(primary, currentlyLight).value,
-      primary ? Icons.colorize_rounded : Icons.tonality_rounded,
-      '',
-      () => fetchColor(primary, currentlyLight),
-    );
-    l.trailing = [
-      IconButton(
-        icon: const Icon(Icons.shuffle_rounded),
-        onPressed: () => randomColor(primary, currentlyLight),
-      ),
-      IconButton(
-        icon: const Icon(Icons.add_rounded),
-        onPressed: () => fetchColor(primary, currentlyLight),
-      ),
-    ];
-    l.list = colorMap.entries.map((color) {
-      return Tile.complex(
-        color.key,
-        color.value,
-        '',
-        () => themePref(primary, currentlyLight).set(color.key),
-        iconColor: colorFromHex(color.key),
-      );
-    });
-    return l;
-  }
 
   static void randomColor(bool primary, bool light) {
     String result = '';

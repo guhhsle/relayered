@@ -6,7 +6,7 @@ import '../data.dart';
 class Tile {
   void Function()? secondary;
   void Function()? onHold;
-  void Function() onTap;
+  void Function()? onTap;
   dynamic title, trailing;
   Color? iconColor;
   IconData icon;
@@ -16,8 +16,8 @@ class Tile {
     this.title = '',
     this.icon = Icons.moped_rounded,
     this.trailing = '',
-    void Function()? onTap,
-  ]) : onTap = (onTap ?? () {});
+    this.onTap,
+  ]);
 
   Tile.complex(
     this.title,
@@ -56,8 +56,8 @@ class Tile {
         leading: lead,
         title: Text(t(title)),
         trailing: trail,
-        onTap: () => onTap.call(),
-        onLongPress: () => onHold?.call(),
+        onTap: onTap,
+        onLongPress: onHold,
       ),
     );
   }

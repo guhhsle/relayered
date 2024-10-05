@@ -1,15 +1,14 @@
-import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
-import '../sheets/open_task.dart';
-import '../template/tile.dart';
+import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'encrypt.dart';
-import '../data.dart';
 import 'folder.dart';
-import '../functions/task.dart';
-import '../pages/task.dart';
 import '../template/functions.dart';
-import '../template/layer.dart';
+import '../sheets/open_task.dart';
+import '../functions/task.dart';
+import '../template/tile.dart';
+import '../pages/task.dart';
+import '../data.dart';
 
 class Task extends Crypt {
   String name, desc, color;
@@ -55,7 +54,14 @@ class Task extends Crypt {
     );
   }
 
-  void open() => showSheet(openTask, {'id': id});
+  static Task fromID(String? id) {
+    for (var folder in structure.values) {
+      for (Task current in folder.items) {
+        if (current.id == id) return current;
+      }
+    }
+    return defaultNew(Folder.defaultNew('/ERROR'), name: 'ERROR');
+  }
 
   Tile toTile({String? title}) {
     title ??= '$name   ${date(month: true)}';
@@ -63,7 +69,7 @@ class Task extends Crypt {
       title,
       checkedIcon,
       '',
-      () => open(),
+      TaskLayer(id).show,
       iconColor: taskColors[color],
       secondary: () {
         done = !done;
@@ -126,11 +132,4 @@ class Task extends Crypt {
       return '${formatDate(dues[0], year: year, month: month)}...';
     }
   }
-
-  Future<DateTime?> pickDate(BuildContext context) => showDatePicker(
-        builder: (context, child2) => child2!,
-        context: context,
-        firstDate: DateTime(DateTime.now().year - 1),
-        lastDate: DateTime(DateTime.now().year + 5),
-      );
 }

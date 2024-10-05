@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:relayered/sheets/folder_options.dart';
+import 'package:relayered/sheets/open_folder.dart';
 import '../classes/database.dart';
 import '../template/data.dart';
 import '../data.dart';
@@ -27,13 +29,13 @@ class OverviewState extends State<Overview> {
           itemBuilder: (context, i) {
             final folder = structure.values.elementAt(i);
             return InkWell(
-              onLongPress: folder.options,
+              onLongPress: FolderOptions(folder.id).show,
               child: Padding(
                 padding: const EdgeInsets.only(right: 8, top: 4),
                 child: InputChip(
                   showCheckmark: false,
                   selected: folder.pin || folder.color != null,
-                  onSelected: (sel) => folder.open(),
+                  onSelected: (sel) => FolderLayer(folder.id).show,
                   selectedColor: folder.color == null
                       ? null
                       : mixColors(background, taskColors[folder.color]!, 0.5),

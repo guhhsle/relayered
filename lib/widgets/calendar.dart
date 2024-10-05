@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:relayered/sheets/folder_options.dart';
+import 'package:relayered/sheets/open_folder.dart';
 import '../classes/month.dart';
 import '../classes/schedule.dart';
 import '../classes/database.dart';
@@ -47,8 +49,8 @@ class _CalendarState extends State<Calendar> {
                     MonthContainer field = fields[j];
                     return InkWell(
                       borderRadius: customRadius,
-                      onTap: field.folder?.open ?? () {},
-                      onLongPress: field.folder?.options ?? () {},
+                      onTap: FolderLayer(field.folder?.id).show,
+                      onLongPress: FolderOptions(field.folder?.id).show,
                       child: Card(
                         margin: const EdgeInsets.symmetric(
                           vertical: 8,

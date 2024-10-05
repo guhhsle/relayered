@@ -36,7 +36,7 @@ class CustomChip extends StatelessWidget {
               avatar: showAvatar
                   ? Icon(tile.icon, color: selected ? bg : pr)
                   : null,
-              onSelected: (val) => tile.onTap.call(),
+              onSelected: (val) => tile.onTap?.call(),
               selected: selected,
               backgroundColor: bg,
               selectedColor: pr,
