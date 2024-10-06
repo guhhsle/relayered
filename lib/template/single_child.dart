@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'custom_card.dart';
+import 'tile_card.dart';
 import 'data.dart';
 import 'tile.dart';
 import '../data.dart';
@@ -33,7 +33,7 @@ Future<void> singleChildSheet({
               padding: const EdgeInsets.all(8),
               child: Column(
                 children: [
-                  CustomCard(action),
+                  TileCard(action),
                   Expanded(
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.symmetric(

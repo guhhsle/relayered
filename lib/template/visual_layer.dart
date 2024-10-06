@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'custom_card.dart';
+import 'tile_card.dart';
 import 'layer.dart';
 
 class VisualLayer extends StatefulWidget {
@@ -60,7 +60,7 @@ class _VisualLayerState extends State<VisualLayer> {
                         children: [
                           Row(children: [
                             ...widget.layer.leading,
-                            Expanded(child: CustomCard(widget.layer.action)),
+                            Expanded(child: TileCard(widget.layer.action)),
                             ...widget.layer.trailing,
                           ]),
                           Expanded(
@@ -93,7 +93,7 @@ class _VisualLayerState extends State<VisualLayer> {
                   children: [
                     Row(children: [
                       ...widget.layer.leading,
-                      Expanded(child: CustomCard(widget.layer.action)),
+                      Expanded(child: TileCard(widget.layer.action)),
                       ...widget.layer.trailing,
                     ]),
                     ...list,

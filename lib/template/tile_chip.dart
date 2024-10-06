@@ -3,13 +3,13 @@ import 'functions.dart';
 import 'prefs.dart';
 import 'tile.dart';
 
-class CustomChip extends StatelessWidget {
+class TileChip extends StatelessWidget {
   final bool selected, showCheckmark;
   final bool showAvatar;
   final Color? primary, background;
   final Tile tile;
 
-  const CustomChip({
+  const TileChip({
     super.key,
     this.showCheckmark = false,
     required this.selected,

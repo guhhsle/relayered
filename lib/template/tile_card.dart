@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'functions.dart';
 import 'tile.dart';
 
-class CustomCard extends StatelessWidget {
+class TileCard extends StatelessWidget {
   final Tile tile;
   final EdgeInsets margin;
   final double height;
 
-  const CustomCard(
+  const TileCard(
     this.tile, {
     super.key,
     this.margin = const EdgeInsets.symmetric(

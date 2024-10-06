@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../layers/folder_options.dart';
-import '../template/custom_chip.dart';
+import '../template/tile_chip.dart';
 import '../classes/database.dart';
 import '../layers/folder.dart';
 import '../template/data.dart';
@@ -29,7 +29,7 @@ class OverviewState extends State<Overview> {
           itemCount: structure.length,
           itemBuilder: (context, i) {
             final folder = structure.values.elementAt(i);
-            return CustomChip(
+            return TileChip(
               selected: folder.pin && folder.color == null,
               showAvatar: false,
               tile: Tile.complex(
