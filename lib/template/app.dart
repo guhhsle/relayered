@@ -20,6 +20,7 @@ class App extends StatelessWidget {
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: title,
+        scrollBehavior: NoScrollBehavior(),
         theme: ThemePref.data(
           ThemePref.color(true, light: true),
           ThemePref.color(false, light: true),
@@ -52,5 +53,16 @@ class App extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class NoScrollBehavior extends ScrollBehavior {
+  @override
+  Widget buildScrollbar(
+    BuildContext context,
+    Widget child,
+    ScrollableDetails details,
+  ) {
+    return child; // No scrollbar
   }
 }

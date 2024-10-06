@@ -33,7 +33,6 @@ enum Pref {
   syncTimeout('Sync timeout', 6, Icons.cloud_sync_rounded, all: timeouts),
   encryptKey('Encryption key', '0000000000000000', Icons.key_rounded),
   action('Action button', 'Floating', Icons.folder_rounded, all: actionPos),
-  stackLayers('Stack layers', false, Icons.layers_rounded),
   defaultColor('Default color', 'Adaptive', Icons.colorize_rounded),
   showPinned('Show pinned', true, Icons.push_pin_rounded, ui: true),
   showDone('Show done', true, Icons.done_rounded, ui: true),
@@ -41,15 +40,17 @@ enum Pref {
       ui: true),
   showFolders('Folder field', true, Icons.folder_copy_rounded, ui: true),
   ignore('Ignore folders', <String>[], Icons.folder_copy_rounded, ui: true),
+  none('', 0, Icons.abc, backend: true),
   ;
 
   final dynamic initial;
   final List? all;
   final String title;
   final IconData icon;
-  final bool ui; //Changing it leads to UI rebuild
+  final bool ui, backend; //Changing it leads to UI rebuild
 
-  const Pref(this.title, this.initial, this.icon, {this.all, this.ui = false});
+  const Pref(this.title, this.initial, this.icon,
+      {this.all, this.ui = false, this.backend = false});
 
   dynamic get value => Preferences.get(this);
 

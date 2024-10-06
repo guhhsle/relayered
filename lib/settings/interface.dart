@@ -8,7 +8,6 @@ class InterfaceLayer extends Layer {
     action = Tile.fromPref(Pref.appbar);
     list = [
       Tile.fromPref(Pref.action),
-      Tile.fromPref(Pref.stackLayers),
       Tile.fromPref(Pref.defaultColor),
     ];
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const Map<String, IconData> colorMap = {
+const colorMap = {
   'FFFFFF': Icons.ac_unit_rounded,
   'F6F7EB': Icons.ac_unit_rounded,
   'F0F8FF': Icons.water_rounded,
