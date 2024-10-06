@@ -34,13 +34,13 @@ class Preferences extends ChangeNotifier {
   }
 
   static Future set(Pref pref, var value) async {
-    if (value is int) {
+    if (pref.initial is int) {
       await prefs.setInt('$pref', value);
-    } else if (value is bool) {
+    } else if (pref.initial is bool) {
       await prefs.setBool('$pref', value);
-    } else if (value is String) {
+    } else if (pref.initial is String) {
       await prefs.setString('$pref', value);
-    } else if (value is List<String>) {
+    } else if (pref.initial is List<String>) {
       await prefs.setStringList('$pref', value);
     }
     if (pref.ui) ThemePref.notify();

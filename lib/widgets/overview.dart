@@ -29,7 +29,7 @@ class OverviewState extends State<Overview> {
           itemCount: structure.length,
           itemBuilder: (context, i) {
             final folder = structure.values.elementAt(i);
-            return TileChip(
+            return CustomChip(
               selected: folder.pin && folder.color == null,
               showAvatar: false,
               tile: Tile.complex(

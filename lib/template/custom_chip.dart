@@ -3,13 +3,13 @@ import 'functions.dart';
 import 'prefs.dart';
 import 'tile.dart';
 
-class TileChip extends StatelessWidget {
+class CustomChip extends StatelessWidget {
   final bool selected, showCheckmark;
   final bool showAvatar;
   final Color? primary, background;
   final Tile tile;
 
-  const TileChip({
+  const CustomChip({
     super.key,
     this.showCheckmark = false,
     required this.selected,
@@ -30,7 +30,7 @@ class TileChip extends StatelessWidget {
         child: Semantics(
           label: tile.title,
           child: InkWell(
-            onLongPress: tile.onHold,
+            onLongPress: () => tile.onHold?.call(),
             child: InputChip(
               showCheckmark: showCheckmark,
               avatar: showAvatar

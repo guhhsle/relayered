@@ -45,8 +45,8 @@ class Tile {
     } else {
       trail = InkWell(
         borderRadius: BorderRadius.circular(10),
-        onTap: secondary,
         child: Icon(icon, color: iconColor),
+        onTap: () => secondary?.call(),
       );
     }
 
