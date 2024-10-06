@@ -19,10 +19,10 @@ class _VisualLayerState extends State<VisualLayer> {
 
   @override
   void initState() {
+    super.initState();
     for (var listenable in widget.layer.listened) {
       listenable.addListener(layerChange);
     }
-    super.initState();
   }
 
   @override
@@ -35,12 +35,12 @@ class _VisualLayerState extends State<VisualLayer> {
 
   @override
   Widget build(BuildContext context) {
-    widget.layer.dirtyContext = context;
     return Semantics(
       label: 'Bottom sheet',
       child: ListenableBuilder(
         listenable: widget.layer,
         builder: (c, child) {
+          widget.layer.dirtyContext = c;
           final list = widget.layer.list.map((e) => e.toWidget);
           if (widget.layer.scroll) {
             return GestureDetector(

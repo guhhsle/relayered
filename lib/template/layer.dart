@@ -15,7 +15,6 @@ abstract class Layer extends ChangeNotifier {
   void listenTo(Listenable listenable) {
     if (listened.contains(listenable)) return;
     listened.add(listenable);
-    listenable.addListener(notifyListeners);
   }
 
   BuildContext get context {
