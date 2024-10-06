@@ -35,7 +35,7 @@ class OverviewState extends State<Overview> {
                 child: InputChip(
                   showCheckmark: false,
                   selected: folder.pin || folder.color != null,
-                  onSelected: (sel) => FolderLayer(folder.id).show,
+                  onSelected: (sel) => FolderLayer(folder.id).show(),
                   selectedColor: folder.color == null
                       ? null
                       : mixColors(background, taskColors[folder.color]!, 0.5),
