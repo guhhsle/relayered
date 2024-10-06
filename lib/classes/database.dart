@@ -10,15 +10,15 @@ import '../data.dart';
 
 class Database extends ChangeNotifier {
   Database.internal();
-
   static final Database instance = Database.internal();
   factory Database() => instance;
+
   static StreamController structureStream = StreamController.broadcast();
-  static Stream get stream => structureStream.stream;
-  static User get user => auth.currentUser!;
-  static FirebaseAuth get auth => FirebaseAuth.instance;
   static FirebaseFirestore get firestore => FirebaseFirestore.instance;
   static CollectionReference get folders => userFolders(user.uid);
+  static FirebaseAuth get auth => FirebaseAuth.instance;
+  static Stream get stream => structureStream.stream;
+  static User get user => auth.currentUser!;
 
   static bool get logged {
     if (user.isAnonymous) return false;

@@ -3,7 +3,7 @@ import '../data.dart';
 import 'folder.dart';
 import 'task.dart';
 
-Map<String, Color> monthColors = {
+const monthColors = {
   'January': Colors.white,
   'February': Colors.pink,
   'March': Colors.purple,

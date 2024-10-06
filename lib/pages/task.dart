@@ -2,9 +2,9 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import '../template/functions.dart';
-import '../sheets/open_task.dart';
 import '../widgets/frame.dart';
 import '../classes/task.dart';
+import '../layers/task.dart';
 
 class TaskPage extends StatefulWidget {
   final Task task;

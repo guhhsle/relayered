@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../sheets/open_folder.dart';
-import '../template/functions.dart';
-import '../template/settings.dart';
-import '../classes/database.dart';
-import '../template/layer.dart';
-import '../template/tile.dart';
-import '../data.dart';
+import '../folder.dart';
+import '../../template/functions.dart';
+import '../../template/settings.dart';
+import '../../classes/database.dart';
+import '../../template/layer.dart';
+import '../../template/tile.dart';
+import '../../data.dart';
 
 class CalendarSettings extends Layer {
   @override

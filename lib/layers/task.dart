@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'open_folder.dart';
 import 'move_task.dart';
 import 'task_date.dart';
+import 'folder.dart';
 import '../template/functions.dart';
 import '../classes/database.dart';
 import '../template/layer.dart';
@@ -19,9 +19,8 @@ class TaskLayer extends Layer {
   @override
   void construct() {
     listenTo(Database());
-    action = Tile(task.name, Icons.edit, '', () async {
-      task.name = await getInput(task.name, 'Name');
-      task.update();
+    action = Tile(task.name, Icons.notes_rounded, '', () {
+      goToPage(TaskPage(task: task));
     });
     trailing = [
       IconButton(
@@ -30,9 +29,6 @@ class TaskLayer extends Layer {
       ),
     ];
     list = [
-      Tile('', Icons.short_text_rounded, task.shortDesc, () {
-        goToPage(TaskPage(task: task));
-      }),
       Tile.complex(
         '',
         Icons.colorize_rounded,
@@ -44,7 +40,7 @@ class TaskLayer extends Layer {
         },
         iconColor: taskColors[task.color],
       ),
-      Tile('', Icons.calendar_today_rounded, task.date(year: true, month: true),
+      Tile('', Icons.calendar_today_rounded, task.date(true, true),
           () => TaskDate(taskID).show()),
       Tile('', task.pinnedIcon, 'Pin${task.pinned ? 'ned' : ''}', () {
         (task..pinned = !task.pinned).update();

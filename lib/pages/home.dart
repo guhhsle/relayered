@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import '../layers/settings/calendar.dart';
+import '../layers/folder_other.dart';
 import '../template/functions.dart';
-import '../settings/calendar.dart';
 import '../classes/database.dart';
-import '../sheets/structure.dart';
-import '../sheets/all_tasks.dart';
+import '../layers/all_tasks.dart';
 import '../widgets/overview.dart';
 import '../widgets/calendar.dart';
-import '../functions/task.dart';
 import '../template/prefs.dart';
 import '../widgets/frame.dart';
+import '../functions.dart';
 import '../data.dart';
 
 class HomePage extends StatefulWidget {
@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                 )
               : null,
           automaticallyImplyLeading: false,
-          title: Text(formatDate(DateTime.now(), year: false)),
+          title: Text(DateTime.now().prettify(false)),
           actions: [
             IconButton(
               tooltip: t('Search'),

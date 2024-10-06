@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../functions/task.dart';
-import '../data.dart';
 import 'month.dart';
 import 'task.dart';
+import '../functions.dart';
+import '../data.dart';
 
 class Schedule {
   BuildContext context;

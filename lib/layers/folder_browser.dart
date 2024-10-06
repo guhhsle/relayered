@@ -18,7 +18,7 @@ abstract class FolderBrowser extends Layer {
       onSelected(newFolder);
     });
     list = structure.values.map((e) {
-      return e.toTile(onTap: () {
+      return e.toTile(() {
         Navigator.of(context).pop();
         onSelected(e);
       });

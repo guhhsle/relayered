@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'task.dart';
 import '../classes/database.dart';
 import '../template/prefs.dart';
 import '../classes/folder.dart';
@@ -26,6 +27,11 @@ class AllTasks extends Layer {
       selFilter = filters[(filters.indexOf(selFilter) + 1) % 3];
       Preferences.notify();
     });
-    list = allTasks.map((task) => task.toTile());
+    list = allTasks.map((task) {
+      return task.toTile(() {
+        Navigator.of(context).pop();
+        TaskLayer(task.id).show();
+      });
+    });
   }
 }

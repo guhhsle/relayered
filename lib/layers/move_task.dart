@@ -1,6 +1,5 @@
-import 'package:relayered/classes/folder.dart';
-import 'package:relayered/sheets/choose_folder.dart';
-
+import 'folder_browser.dart';
+import '../classes/folder.dart';
 import '../classes/task.dart';
 
 class MoveTask extends FolderBrowser {

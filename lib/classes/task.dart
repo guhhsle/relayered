@@ -1,13 +1,10 @@
-import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'encrypt.dart';
 import 'folder.dart';
 import '../template/functions.dart';
-import '../sheets/open_task.dart';
-import '../functions/task.dart';
 import '../template/tile.dart';
 import '../pages/task.dart';
+import '../functions.dart';
 import '../data.dart';
 
 class Task extends Crypt {
@@ -63,13 +60,13 @@ class Task extends Crypt {
     return defaultNew(Folder.defaultNew('/ERROR'), name: 'ERROR');
   }
 
-  Tile toTile({String? title}) {
-    title ??= '$name   ${date(month: true)}';
+  Tile toTile(VoidCallback onTap, {String? title}) {
+    title ??= '$name   ${date(false, true)}';
     return Tile.complex(
       title,
       checkedIcon,
       '',
-      TaskLayer(id).show,
+      onTap,
       iconColor: taskColors[color],
       secondary: () {
         done = !done;
@@ -113,23 +110,13 @@ class Task extends Crypt {
 
   bool get hasDue => dues.isNotEmpty;
 
-  String get shortDesc {
-    try {
-      String short = quill.Document.fromJson(json.decode(desc)).toPlainText();
-      short = short.substring(0, short.length > 20 ? 20 : null);
-      return short;
-    } catch (e) {
-      return 'ERROR';
-    }
-  }
-
-  String date({bool year = false, bool month = false}) {
+  String date([bool showYear = false, bool showMonth = false]) {
     if (!hasDue) {
-      return '  ${year ? '     ' : ''}${month ? '   ' : ''}';
+      return '  ${showYear ? '     ' : ''}${showMonth ? '   ' : ''}';
     } else if (dues.length == 1) {
-      return formatDate(dues[0], year: year, month: month);
+      return dues[0].prettify(showYear, showMonth);
     } else {
-      return '${formatDate(dues[0], year: year, month: month)}...';
+      return '${dues[0].prettify(showYear, showMonth)}...';
     }
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'open_folder.dart';
-import 'structure.dart';
+import 'folder.dart';
+import 'folder_other.dart';
 import '../template/functions.dart';
 import '../classes/database.dart';
 import '../template/tile.dart';

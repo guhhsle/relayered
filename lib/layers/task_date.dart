@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'task.dart';
 import '../classes/database.dart';
-import '../functions/task.dart';
 import '../template/tile.dart';
-import 'open_task.dart';
+import '../functions.dart';
 
 class TaskDate extends TaskLayer {
   TaskDate(super.taskID);
@@ -23,7 +23,7 @@ class TaskDate extends TaskLayer {
     });
     list = task.dues.map((due) {
       return Tile.complex(
-        formatDate(due, year: false),
+        due.prettify(false),
         Icons.event_busy_rounded,
         '',
         () {

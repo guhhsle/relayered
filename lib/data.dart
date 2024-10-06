@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:relayered/settings/other.dart';
+import 'layers/settings/interface.dart';
+import 'layers/settings/account.dart';
+import 'layers/settings/other.dart';
 import 'classes/folder.dart';
-import 'settings/account.dart';
-import 'settings/interface.dart';
 import 'template/prefs.dart';
 import 'template/theme.dart';
 import 'template/tile.dart';

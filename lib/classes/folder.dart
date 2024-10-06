@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'database.dart';
 import 'encrypt.dart';
 import 'task.dart';
-import '../sheets/folder_options.dart';
-import '../sheets/open_folder.dart';
+import '../layers/folder_options.dart';
 import '../template/tile.dart';
 import '../data.dart';
 
@@ -64,12 +63,12 @@ class Folder extends Crypt {
     Database.notify();
   }
 
-  Tile toTile({VoidCallback? onTap}) {
+  Tile toTile(VoidCallback onTap) {
     return Tile.complex(
       name,
       Icons.folder_outlined,
       '',
-      onTap ?? FolderLayer(id).show,
+      onTap,
       onHold: FolderOptions(id).show,
       iconColor: taskColors[color],
     );

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:relayered/sheets/folder_options.dart';
-import 'package:relayered/sheets/open_folder.dart';
-import '../classes/month.dart';
+import '../layers/folder_options.dart';
+import '../template/functions.dart';
 import '../classes/schedule.dart';
 import '../classes/database.dart';
-import '../data.dart';
-import '../functions/task.dart';
+import '../classes/month.dart';
+import '../layers/folder.dart';
 import '../template/data.dart';
-import '../template/functions.dart';
+import '../layers/task.dart';
+import '../functions.dart';
+import '../data.dart';
 
 class Calendar extends StatefulWidget {
   const Calendar({super.key});
@@ -76,17 +77,15 @@ class _CalendarState extends State<Calendar> {
                                   if (entry.value.path.prefix != '') {
                                     prefix = '${entry.value.path.prefix} ';
                                   }
-                                  String date = '${formatDate(
-                                    entry.key,
-                                    year: false,
-                                    month: false,
-                                  )}  ';
-                                  if (date == '  ') date += '  ';
+                                  String? date;
+                                  date = entry.key?.prettify(false, false);
+                                  date ??= '  ';
+                                  date += '  ';
                                   String title =
                                       '$date$prefix${entry.value.name}';
-                                  return entry.value
-                                      .toTile(title: title)
-                                      .toWidget;
+                                  return entry.value.toTile(() {
+                                    TaskLayer(entry.value.id).show();
+                                  }, title: title).toWidget;
                                 },
                               ),
                             ],

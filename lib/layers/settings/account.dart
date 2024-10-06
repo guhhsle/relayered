@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../classes/database.dart';
-import '../template/functions.dart';
-import '../template/layer.dart';
-import '../template/tile.dart';
-import '../data.dart';
+import '../../template/functions.dart';
+import '../../classes/database.dart';
+import '../../template/prefs.dart';
+import '../../template/layer.dart';
+import '../../template/tile.dart';
+import '../../data.dart';
 
 class AccountLayer extends Layer {
   static String mail = '';
@@ -48,7 +49,7 @@ class AccountLayer extends Layer {
           '',
           () async {
             mail = await getInput(mail, 'Email');
-            notifyListeners();
+            Preferences.notify();
           },
         ),
         Tile(
@@ -57,7 +58,7 @@ class AccountLayer extends Layer {
           '',
           () async {
             password = await getInput(password, 'Password');
-            notifyListeners();
+            Preferences.notify();
           },
         ),
         Tile('Encryption key', Icons.key_rounded, '', () {

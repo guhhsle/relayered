@@ -23,3 +23,17 @@ class ColorLayer extends Layer {
     });
   }
 }
+
+extension Prettify on DateTime {
+  String prettify([bool showYear = true, bool showMonth = true]) {
+    String years = showYear ? '.$year' : '';
+    String months = showMonth ? (month < 10 ? '.0$month' : '.$month') : '';
+    String days = day < 10 ? '0$day' : '$day';
+    return '$days$months$years';
+  }
+}
+
+DateTime today() {
+  DateTime now = DateTime.now();
+  return DateTime(now.year, now.month, now.day);
+}
