@@ -11,22 +11,22 @@ class ThemeLayer extends Layer {
   bool primary;
   ThemeLayer(this.primary);
   @override
-  void construct() {
+  construct() {
     scroll = true;
     action = Tile(
       ThemePref.themePref(primary, currentlyLight).value,
       primary ? Icons.colorize_rounded : Icons.tonality_rounded,
       '',
-      () => ThemePref.fetchColor(primary, currentlyLight),
+      () => ThemePref.fetchColor(primary),
     );
     trailing = [
       IconButton(
         icon: const Icon(Icons.shuffle_rounded),
-        onPressed: () => ThemePref.randomColor(primary, currentlyLight),
+        onPressed: () => ThemePref.randomColor(primary),
       ),
       IconButton(
         icon: const Icon(Icons.add_rounded),
-        onPressed: () => ThemePref.fetchColor(primary, currentlyLight),
+        onPressed: () => ThemePref.fetchColor(primary),
       ),
     ];
     list = colorMap.entries.map((color) {
@@ -79,25 +79,26 @@ class ThemePref extends ChangeNotifier {
 
   static Color colorFromHex(String hex) => Color(int.parse('0xFF$hex'));
 
-  static void randomColor(bool primary, bool light) {
+  static void randomColor(bool primary) {
     String result = '';
     for (int i = 0; i < 6; i++) {
-      int random = Random().nextInt(16);
+      int random = Random().nextInt(8);
+      if ((i % 2 == 1) || (currentlyLight != primary)) random += 8;
       if (random < 10) {
         result += '$random';
       } else {
         result += String.fromCharCode(random + 55);
       }
     }
-    themePref(primary, light).set(result);
+    themePref(primary, currentlyLight).set(result);
   }
 
-  static Future<void> fetchColor(bool primary, bool light) async {
+  static Future<void> fetchColor(bool primary) async {
     try {
       String val = await getInput('', 'HEX value');
       val = val.replaceAll('#', '');
       int.parse('0xFF$val');
-      themePref(primary, light).set(val);
+      themePref(primary, currentlyLight).set(val);
     } catch (e) {
       showSnack('$e', false);
     }

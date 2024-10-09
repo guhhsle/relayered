@@ -30,7 +30,7 @@ class TileChip extends StatelessWidget {
         child: Semantics(
           label: tile.title,
           child: InkWell(
-            onLongPress: () => tile.onHold?.call(),
+            onLongPress: tile.onHold,
             child: InputChip(
               showCheckmark: showCheckmark,
               avatar: showAvatar

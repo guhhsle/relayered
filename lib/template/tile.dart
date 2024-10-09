@@ -83,7 +83,7 @@ class Tile {
     suffix = t(suffix);
     return Tile(
       pref.title,
-      pref.icon,
+      pref.icon ?? Icons.moped_rounded,
       '$prefix${t(pref.value)}$suffix',
       onTap,
     );
