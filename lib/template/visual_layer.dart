@@ -4,7 +4,6 @@ import 'layer.dart';
 
 class VisualLayer extends StatefulWidget {
   final Layer layer;
-
   const VisualLayer({super.key, required this.layer});
 
   @override
@@ -12,24 +11,9 @@ class VisualLayer extends StatefulWidget {
 }
 
 class _VisualLayerState extends State<VisualLayer> {
-  void layerChange() {
-    widget.layer.construct();
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    for (var listenable in widget.layer.listened) {
-      listenable.addListener(layerChange);
-    }
-  }
-
   @override
   void dispose() {
-    for (var listenable in widget.layer.listened) {
-      listenable.removeListener(layerChange);
-    }
+    widget.layer.disposeListeners();
     super.dispose();
   }
 

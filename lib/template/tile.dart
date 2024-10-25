@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'data.dart';
 import 'functions.dart';
+import 'prefs.dart';
 import '../data.dart';
 
 class Tile {
@@ -9,8 +9,7 @@ class Tile {
   void Function()? onTap;
   dynamic title, trailing;
   Color? iconColor;
-  IconData icon;
-  BuildContext dirtyContext = navigatorKey.currentContext!;
+  IconData icon = Icons.moped_rounded;
 
   Tile([
     this.title = '',
@@ -28,14 +27,6 @@ class Tile {
     this.onHold,
     this.iconColor,
   });
-
-  BuildContext get context {
-    if (dirtyContext.mounted) {
-      return dirtyContext;
-    } else {
-      return navigatorKey.currentContext!;
-    }
-  }
 
   Widget get toWidget {
     Widget? lead, trail;
@@ -81,11 +72,18 @@ class Tile {
     }
     prefix = t(prefix);
     suffix = t(suffix);
-    return Tile(
+    return Tile.complex(
       pref.title,
       pref.icon ?? Icons.moped_rounded,
       '$prefix${t(pref.value)}$suffix',
       onTap,
+      onHold: () => pref.set(pref.initial),
     );
+  }
+
+  static Tile fromListPref(Pref<List<String>> pref) {
+    return Tile(pref.title, pref.icon ?? Icons.moped_rounded, '', () {
+      PrefAsList(pref).show();
+    });
   }
 }

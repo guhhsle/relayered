@@ -44,7 +44,7 @@ void showSnack(
 
 Future<String> getPrefInput(Pref pref) => getInput(pref.value, pref.title);
 
-Future<String> getInput(dynamic init, String hintText) async {
+Future<String> getInput(dynamic init, String? hintText) async {
   final completer = Completer<String>();
   TextEditingController controller = TextEditingController(text: '$init');
   BuildContext context = navigatorKey.currentContext!;
@@ -54,11 +54,11 @@ Future<String> getInput(dynamic init, String hintText) async {
     builder: (c) => Padding(
       padding: MediaQuery.of(context).viewInsets,
       child: Semantics(
-        label: t(hintText),
+        label: t(hintText ?? 'Input'),
         child: TextField(
           cursorColor: Colors.white,
           decoration: InputDecoration(
-            labelText: t(hintText),
+            labelText: t(hintText ?? 'Input'),
             border: InputBorder.none,
             focusedBorder: InputBorder.none,
             enabledBorder: InputBorder.none,
@@ -95,10 +95,7 @@ Future<Map> loadLocale() async {
   return l;
 }
 
-String t(dynamic d) {
-  String s = '$d';
-  return l[s] ?? s;
-}
+String t(s) => l['$s'] ?? '$s';
 
 IconData checked(bool check) {
   if (check) return Icons.radio_button_checked;

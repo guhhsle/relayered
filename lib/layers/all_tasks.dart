@@ -12,7 +12,8 @@ class AllTasks extends Layer {
   static const filters = ['All', 'Pending', 'Done'];
   static String selFilter = 'All';
   @override
-  void construct() {
+  construct() {
+    scroll = true;
     listenTo(Database());
     List<Task> allTasks = [];
     for (Folder folder in structure.values) {

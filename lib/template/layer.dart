@@ -17,16 +17,34 @@ abstract class Layer extends ChangeNotifier {
     listened.add(listenable);
   }
 
+  void construct();
+
   BuildContext get context {
     if (dirtyContext?.mounted ?? false) return dirtyContext!;
     return navigatorKey.currentContext!;
   }
 
-  void construct();
-
-  Layer show() {
-    listenTo(Preferences());
+  void layerChange() {
     construct();
+    notifyListeners();
+  }
+
+  void disposeListeners() {
+    for (var listenable in listened) {
+      listenable.removeListener(layerChange);
+    }
+  }
+
+  void initListeners() {
+    construct();
+    listenTo(Preferences());
+    for (var listenable in listened) {
+      listenable.addListener(layerChange);
+    }
+  }
+
+  void show() {
+    initListeners();
     showModalBottomSheet(
       barrierLabel: 'Barrier',
       context: navigatorKey.currentContext!,
@@ -34,6 +52,5 @@ abstract class Layer extends ChangeNotifier {
       barrierColor: Colors.black.withOpacity(0.3),
       builder: (c) => VisualLayer(layer: this),
     );
-    return this;
   }
 }
