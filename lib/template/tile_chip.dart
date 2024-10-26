@@ -28,7 +28,7 @@ class TileChip extends StatelessWidget {
       builder: (context, child) => Padding(
         padding: const EdgeInsets.only(right: 8),
         child: Semantics(
-          label: tile.title,
+          label: '${tile.title}',
           child: InkWell(
             onLongPress: tile.onHold,
             child: InputChip(
