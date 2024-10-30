@@ -12,7 +12,6 @@ class ThemeLayer extends Layer {
   ThemeLayer(this.primary);
   @override
   construct() {
-    scroll = true;
     action = Tile(
       ThemePref.themePref(primary, currentlyLight).value,
       primary ? Icons.colorize_rounded : Icons.tonality_rounded,
@@ -82,8 +81,8 @@ class ThemePref extends ChangeNotifier {
   static void randomColor(bool primary) {
     String result = '';
     for (int i = 0; i < 6; i++) {
-      int random = Random().nextInt(8);
-      if ((i % 2 == 1) || (currentlyLight != primary)) random += 8;
+      int random = Random().nextInt(5);
+      if ((i % 2 == 1) || (currentlyLight != primary)) random += 11;
       if (random < 10) {
         result += '$random';
       } else {

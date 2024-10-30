@@ -26,7 +26,7 @@ class _VisualLayerState extends State<VisualLayer> {
         builder: (c, child) {
           widget.layer.dirtyContext = c;
           final list = widget.layer.list.map((e) => e.toWidget);
-          if (widget.layer.scroll) {
+          if (list.length > 5) {
             return GestureDetector(
               onTap: () => Navigator.of(c).pop(),
               child: Container(

@@ -9,7 +9,6 @@ abstract class Layer extends ChangeNotifier {
   BuildContext? dirtyContext;
   Iterable<Tile> list = [];
   Tile action = Tile();
-  bool scroll = false;
   List<Listenable> listened = [];
 
   void listenTo(Listenable listenable) {
