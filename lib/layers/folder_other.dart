@@ -61,7 +61,6 @@ class AllFolders extends FolderBrowser {
 
   @override
   void construct() {
-    scroll = true;
     action = Tile('New', Icons.add_rounded, '', () async {
       String newName = await getInput('', 'New folder');
       Folder newFolder = Folder.defaultNew(newName);

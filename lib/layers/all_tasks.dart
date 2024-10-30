@@ -13,7 +13,6 @@ class AllTasks extends Layer {
   static String selFilter = 'All';
   @override
   construct() {
-    scroll = true;
     listenTo(Database());
     List<Task> allTasks = [];
     for (Folder folder in structure.values) {

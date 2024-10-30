@@ -10,7 +10,6 @@ abstract class FolderBrowser extends Layer {
   @override
   void construct() {
     listenTo(Database());
-    scroll = true;
     action = Tile('New', Icons.add_rounded, '', () async {
       String newName = await getInput('', 'New folder');
       Folder newFolder = Folder.defaultNew(newName);

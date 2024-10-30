@@ -40,29 +40,25 @@ enum Pref<T> {
       ui: true),
   showFolders('Folder field', true, Icons.folder_copy_rounded, ui: true),
   ignore('Ignore folders', <String>[], Icons.folder_copy_rounded, ui: true),
-  none('', 0, Icons.abc, backend: true),
   ;
 
   final T initial;
   final List<T>? all;
-  final String title;
-  final IconData icon;
-  final bool ui, backend; //Changing it leads to UI rebuild
+  final String? title; //Backend is null
+  final IconData? icon;
+  final bool ui;
 
-  const Pref(this.title, this.initial, this.icon,
-      {this.all, this.ui = false, this.backend = false});
+  const Pref(this.title, this.initial, this.icon, {this.all, this.ui = false});
 
   T get value => Preferences.get(this);
 
-  Future set(dynamic val) => Preferences.set(this, val);
+  Future set(T val) => Preferences.set(this, val);
 
   Future rev() => Preferences.rev(this);
 
   Future next() => Preferences.next(this);
 
-  void nextByLayer({String suffix = ''}) {
-    NextByLayer(this, suffix: suffix).show();
-  }
+  void nextByLayer({suffix = ''}) => NextByLayer(this, suffix: suffix).show();
 
   @override
   String toString() => name;
