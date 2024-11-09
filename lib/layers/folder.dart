@@ -20,10 +20,7 @@ class FolderLayer extends Layer {
       FolderOptions(folderID).show();
     });
     final pendingTasks = folder.items.where((task) => !task.done).map((task) {
-      return task.toTile(() {
-        Navigator.of(context).pop();
-        TaskLayer(task.id).show();
-      });
+      return task.toTile(TaskLayer(task.id).show);
     });
     final subfolders = structure.values.where((f) {
       return folder.nodes.contains(f.id);

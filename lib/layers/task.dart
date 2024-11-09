@@ -34,7 +34,7 @@ class TaskLayer extends Layer {
         Icons.colorize_rounded,
         task.color,
         () async {
-          final layer = ColorLayer(task.color);
+          final layer = ColorLayer(task.color)..show();
           task.color = await layer.completer.future;
           task.update();
         },

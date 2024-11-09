@@ -23,7 +23,7 @@ class FolderOptions extends FolderLayer {
         Icons.colorize_rounded,
         folder.color ?? 'Adaptive',
         () async {
-          final layer = ColorLayer(folder.color ?? 'Adaptive');
+          final layer = ColorLayer(folder.color ?? 'Adaptive')..show();
           folder.color = await layer.completer.future;
           folder.update();
         },
