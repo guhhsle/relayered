@@ -50,6 +50,12 @@ class FolderOptions extends FolderLayer {
         folder.prefix = await getInput(folder.prefix, 'Prefix');
         folder.update();
       }),
+      Tile(
+        'Show on home',
+        folder.show ? Icons.visibility_rounded : Icons.visibility_off_rounded,
+        folder.show,
+        () => (folder..show = !folder.show).update(),
+      ),
       Tile('${folder.items.length}', Icons.numbers_rounded, 'Items'),
       Tile(
         '',

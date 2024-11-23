@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../template/functions.dart';
+import '../classes/structure.dart';
 import '../classes/database.dart';
 import '../classes/folder.dart';
 import '../template/layer.dart';
 import '../template/tile.dart';
-import '../data.dart';
 
 abstract class FolderBrowser extends Layer {
   @override
@@ -16,10 +16,10 @@ abstract class FolderBrowser extends Layer {
       await newFolder.upload();
       onSelected(newFolder);
     });
-    list = structure.values.map((e) {
-      return e.toTile(() {
+    list = Structure().folders.map((f) {
+      return f.toTile(() {
         Navigator.of(context).pop();
-        onSelected(e);
+        onSelected(f);
       });
     });
   }

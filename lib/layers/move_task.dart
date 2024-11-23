@@ -1,10 +1,11 @@
 import 'folder_browser.dart';
+import '../classes/structure.dart';
 import '../classes/folder.dart';
 import '../classes/task.dart';
 
 class MoveTask extends FolderBrowser {
   String? taskID;
-  Task get task => Task.fromID(taskID);
+  Task get task => Structure().findTask(taskID) ?? Task.error();
   MoveTask(this.taskID);
 
   @override

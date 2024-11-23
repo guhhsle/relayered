@@ -3,24 +3,24 @@ import 'folder_browser.dart';
 import 'folder.dart';
 import 'task.dart';
 import '../template/functions.dart';
+import '../classes/structure.dart';
 import '../classes/database.dart';
 import '../classes/folder.dart';
 import '../template/layer.dart';
 import '../template/tile.dart';
-import '../data.dart';
 
-class PinnedFolders extends Layer {
+class PinnedLayer extends Layer {
   @override
   void construct() {
     listenTo(Database());
-    action = Tile('Pinned', Icons.push_pin_rounded, ' ');
-    final folders = structure.values.where((e) => e.pin).map(
+    action = Tile('Pinned', Icons.push_pin_rounded);
+    final folders = Structure().pinnedFolders.map(
           (e) => e.toTile(() {
             Navigator.of(context).pop();
             FolderLayer(e.id).show();
           }),
         );
-    final tasks = structure.values.map((f) {
+    final tasks = Structure().folders.map((f) {
       return f.items;
     }).expand((task) {
       return task;
@@ -35,16 +35,9 @@ class PinnedFolders extends Layer {
     list = [...folders, ...tasks];
     trailing = [
       IconButton(
-        icon: const Icon(Icons.line_style_rounded),
-        onPressed: () {
-          Navigator.of(context).pop();
-          AllFolders().show();
-        },
-      ),
-      IconButton(
         icon: const Icon(Icons.add_rounded),
         tooltip: t('New folder'),
-        onPressed: () => getInput('', 'New folder').then((newName) {
+        onPressed: () => getInput('', 'New pinned folder').then((newName) {
           Folder newFolder = Folder.defaultNew(newName)..pin = true;
           newFolder.upload();
         }),
@@ -66,12 +59,12 @@ class AllFolders extends FolderBrowser {
       Folder newFolder = Folder.defaultNew(newName);
       newFolder.upload();
     });
-    list = structure.values.map(
-      (e) => e.toTile(() {
-        Navigator.of(context).pop();
-        FolderLayer(e.id).show();
-      }),
-    );
+    list = Structure().folders.map(
+          (f) => f.toTile(() {
+            Navigator.of(context).pop();
+            FolderLayer(f.id).show();
+          }),
+        );
   }
 }
 
@@ -79,7 +72,7 @@ class FolderNodes extends FolderBrowser {
   String? folderID;
   FolderNodes(this.folderID);
 
-  Folder get folder => structure[folderID] ?? Folder.defaultNew('/ERROR');
+  Folder get folder => Structure().findFolder(folderID) ?? Folder.error();
 
   @override
   void onSelected(Folder chosen) {

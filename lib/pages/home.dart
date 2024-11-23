@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
               ? Padding(
                   padding: const EdgeInsets.all(8),
                   child: FloatingActionButton(
-                    onPressed: PinnedFolders().show,
+                    onPressed: PinnedLayer().show,
                     child: const Icon(Icons.folder_rounded),
                   ),
                 )
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
             if (Pref.action.value == 'Top')
               IconButton(
                 icon: const Icon(Icons.folder_rounded),
-                onPressed: PinnedFolders().show,
+                onPressed: PinnedLayer().show,
               ),
             if (web)
               const IconButton(

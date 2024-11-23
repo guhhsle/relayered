@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'folder_options.dart';
 import 'task.dart';
 import '../template/functions.dart';
+import '../classes/structure.dart';
 import '../classes/database.dart';
 import '../classes/folder.dart';
 import '../template/layer.dart';
 import '../template/tile.dart';
 import '../classes/task.dart';
-import '../data.dart';
 
 class FolderLayer extends Layer {
   String? folderID;
-  Folder get folder => Folder.fromID(folderID);
+  Folder get folder => Structure().findFolder(folderID) ?? Folder.error();
   FolderLayer(this.folderID);
   @override
   void construct() {
@@ -22,7 +22,7 @@ class FolderLayer extends Layer {
     final pendingTasks = folder.items.where((task) => !task.done).map((task) {
       return task.toTile(TaskLayer(task.id).show);
     });
-    final subfolders = structure.values.where((f) {
+    final subfolders = Structure().folders.where((f) {
       return folder.nodes.contains(f.id);
     }).map((f) {
       return f.toTile(() {
@@ -40,13 +40,12 @@ class FolderLayer extends Layer {
     trailing = [
       IconButton(
         icon: const Icon(Icons.add_rounded),
-        onPressed: () {
-          if (!structure.containsKey(folderID)) {
-            Folder.defaultNew('').upload();
+        onPressed: () async {
+          if (Structure().findFolder(folderID) == null) {
+            await Folder.defaultNew('').upload();
           }
-          getInput('', 'New task').then((name) {
-            Task.defaultNew(folder, name: name).upload();
-          });
+          final input = await getInput('', 'New task');
+          Task.defaultNew(folder, name: input).upload();
         },
       ),
     ];

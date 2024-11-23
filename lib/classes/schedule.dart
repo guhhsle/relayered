@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:relayered/classes/structure.dart';
 import 'month.dart';
 import 'task.dart';
 import '../functions.dart';
@@ -56,13 +57,9 @@ class Schedule {
       color: Theme.of(context).colorScheme.surface,
     ));
 
-    for (var folder in structure.values) {
-      bool ignored = false;
-      for (var str in Pref.ignore.value) {
-        if (folder.name.startsWith(str)) ignored = true;
-      }
-      if (ignored) continue;
-      for (var task in folder.items) {
+    for (final folder in Structure().folders) {
+      if (!folder.show) continue;
+      for (final task in folder.items) {
         if (task.done && !Pref.showDone.value && !task.pinned) continue;
         if (task.hasDue && Pref.showCalendar.value) {
           for (int i = 0; i < task.dues.length; i++) {

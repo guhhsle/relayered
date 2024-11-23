@@ -82,7 +82,7 @@ class ThemePref extends ChangeNotifier {
     String result = '';
     for (int i = 0; i < 6; i++) {
       int random = Random().nextInt(5);
-      if ((i % 2 == 1) || (currentlyLight != primary)) random += 11;
+      if (i % 2 == 0 && currentlyLight != primary) random += 11;
       if (random < 10) {
         result += '$random';
       } else {

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'folder_other.dart';
 import 'task.dart';
+import '../classes/structure.dart';
 import '../classes/database.dart';
 import '../template/prefs.dart';
 import '../classes/folder.dart';
 import '../template/layer.dart';
 import '../template/tile.dart';
 import '../classes/task.dart';
-import '../data.dart';
 
 class AllTasks extends Layer {
   static const filters = ['All', 'Pending', 'Done'];
@@ -15,7 +16,7 @@ class AllTasks extends Layer {
   construct() {
     listenTo(Database());
     List<Task> allTasks = [];
-    for (Folder folder in structure.values) {
+    for (Folder folder in Structure().folders) {
       for (Task task in folder.items) {
         if (selFilter == 'Pending' && task.done) continue;
         if (selFilter == 'Done' && !task.done) continue;
@@ -33,5 +34,14 @@ class AllTasks extends Layer {
         TaskLayer(task.id).show();
       });
     });
+    trailing = [
+      IconButton(
+        icon: const Icon(Icons.folder_rounded),
+        onPressed: () {
+          Navigator.of(context).pop();
+          AllFolders().show();
+        },
+      ),
+    ];
   }
 }

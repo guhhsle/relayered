@@ -39,7 +39,6 @@ enum Pref<T> {
   showCalendar('Calendar field', true, Icons.calendar_view_day_rounded,
       ui: true),
   showFolders('Folder field', true, Icons.folder_copy_rounded, ui: true),
-  ignore('Ignore folders', <String>[], Icons.folder_copy_rounded, ui: true),
   ;
 
   final T initial;
@@ -93,5 +92,3 @@ const customRadius = BorderRadius.only(
   bottomLeft: Radius.circular(16),
   bottomRight: Radius.circular(16),
 );
-
-Map<String, Folder> structure = {};

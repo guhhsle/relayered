@@ -51,14 +51,7 @@ class Task extends Crypt {
     );
   }
 
-  static Task fromID(String? id) {
-    for (var folder in structure.values) {
-      for (Task current in folder.items) {
-        if (current.id == id) return current;
-      }
-    }
-    return defaultNew(Folder.defaultNew('/ERROR'), name: 'ERROR');
-  }
+  static Task error() => defaultNew(Folder.defaultNew('/ERROR'), name: 'ERROR');
 
   Tile toTile(VoidCallback onTap, {String? title}) {
     title ??= '$name   ${date(false, true)}';

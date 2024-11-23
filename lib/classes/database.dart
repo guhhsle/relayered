@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
+import 'package:relayered/classes/structure.dart';
 import 'dart:async';
 import 'folder.dart';
 import '../template/functions.dart';
@@ -83,12 +84,12 @@ class Database extends ChangeNotifier {
   }
 
   void refreshStructure(QuerySnapshot data) {
-    structure.clear();
+    Structure().folders.clear();
 
     for (QueryDocumentSnapshot snap in data.docs) {
       Folder folder = Folder.fromJson(snap.data() as Map);
       folder.id = snap.id;
-      structure.addAll({snap.id: folder});
+      Structure().folders.add(folder);
       folder.items.sort((a, b) {
         if (a.hasDue && b.hasDue) {
           return a.dues[0].compareTo(b.dues[0]);
@@ -101,27 +102,8 @@ class Database extends ChangeNotifier {
         }
       });
     }
-    for (Folder folder in structure.values) {
-      for (int i = 0; i < folder.nodes.length; i++) {
-        String node = folder.nodes[i];
-        Folder? connection = structure[node];
-        if (connection == null) {
-          folder.nodes.removeAt(i);
-          i--;
-        } else if (!connection.nodes.contains(folder.id) && folder.id != null) {
-          connection.nodes.add(folder.id!);
-        }
-      }
-      folder.nodes.sort((a, b) {
-        return structure[a]!.name.compareTo(structure[b]!.name);
-      });
-    }
-    structure = Map.fromEntries(
-      structure.entries.toList()
-        ..sort((e1, e2) {
-          return e1.value.name.compareTo(e2.value.name);
-        }),
-    );
+    Structure().clearNullNodes();
+    Structure().sort();
     notify();
   }
 

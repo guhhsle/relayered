@@ -7,17 +7,16 @@ import '../template/tile.dart';
 import '../data.dart';
 
 class Folder extends Crypt {
-  String name;
-  String? color;
-  String prefix;
-  String? id;
-  bool pin;
+  String name, prefix;
+  String? color, id;
+  bool pin, show;
   List<String> nodes;
   List<Task> items;
   Folder({
     required this.name,
     required this.items,
     required this.nodes,
+    required this.show,
     this.color,
     this.id,
     this.prefix = '',
@@ -31,6 +30,7 @@ class Folder extends Crypt {
       color: json['col'] == 'Adaptive' ? null : json['col'],
       items: [],
       prefix: json['pre'] ?? '',
+      show: json['show'] ?? true,
       nodes: (json['nodes'] as List? ?? <String>[]).map((e) {
         return e.toString();
       }).toList(),
@@ -48,6 +48,7 @@ class Folder extends Crypt {
       'id': id,
       'col': color,
       'pin': pin,
+      'show': show,
       'nodes': nodes,
       'pre': prefix,
       'items': items.map((e) => e.toJson).toList(),
@@ -55,7 +56,12 @@ class Folder extends Crypt {
   }
 
   static Folder defaultNew(String name, {String? node}) {
-    return Folder(name: name, items: [], nodes: node != null ? [node] : []);
+    return Folder(
+      name: name,
+      items: [],
+      nodes: node != null ? [node] : [],
+      show: true,
+    );
   }
 
   Future<void> upload() async {
@@ -83,9 +89,7 @@ class Folder extends Crypt {
     Database.notify();
   }
 
-  static Folder fromID(String? id) {
-    return structure[id] ?? Folder.defaultNew('/ERROR');
-  }
+  static Folder error() => defaultNew('/ERROR');
 
   Future delete() async {
     await Database.folders.doc(id).delete();

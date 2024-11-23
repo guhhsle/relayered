@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:relayered/classes/structure.dart';
 import '../layers/folder_options.dart';
 import '../template/tile_chip.dart';
 import '../classes/database.dart';
@@ -20,32 +21,35 @@ class OverviewState extends State<Overview> {
     Color background = Theme.of(context).colorScheme.surface;
     return StreamBuilder(
       stream: Database.stream,
-      builder: (context, snap) => SizedBox(
-        height: 64,
-        child: ListView.builder(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-          physics: scrollPhysics,
-          scrollDirection: Axis.horizontal,
-          itemCount: structure.length,
-          itemBuilder: (context, i) {
-            final folder = structure.values.elementAt(i);
-            return TileChip(
-              selected: folder.pin && folder.color == null,
-              showAvatar: false,
-              tile: Tile.complex(
-                folder.name,
-                Icons.folder_rounded,
-                '',
-                () => FolderLayer(folder.id).show(),
-                onHold: () => FolderOptions(folder.id).show(),
-              ),
-              background: folder.color == null
-                  ? null
-                  : mixColors(background, taskColors[folder.color]!, 0.5),
-            );
-          },
-        ),
-      ),
+      builder: (context, snap) {
+        final shownFolders = Structure().shownFolders;
+        return SizedBox(
+          height: 64,
+          child: ListView.builder(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            physics: scrollPhysics,
+            scrollDirection: Axis.horizontal,
+            itemCount: shownFolders.length,
+            itemBuilder: (context, i) {
+              final folder = shownFolders[i];
+              return TileChip(
+                selected: folder.pin && folder.color == null,
+                showAvatar: false,
+                tile: Tile.complex(
+                  folder.name,
+                  Icons.folder_rounded,
+                  '',
+                  () => FolderLayer(folder.id).show(),
+                  onHold: () => FolderOptions(folder.id).show(),
+                ),
+                background: folder.color == null
+                    ? null
+                    : mixColors(background, taskColors[folder.color]!, 0.5),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

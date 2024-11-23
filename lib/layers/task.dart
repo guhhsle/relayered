@@ -3,6 +3,7 @@ import 'move_task.dart';
 import 'task_date.dart';
 import 'folder.dart';
 import '../template/functions.dart';
+import '../classes/structure.dart';
 import '../classes/database.dart';
 import '../template/layer.dart';
 import '../template/tile.dart';
@@ -14,7 +15,7 @@ import '../data.dart';
 class TaskLayer extends Layer {
   String? taskID;
   TaskLayer(this.taskID);
-  Task get task => Task.fromID(taskID);
+  Task get task => Structure().findTask(taskID) ?? Task.error();
 
   @override
   void construct() {
