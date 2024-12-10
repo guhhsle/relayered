@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:relayered/classes/structure.dart';
+import 'package:relayered/template/functions.dart';
+import '../classes/folder.dart';
 import '../layers/folder_options.dart';
 import '../template/tile_chip.dart';
+import '../classes/structure.dart';
 import '../classes/database.dart';
 import '../layers/folder.dart';
 import '../template/data.dart';
@@ -22,31 +24,46 @@ class OverviewState extends State<Overview> {
     return StreamBuilder(
       stream: Database.stream,
       builder: (context, snap) {
-        final shownFolders = Structure().shownFolders;
+        final shownFolders = Structure().pinnedFolders;
         return SizedBox(
           height: 64,
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-            physics: scrollPhysics,
+          child: ListView(
+            padding: const EdgeInsets.all(12),
             scrollDirection: Axis.horizontal,
-            itemCount: shownFolders.length,
-            itemBuilder: (context, i) {
-              final folder = shownFolders[i];
-              return TileChip(
-                selected: folder.pin && folder.color == null,
+            physics: scrollPhysics,
+            children: [
+              ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: shownFolders.length,
+                itemBuilder: (context, i) {
+                  final folder = shownFolders[i];
+                  return TileChip(
+                    selected: false,
+                    showAvatar: false,
+                    tile: Tile.complex(
+                      folder.name,
+                      Icons.folder_rounded,
+                      '',
+                      () => FolderLayer(folder.id).show(),
+                      onHold: () => FolderOptions(folder.id).show(),
+                    ),
+                    background: folder.color == null
+                        ? null
+                        : mixColors(background, taskColors[folder.color]!, 0.5),
+                  );
+                },
+              ),
+              TileChip(
+                selected: false,
                 showAvatar: false,
-                tile: Tile.complex(
-                  folder.name,
-                  Icons.folder_rounded,
-                  '',
-                  () => FolderLayer(folder.id).show(),
-                  onHold: () => FolderOptions(folder.id).show(),
-                ),
-                background: folder.color == null
-                    ? null
-                    : mixColors(background, taskColors[folder.color]!, 0.5),
-              );
-            },
+                tile: Tile('+', Icons.folder_rounded, '', () async {
+                  final name = await getInput('', 'New pinned folder');
+                  final newFolder = Folder.defaultNew(name)..pin = true;
+                  newFolder.upload();
+                }),
+              ),
+            ],
           ),
         );
       },

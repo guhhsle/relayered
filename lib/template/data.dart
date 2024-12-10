@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 
 const colorMap = {
   'FFFFFF': Icons.ac_unit_rounded,
-  'F6F7EB': Icons.ac_unit_rounded,
+  'F6F7EB': Icons.egg_rounded,
   'F0F8FF': Icons.water_rounded,
+  'E1C0F0': Icons.bubble_chart_rounded,
   'FEDBD0': Icons.spa_outlined,
   'C8A58A': Icons.local_cafe_rounded,
   'CBE2D4': Icons.nature_outlined,
-  'EE7674': Icons.spa_outlined,
+  'EE7674': Icons.warning_rounded,
   '6A89A7': Icons.filter_drama_rounded,
   '263238': Icons.filter_drama_rounded,
   '25291C': Icons.nature_outlined,

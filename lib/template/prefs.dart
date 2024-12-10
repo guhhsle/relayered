@@ -44,7 +44,7 @@ class Preferences extends ChangeNotifier {
       await prefs.setStringList('$pref', value);
     }
     if (pref.ui) ThemePref.notify();
-    if (pref.title != null) notify();
+    if (pref.title != null || pref.ui) notify();
     return value;
   }
 }

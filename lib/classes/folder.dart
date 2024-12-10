@@ -72,7 +72,7 @@ class Folder extends Crypt {
   Tile toTile(VoidCallback onTap) {
     return Tile.complex(
       name,
-      Icons.folder_outlined,
+      pin ? Icons.folder_rounded : Icons.folder_outlined,
       '',
       onTap,
       onHold: FolderOptions(id).show,

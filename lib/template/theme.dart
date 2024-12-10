@@ -21,7 +21,10 @@ class ThemeLayer extends Layer {
     trailing = [
       IconButton(
         icon: const Icon(Icons.shuffle_rounded),
-        onPressed: () => ThemePref.randomColor(primary),
+        onPressed: () {
+          final hex = ThemePref.randomColor(primary);
+          ThemePref.themePref(primary, currentlyLight).set(hex);
+        },
       ),
       IconButton(
         icon: const Icon(Icons.add_rounded),
@@ -78,18 +81,19 @@ class ThemePref extends ChangeNotifier {
 
   static Color colorFromHex(String hex) => Color(int.parse('0xFF$hex'));
 
-  static void randomColor(bool primary) {
+  static String randomColor(bool primary, {int? offset}) {
+    offset ??= currentlyLight != primary ? 11 : 0;
     String result = '';
     for (int i = 0; i < 6; i++) {
       int random = Random().nextInt(5);
-      if (i % 2 == 0 && currentlyLight != primary) random += 11;
+      if (i % 2 == 0) random += offset;
       if (random < 10) {
         result += '$random';
       } else {
         result += String.fromCharCode(random + 55);
       }
     }
-    themePref(primary, currentlyLight).set(result);
+    return result;
   }
 
   static Future<void> fetchColor(bool primary) async {

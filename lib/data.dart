@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'layers/settings/interface.dart';
 import 'layers/settings/account.dart';
 import 'layers/settings/other.dart';
-import 'classes/folder.dart';
 import 'template/prefs.dart';
 import 'template/theme.dart';
 import 'template/tile.dart';
@@ -32,7 +31,6 @@ enum Pref<T> {
   //INTERFACE
   syncTimeout('Sync timeout', 6, Icons.cloud_sync_rounded, all: timeouts),
   encryptKey('Encryption key', '0000000000000000', Icons.key_rounded),
-  action('Action button', 'Floating', Icons.folder_rounded, all: actionPos),
   defaultColor('Default color', 'Adaptive', Icons.colorize_rounded),
   showPinned('Show pinned', true, Icons.push_pin_rounded, ui: true),
   showDone('Show done', true, Icons.done_rounded, ui: true),

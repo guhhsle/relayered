@@ -7,7 +7,6 @@ class InterfaceLayer extends Layer {
   void construct() {
     action = Tile.fromPref(Pref.appbar);
     list = [
-      Tile.fromPref(Pref.action),
       Tile.fromPref(Pref.defaultColor),
     ];
   }

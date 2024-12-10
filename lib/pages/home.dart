@@ -39,15 +39,6 @@ class _HomePageState extends State<HomePage> {
       listenable: Listenable.merge([Database(), Preferences()]),
       builder: (context, child) {
         return Frame(
-          floatingActionButton: Pref.action.value == 'Floating'
-              ? Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: FloatingActionButton(
-                    onPressed: PinnedLayer().show,
-                    child: const Icon(Icons.folder_rounded),
-                  ),
-                )
-              : null,
           automaticallyImplyLeading: false,
           title: Text(DateTime.now().prettify(false)),
           actions: [
@@ -56,11 +47,6 @@ class _HomePageState extends State<HomePage> {
               icon: const Icon(Icons.fiber_manual_record_outlined),
               onPressed: AllTasks().show,
             ),
-            if (Pref.action.value == 'Top')
-              IconButton(
-                icon: const Icon(Icons.folder_rounded),
-                onPressed: PinnedLayer().show,
-              ),
             if (web)
               const IconButton(
                 onPressed: Database.sync,
