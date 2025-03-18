@@ -39,7 +39,6 @@ class Database extends ChangeNotifier {
       cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
     );
     if (auth.currentUser == null) await auth.signInAnonymously();
-    if (!kIsWeb) await firestore.disableNetwork();
     auth.userChanges().listen((user) {
       if (user != null) {
         userFolders(user.uid).snapshots().listen((data) {
@@ -52,7 +51,6 @@ class Database extends ChangeNotifier {
   }
 
   static Future<void> signIn(String email, String password) async {
-    await firestore.enableNetwork();
     try {
       try {
         await auth.createUserWithEmailAndPassword(
@@ -105,12 +103,5 @@ class Database extends ChangeNotifier {
     Structure().clearNullNodes();
     Structure().sort();
     notify();
-  }
-
-  static Future sync() async {
-    if (user.isAnonymous) return;
-    await firestore.enableNetwork();
-    await Future.delayed(Duration(seconds: Pref.syncTimeout.value));
-    await firestore.disableNetwork();
   }
 }

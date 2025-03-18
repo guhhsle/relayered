@@ -28,7 +28,6 @@ class AccountLayer extends Layer {
           Navigator.of(context).pop();
           getKey();
         }),
-        Tile.fromPref(Pref.syncTimeout),
         Tile('Change password', Icons.password_rounded, '', () {
           Database.resetPassword(Database.user.email!);
         }),

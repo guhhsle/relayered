@@ -8,9 +8,9 @@ import '../data.dart';
 
 void goToPage(Widget page) {
   if (navigatorKey.currentContext == null) return;
-  Navigator.of(navigatorKey.currentContext!).push(
-    MaterialPageRoute(builder: (c) => page),
-  );
+  Navigator.of(
+    navigatorKey.currentContext!,
+  ).push(MaterialPageRoute(builder: (c) => page));
 }
 
 void showSnack(
@@ -25,7 +25,7 @@ void showSnack(
   Color back = good ? Colors.green.shade100 : Colors.red.shade100;
   FlashyFlushbar(
     margin: const EdgeInsets.all(16),
-    backgroundColor: back.withOpacity(0.9),
+    backgroundColor: back.withValues(alpha: 0.9),
     animationDuration: const Duration(milliseconds: 64),
     message: t(text),
     duration: Duration(seconds: duration),
@@ -50,34 +50,34 @@ Future<String> getInput(dynamic init, String? hintText) async {
   BuildContext context = navigatorKey.currentContext!;
   showModalBottomSheet(
     context: context,
-    barrierColor: Colors.black.withOpacity(0.8),
-    builder: (c) => Padding(
-      padding: MediaQuery.of(context).viewInsets,
-      child: Semantics(
-        label: t(hintText ?? 'Input'),
-        child: TextField(
-          cursorColor: Colors.white,
-          decoration: InputDecoration(
-            labelText: t(hintText ?? 'Input'),
-            border: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            floatingLabelAlignment: FloatingLabelAlignment.center,
-            labelStyle: const TextStyle(color: Colors.white),
+    barrierColor: Colors.black.withValues(alpha: 0.8),
+    builder: (c) {
+      return Padding(
+        padding: MediaQuery.of(context).viewInsets,
+        child: Semantics(
+          label: t(hintText ?? 'Input'),
+          child: TextField(
+            cursorColor: Colors.white,
+            decoration: InputDecoration(
+              labelText: t(hintText ?? 'Input'),
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              floatingLabelAlignment: FloatingLabelAlignment.center,
+              labelStyle: const TextStyle(color: Colors.white),
+            ),
+            autofocus: true,
+            controller: controller,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white),
+            onSubmitted: (text) {
+              Navigator.of(c).pop();
+              completer.complete(text);
+            },
           ),
-          autofocus: true,
-          controller: controller,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.white,
-          ),
-          onSubmitted: (text) {
-            Navigator.of(c).pop();
-            completer.complete(text);
-          },
         ),
-      ),
-    ),
+      );
+    },
   );
   return completer.future;
 }

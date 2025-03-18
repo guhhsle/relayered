@@ -29,7 +29,6 @@ enum Pref<T> {
   primaryDark('Dark primary', 'FEDBD0', Icons.colorize_rounded, ui: true),
   debug('Developer', false, Icons.code_rounded),
   //INTERFACE
-  syncTimeout('Sync timeout', 6, Icons.cloud_sync_rounded, all: timeouts),
   encryptKey('Encryption key', '0000000000000000', Icons.key_rounded),
   defaultColor('Default color', 'Adaptive', Icons.colorize_rounded),
   showPinned('Show pinned', true, Icons.push_pin_rounded, ui: true),

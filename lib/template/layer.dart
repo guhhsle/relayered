@@ -48,7 +48,7 @@ abstract class Layer extends ChangeNotifier {
       barrierLabel: 'Barrier',
       context: navigatorKey.currentContext!,
       isScrollControlled: true,
-      barrierColor: Colors.black.withOpacity(0.3),
+      barrierColor: Colors.black.withValues(alpha: 0.3),
       builder: (c) => VisualLayer(layer: this),
     );
   }

@@ -35,51 +35,59 @@ class _VisualLayerState extends State<VisualLayer> {
                   initialChildSize: 0.6,
                   maxChildSize: 0.8,
                   minChildSize: 0.2,
-                  builder: (c, controller) => Card(
-                    margin: const EdgeInsets.all(8),
-                    color: Theme.of(c).colorScheme.surface.withOpacity(0.8),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        children: [
-                          Row(children: [
-                            ...widget.layer.leading,
-                            Expanded(child: TileCard(widget.layer.action)),
-                            ...widget.layer.trailing,
-                          ]),
-                          Expanded(
-                            child: Scrollbar(
-                              controller: controller,
-                              child: ListView.builder(
-                                physics: const BouncingScrollPhysics(),
-                                padding: const EdgeInsets.only(bottom: 8),
+                  builder: (c, controller) {
+                    return Card(
+                      margin: const EdgeInsets.all(8),
+                      color: Theme.of(
+                        c,
+                      ).colorScheme.surface.withValues(alpha: 0.8),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                ...widget.layer.leading,
+                                Expanded(child: TileCard(widget.layer.action)),
+                                ...widget.layer.trailing,
+                              ],
+                            ),
+                            Expanded(
+                              child: Scrollbar(
                                 controller: controller,
-                                itemCount: list.length,
-                                itemBuilder: (c, i) => list.elementAt(i),
+                                child: ListView.builder(
+                                  physics: const BouncingScrollPhysics(),
+                                  padding: const EdgeInsets.only(bottom: 8),
+                                  controller: controller,
+                                  itemCount: list.length,
+                                  itemBuilder: (c, i) => list.elementAt(i),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
               ),
             );
           } else {
             return Card(
-              color: Theme.of(c).colorScheme.surface.withOpacity(0.8),
+              color: Theme.of(c).colorScheme.surface.withValues(alpha: 0.8),
               margin: const EdgeInsets.all(8),
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Row(children: [
-                      ...widget.layer.leading,
-                      Expanded(child: TileCard(widget.layer.action)),
-                      ...widget.layer.trailing,
-                    ]),
+                    Row(
+                      children: [
+                        ...widget.layer.leading,
+                        Expanded(child: TileCard(widget.layer.action)),
+                        ...widget.layer.trailing,
+                      ],
+                    ),
                     ...list,
                   ],
                 ),

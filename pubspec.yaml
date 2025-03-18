@@ -1,6 +1,6 @@
 name: relayered
 description: Note app with a recursive interface.
-#JAVA 17
+#JAVA 18
 
 publish_to: 'none'
 version: 1.0.9
