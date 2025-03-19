@@ -7,6 +7,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   file_selector_windows
   firebase_auth
   firebase_core
+  flutter_inappwebview_windows
   gal
   irondash_engine_context
   super_native_extensions
