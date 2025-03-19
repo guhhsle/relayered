@@ -73,10 +73,14 @@ class OverviewState extends State<Overview> {
 
 Color mixColors(Color color1, Color color2, double ratio) {
   ratio = ratio.clamp(0.0, 1.0);
-  int mixedRed = ((1 - ratio) * color1.r + ratio * color2.r).round();
-  int mixedGreen = ((1 - ratio) * color1.g + ratio * color2.g).round();
-  int mixedBlue = ((1 - ratio) * color1.b + ratio * color2.b).round();
-  int mixedAlpha = ((1 - ratio) * color1.a + ratio * color2.a).round();
+  final argbDouble = [
+    ((1 - ratio) * color1.r + ratio * color2.r),
+    ((1 - ratio) * color1.g + ratio * color2.g),
+    ((1 - ratio) * color1.b + ratio * color2.b),
+    ((1 - ratio) * color1.a + ratio * color2.a),
+  ];
 
-  return Color.fromARGB(mixedAlpha, mixedRed, mixedGreen, mixedBlue);
+  final argb = argbDouble.map((val) => (val * 255).round()).toList();
+
+  return Color.fromARGB(argb[0], argb[1], argb[2], argb[3]);
 }

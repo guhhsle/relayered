@@ -9,6 +9,7 @@ import '../template/data.dart';
 import '../layers/task.dart';
 import '../functions.dart';
 import '../data.dart';
+import '../template/prefs.dart';
 
 class Calendar extends StatefulWidget {
   const Calendar({super.key});
@@ -20,8 +21,8 @@ class Calendar extends StatefulWidget {
 class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: Database.stream,
+    return ListenableBuilder(
+      listenable: Listenable.merge([Database(), Preferences()]),
       builder: (context, snap) {
         Schedule schedule = Schedule(context: context);
         return ListView.builder(
@@ -30,6 +31,7 @@ class _CalendarState extends State<Calendar> {
           padding: const EdgeInsets.only(bottom: 64),
           itemBuilder: (context, i) {
             List<MonthContainer> fields = schedule.list[i];
+            if (fields.isEmpty) return Container();
             return Card(
               margin: const EdgeInsets.only(
                 top: 8,
@@ -44,8 +46,10 @@ class _CalendarState extends State<Calendar> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: fields.length,
                 shrinkWrap: true,
+                padding: EdgeInsets.zero,
                 itemBuilder: (context, j) {
                   MonthContainer field = fields[j];
+                  if (field.isEmpty) return Container();
                   return InkWell(
                     borderRadius: customRadius,
                     onTap: FolderLayer(field.folder?.id).show,
@@ -68,6 +72,7 @@ class _CalendarState extends State<Calendar> {
                             ListView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
+                              padding: EdgeInsets.zero,
                               itemCount: field.list.length,
                               itemBuilder: (context, k) {
                                 final entry = field.list[k];

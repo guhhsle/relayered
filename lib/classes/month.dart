@@ -34,6 +34,8 @@ class MonthContainer {
     this.folder,
   });
 
+  bool get isEmpty => list.isEmpty;
+
   bool during(MapEntry<DateTime?, Task> entry) {
     if (entry.key == null) return entry.value.path.name == name;
     if (entry.key!.month != month) return false;
