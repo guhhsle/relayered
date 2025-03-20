@@ -79,9 +79,9 @@ class TaskPageState extends State<TaskPage> {
               child: NoteTemplate(controller: controller),
             ),
             if (keyboard)
-              QuillToolbar.simple(
-                configurations: QuillSimpleToolbarConfigurations(
-                  controller: controller,
+              QuillSimpleToolbar(
+                controller: controller,
+                config: QuillSimpleToolbarConfig(
                   sectionDividerColor: Theme.of(context).colorScheme.surface,
                   color: Colors.transparent,
                   multiRowsDisplay: false,
@@ -110,16 +110,17 @@ class NoteTemplate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return QuillEditor(
+      controller: controller,
       scrollController: ScrollController(),
       focusNode: FocusNode(),
-      configurations: QuillEditorConfigurations(
-        controller: controller,
+      config: QuillEditorConfig(
+        showCursor: true,
+        paintCursorAboveText: true,
         autoFocus: false,
         scrollPhysics: const BouncingScrollPhysics(),
         scrollable: true,
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
         expands: true,
-        onImagePaste: (imageBytes) async => imageBytes.toString(),
       ),
     );
   }
