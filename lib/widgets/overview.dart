@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:relayered/template/functions.dart';
-import '../classes/folder.dart';
 import '../layers/folder_options.dart';
+import '../template/functions.dart';
 import '../template/tile_chip.dart';
 import '../classes/structure.dart';
 import '../classes/database.dart';
-import '../layers/folder.dart';
+import '../classes/folder.dart';
 import '../template/data.dart';
 import '../template/tile.dart';
+import '../layers/folder.dart';
 import '../data.dart';
 
 class Overview extends StatefulWidget {
@@ -50,7 +50,7 @@ class OverviewState extends State<Overview> {
                     ),
                     background: folder.color == null
                         ? null
-                        : mixColors(background, taskColors[folder.color]!, 0.5),
+                        : mixColors(background, taskColors[folder.color]!, 0.4),
                   );
                 },
               ),
@@ -74,10 +74,10 @@ class OverviewState extends State<Overview> {
 Color mixColors(Color color1, Color color2, double ratio) {
   ratio = ratio.clamp(0.0, 1.0);
   final argbDouble = [
+    ((1 - ratio) * color1.a + ratio * color2.a),
     ((1 - ratio) * color1.r + ratio * color2.r),
     ((1 - ratio) * color1.g + ratio * color2.g),
     ((1 - ratio) * color1.b + ratio * color2.b),
-    ((1 - ratio) * color1.a + ratio * color2.a),
   ];
 
   final argb = argbDouble.map((val) => (val * 255).round()).toList();
