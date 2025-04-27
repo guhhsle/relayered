@@ -134,28 +134,28 @@ class ThemePref extends ChangeNotifier {
       appBarTheme: AppBarTheme(
         backgroundColor:
             {'Black': Colors.black, 'Transparent': b}[Pref.appbar.value] ?? p,
-        foregroundColor:
-            {'Black': lighterColor(p, b), 'Transparent': p}[Pref
-                .appbar
-                .value] ??
+        foregroundColor: {
+              'Black': lighterColor(p, b),
+              'Transparent': p
+            }[Pref.appbar.value] ??
             b,
         shadowColor: Colors.transparent,
         titleTextStyle: TextStyle(
           fontWeight: FontWeight.w600,
-          color:
-              {'Black': lighterColor(p, b), 'Transparent': p}[Pref
-                  .appbar
-                  .value] ??
+          color: {
+                'Black': lighterColor(p, b),
+                'Transparent': p
+              }[Pref.appbar.value] ??
               b,
           fontFamily: Pref.font.value,
           fontSize: 18,
         ),
       ),
       textSelectionTheme: TextSelectionThemeData(
-        cursorColor:
-            {'Black': lighterColor(p, b), 'Transparent': p}[Pref
-                .appbar
-                .value] ??
+        cursorColor: {
+              'Black': lighterColor(p, b),
+              'Transparent': p
+            }[Pref.appbar.value] ??
             b,
       ),
       textTheme: TextTheme(

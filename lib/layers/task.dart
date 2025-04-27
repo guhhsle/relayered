@@ -8,7 +8,6 @@ import '../classes/database.dart';
 import '../template/layer.dart';
 import '../template/tile.dart';
 import '../classes/task.dart';
-import '../pages/task.dart';
 import '../functions.dart';
 import '../data.dart';
 
@@ -20,14 +19,15 @@ class TaskLayer extends Layer {
   @override
   void construct() {
     listenTo(Database());
-    action = Tile(task.name, Icons.notes_rounded, '', () {
-      goToPage(TaskPage(task: task));
+    action = Tile(task.name, Icons.edit_rounded, '', () async {
+      task.name = await getInput(task.name, 'Task name');
+      task.update();
     });
     trailing = [
       IconButton(
-        icon: Icon(task.checkedIcon),
-        onPressed: () => (task..done = !task.done).update(),
-      ),
+        icon: Icon(task.pinnedIcon),
+        onPressed: () => (task..pinned = !task.pinned).update(),
+      )
     ];
     list = [
       Tile.complex(
@@ -43,9 +43,6 @@ class TaskLayer extends Layer {
       ),
       Tile('', Icons.calendar_today_rounded, task.date(true, true),
           () => TaskDate(taskID).show()),
-      Tile('', task.pinnedIcon, 'Pin${task.pinned ? 'ned' : ''}', () {
-        (task..pinned = !task.pinned).update();
-      }),
       Tile.complex(
         '',
         Icons.folder_outlined,

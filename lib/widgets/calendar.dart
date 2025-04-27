@@ -86,9 +86,9 @@ class _CalendarState extends State<Calendar> {
                                 date += '  ';
                                 String title =
                                     '$date$prefix${entry.value.name}';
-                                return entry.value.toTile(() {
-                                  TaskLayer(entry.value.id).show();
-                                }, title: title).toWidget;
+                                return entry.value
+                                    .toTile(title: title)
+                                    .toWidget;
                               },
                             ),
                           ],

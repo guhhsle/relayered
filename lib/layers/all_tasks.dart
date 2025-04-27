@@ -28,12 +28,7 @@ class AllTasks extends Layer {
       selFilter = filters[(filters.indexOf(selFilter) + 1) % 3];
       Preferences.notify();
     });
-    list = allTasks.map((task) {
-      return task.toTile(() {
-        Navigator.of(context).pop();
-        TaskLayer(task.id).show();
-      });
-    });
+    list = allTasks.map((task) => task.toTile());
     trailing = [
       IconButton(
         icon: const Icon(Icons.folder_rounded),

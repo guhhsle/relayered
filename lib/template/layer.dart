@@ -23,6 +23,8 @@ abstract class Layer extends ChangeNotifier {
     return navigatorKey.currentContext!;
   }
 
+  Widget get visual => VisualLayer(layer: this, key: Key('$hashCode'));
+
   void layerChange() {
     construct();
     notifyListeners();
@@ -35,7 +37,6 @@ abstract class Layer extends ChangeNotifier {
   }
 
   void initListeners() {
-    construct();
     listenTo(Preferences());
     for (var listenable in listened) {
       listenable.addListener(layerChange);
@@ -43,13 +44,12 @@ abstract class Layer extends ChangeNotifier {
   }
 
   void show() {
-    initListeners();
     showModalBottomSheet(
       barrierLabel: 'Barrier',
       context: navigatorKey.currentContext!,
       isScrollControlled: true,
       barrierColor: Colors.black.withValues(alpha: 0.3),
-      builder: (c) => VisualLayer(layer: this),
+      builder: (c) => visual,
     );
   }
 }

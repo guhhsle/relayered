@@ -1,7 +1,6 @@
 import 'package:flashy_flushbar/flashy_flushbar_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_quill/flutter_quill.dart';
 import 'functions.dart';
 import 'theme.dart';
 import 'data.dart';
@@ -18,7 +17,6 @@ class App extends StatelessWidget {
       listenable: ThemePref(),
       builder: (context, chld) => MaterialApp(
         locale: Locale(Pref.locale.value),
-        localizationsDelegates: [FlutterQuillLocalizations.delegate],
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: title,

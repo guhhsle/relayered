@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import '../template/data.dart';
+import '../widgets/task.dart';
 import 'encrypt.dart';
 import 'folder.dart';
 import '../template/functions.dart';
 import '../template/tile.dart';
-import '../pages/task.dart';
 import '../functions.dart';
 import '../data.dart';
 
@@ -29,7 +30,8 @@ class Task extends Crypt {
     //final Delta delta = quill.Delta()..insert('${desc ?? ''}\n');
     return Task(
       name: name ?? 'NOVO',
-      desc: r'[{"insert":"\n"}]',
+      //desc: r'[{"insert":"\n"}]',
+      desc: '',
       path: path,
       color: Pref.defaultColor.value,
       dues: [],
@@ -53,19 +55,31 @@ class Task extends Crypt {
 
   static Task error() => defaultNew(Folder.defaultNew('/ERROR'), name: 'ERROR');
 
-  Tile toTile(VoidCallback onTap, {String? title}) {
+  Tile toTile({String? title}) {
     title ??= '$name   ${date(false, true)}';
     return Tile.complex(
       title,
       checkedIcon,
       '',
-      onTap,
+      openSheet,
       iconColor: taskColors[color],
       secondary: () {
         done = !done;
         update();
       },
-      onHold: () => goToPage(TaskPage(task: this)),
+    );
+  }
+
+  void openSheet() {
+    showModalBottomSheet(
+      barrierLabel: 'Barrier',
+      context: navigatorKey.currentContext!,
+      isScrollControlled: true,
+      barrierColor: Colors.black.withValues(alpha: 0.3),
+      builder: (c) => TaskWidget(
+        task: this,
+        key: Key('$hashCode'),
+      ),
     );
   }
 
@@ -112,4 +126,6 @@ class Task extends Crypt {
       return '${dues[0].prettify(showYear, showMonth)}...';
     }
   }
+
+  void unCheck() => (this..done = !done).update();
 }

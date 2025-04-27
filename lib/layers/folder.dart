@@ -19,9 +19,8 @@ class FolderLayer extends Layer {
     action = Tile(folder.name, Icons.folder_rounded, ' ', () {
       FolderOptions(folderID).show();
     });
-    final pendingTasks = folder.items.where((task) => !task.done).map((task) {
-      return task.toTile(TaskLayer(task.id).show);
-    });
+    final pendingTasks =
+        folder.items.where((t) => !t.done).map((t) => t.toTile());
     final subfolders = Structure().folders.where((f) {
       return folder.nodes.contains(f.id);
     }).map((f) {
@@ -30,12 +29,7 @@ class FolderLayer extends Layer {
         FolderLayer(f.id).show();
       });
     });
-    final doneTasks = folder.items.where((task) => task.done).map((task) {
-      return task.toTile(() {
-        Navigator.of(context).pop();
-        TaskLayer(task.id).show();
-      });
-    });
+    final doneTasks = folder.items.where((t) => t.done).map((t) => t.toTile());
     list = [...pendingTasks, ...subfolders, ...doneTasks];
     trailing = [
       IconButton(

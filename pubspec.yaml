@@ -18,10 +18,6 @@ dependencies:
   shared_preferences: any
   flashy_flushbar: any
 
-  #UI
-  flutter_quill: any
-  flutter_quill_extensions: any
-
   flutter_inappwebview: ^6.1.5 #Some fix idk
 
 

@@ -86,4 +86,12 @@ class Tile {
       PrefAsList(pref).show();
     });
   }
+
+  Widget get toIconButton {
+    return IconButton(
+      icon: Icon(icon),
+      tooltip: title,
+      onPressed: onTap,
+    );
+  }
 }
