@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:relayered/classes/database.dart';
+import 'package:relayered/template/data.dart';
+import '../template/functions.dart';
 import '../template/tile_card.dart';
 import '../template/tile.dart';
 import '../classes/task.dart';
@@ -16,17 +19,19 @@ class TaskWidget extends StatefulWidget {
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
+  late Task task;
   late TextEditingController textController;
   @override
   void initState() {
-    textController = TextEditingController(text: widget.task.desc);
+    task = widget.task;
+    textController = TextEditingController(text: task.desc);
     super.initState();
   }
 
   @override
   void dispose() {
-    widget.task.desc = textController.text;
-    widget.task.update();
+    task.desc = textController.text;
+    task.update();
     super.dispose();
   }
 
@@ -41,48 +46,61 @@ class _TaskWidgetState extends State<TaskWidget> {
           child: DraggableScrollableSheet(
             initialChildSize: 0.75,
             minChildSize: 0.2,
-            builder: (c, controller) => Card(
-              elevation: 6,
-              margin: const EdgeInsets.all(8),
-              color: Theme.of(c).colorScheme.surface.withValues(alpha: 0.8),
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                child: ListView(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TileCard(Tile(
-                            widget.task.name,
-                            Icons.menu_rounded,
-                            '',
-                            TaskLayer(widget.task.id).show,
-                          )),
-                        ),
-                        IconButton(
-                          icon: Icon(widget.task.checkedIcon),
-                          onPressed: () => setState(() {
-                            widget.task.unCheck();
-                          }),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(8),
-                      child: EditableText(
-                        maxLines: null,
-                        controller: textController,
-                        focusNode: FocusNode(),
-                        style: Theme.of(context).textTheme.bodyMedium!,
-                        cursorColor: Theme.of(context).colorScheme.primary,
-                        backgroundCursorColor:
-                            Theme.of(context).colorScheme.surface,
+            builder: (c, controller) => ListenableBuilder(
+                listenable: Database(),
+                builder: (context, snapshot) {
+                  return Card(
+                    elevation: 6,
+                    margin: const EdgeInsets.all(8),
+                    color:
+                        Theme.of(c).colorScheme.surface.withValues(alpha: 0.8),
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      child: ListView(
+                        controller: controller,
+                        physics: scrollPhysics,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TileCard(Tile(
+                                  task.name,
+                                  Icons.edit_rounded,
+                                  '',
+                                  () => getInput(task.name, 'Task name')
+                                      .then((s) {
+                                    (task..name = s).update();
+                                  }),
+                                )),
+                              ),
+                              IconButton(
+                                icon: Icon(task.checkedIcon),
+                                onPressed: task.unCheck,
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.menu_rounded),
+                                onPressed: TaskLayer(task.id).show,
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(8),
+                            child: EditableText(
+                              maxLines: null,
+                              controller: textController,
+                              focusNode: FocusNode(),
+                              style: Theme.of(context).textTheme.bodyMedium!,
+                              cursorColor:
+                                  Theme.of(context).colorScheme.primary,
+                              backgroundCursorColor:
+                                  Theme.of(context).colorScheme.surface,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
+                  );
+                }),
           ),
         ),
       ),

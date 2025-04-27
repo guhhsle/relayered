@@ -19,10 +19,19 @@ class TaskLayer extends Layer {
   @override
   void construct() {
     listenTo(Database());
-    action = Tile(task.name, Icons.edit_rounded, '', () async {
-      task.name = await getInput(task.name, 'Task name');
-      task.update();
-    });
+    action = Tile.complex(
+      task.path.name,
+      Icons.folder_outlined,
+      '',
+      () {
+        Navigator.of(context).pop();
+        FolderLayer(task.path.id).show();
+      },
+      onHold: () {
+        Navigator.of(context).pop();
+        MoveTask(taskID).show();
+      },
+    );
     trailing = [
       IconButton(
         icon: Icon(task.pinnedIcon),
@@ -43,19 +52,6 @@ class TaskLayer extends Layer {
       ),
       Tile('', Icons.calendar_today_rounded, task.date(true, true),
           () => TaskDate(taskID).show()),
-      Tile.complex(
-        '',
-        Icons.folder_outlined,
-        task.path.name,
-        () {
-          Navigator.of(context).pop();
-          FolderLayer(task.path.id).show();
-        },
-        onHold: () {
-          Navigator.of(context).pop();
-          MoveTask(taskID).show();
-        },
-      ),
       Tile('', Icons.delete_forever_rounded, 'Delete', () => task.delete()),
     ];
   }

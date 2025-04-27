@@ -32,6 +32,7 @@ class TileCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           child: InkWell(
+            onLongPress: tile.onHold,
             onTap: tile.onTap,
             customBorder: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
