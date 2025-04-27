@@ -36,71 +36,86 @@ class _TaskWidgetState extends State<TaskWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext c) {
+    double bottom = MediaQuery.of(c).viewInsets.vertical;
+    if (bottom > 16) bottom -= 16;
     return Semantics(
       label: 'Bottom sheet',
-      child: GestureDetector(
-        onTap: () => Navigator.of(context).pop(),
-        child: Container(
-          color: Colors.transparent,
-          child: DraggableScrollableSheet(
-            initialChildSize: 0.75,
-            minChildSize: 0.2,
-            builder: (c, controller) => ListenableBuilder(
-                listenable: Database(),
-                builder: (context, snapshot) {
-                  return Card(
-                    elevation: 6,
-                    margin: const EdgeInsets.all(8),
-                    color:
-                        Theme.of(c).colorScheme.surface.withValues(alpha: 0.8),
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      child: ListView(
-                        controller: controller,
-                        physics: scrollPhysics,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: TileCard(Tile(
+      child: DraggableScrollableSheet(
+        initialChildSize: 0.75,
+        minChildSize: 0.2,
+        builder: (c, controller) => ListenableBuilder(
+          listenable: Database(),
+          builder: (c, snapshot) => Card(
+            elevation: 6,
+            margin: const EdgeInsets.all(8),
+            color: Theme.of(c).colorScheme.surface.withValues(alpha: 0.8),
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TileCard(
+                                Tile(
                                   task.name,
                                   Icons.edit_rounded,
                                   '',
-                                  () => getInput(task.name, 'Task name')
-                                      .then((s) {
-                                    (task..name = s).update();
-                                  }),
-                                )),
+                                  () async {
+                                    task.name =
+                                        await getInput(task.name, 'Task name');
+                                    task.update();
+                                  },
+                                ),
                               ),
-                              IconButton(
-                                icon: Icon(task.checkedIcon),
-                                onPressed: task.unCheck,
+                            ),
+                            IconButton(
+                              icon: Icon(task.checkedIcon),
+                              onPressed: task.unCheck,
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.menu_rounded),
+                              onPressed: TaskLayer(task.id).show,
+                            ),
+                          ],
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            controller: controller,
+                            physics: scrollPhysics,
+                            padding:
+                                EdgeInsets.only(bottom: 64, left: 8, right: 8),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8),
+                              child: TextFormField(
+                                maxLines: null,
+                                controller: textController,
+                                focusNode: FocusNode(),
+                                style: Theme.of(c).textTheme.bodyMedium!,
+                                cursorColor: Theme.of(c).colorScheme.primary,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  disabledBorder: InputBorder.none,
+                                ),
+                                //backgroundCursorColor: Theme.of(c).colorScheme.surface,
                               ),
-                              IconButton(
-                                icon: Icon(Icons.menu_rounded),
-                                onPressed: TaskLayer(task.id).show,
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(8),
-                            child: EditableText(
-                              maxLines: null,
-                              controller: textController,
-                              focusNode: FocusNode(),
-                              style: Theme.of(context).textTheme.bodyMedium!,
-                              cursorColor:
-                                  Theme.of(context).colorScheme.primary,
-                              backgroundCursorColor:
-                                  Theme.of(context).colorScheme.surface,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  );
-                }),
+                  ),
+                  SizedBox(height: bottom),
+                ],
+              ),
+            ),
           ),
         ),
       ),

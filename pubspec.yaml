@@ -3,7 +3,7 @@ description: Note app with a recursive interface.
 #JAVA 18
 
 publish_to: 'none'
-version: 1.0.9
+version: 1.2.5
 
 environment:
   sdk: ">=3.0.0 <=4.0.0"
