@@ -21,12 +21,10 @@ class FolderOptions extends FolderLayer {
       Tile.complex(
         '',
         Icons.colorize_rounded,
-        folder.color ?? 'Adaptive',
-        () async {
-          final layer = ColorLayer(folder.color ?? 'Adaptive')..show();
-          folder.color = await layer.completer.future;
-          folder.update();
-        },
+        folder.color,
+        () => ColorLayer(folder.color, onSelected: (c) {
+          (folder..color = c).update();
+        }).show(),
         iconColor: taskColors[folder.color],
       ),
       if (folder.pin)

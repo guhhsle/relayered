@@ -60,7 +60,7 @@ class _VisualLayerState extends State<VisualLayer> {
                       minChildSize: 0.2,
                       builder: (c, controller) => Card(
                         child: Container(
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(12),
                           child: Column(
                             children: [
                               Row(
@@ -94,7 +94,7 @@ class _VisualLayerState extends State<VisualLayer> {
               } else {
                 return Card(
                   child: Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(12),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [

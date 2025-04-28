@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'template/layer.dart';
 import 'template/tile.dart';
 import 'data.dart';
 
 class ColorLayer extends Layer {
   String initial;
-  final completer = Completer<String>();
-  ColorLayer(this.initial);
+  final void Function(String) onSelected;
+  ColorLayer(this.initial, {required this.onSelected});
 
   @override
   void construct() {
@@ -17,7 +16,7 @@ class ColorLayer extends Layer {
         '',
         Icons.circle,
         col.key,
-        () => completer.complete(col.key),
+        () => onSelected(col.key),
         iconColor: col.value,
       );
     });

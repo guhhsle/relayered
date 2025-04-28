@@ -60,8 +60,7 @@ enum Pref<T> {
   String toString() => name;
 }
 
-final Map<String, Color?> taskColors = {
-  'Adaptive': null,
+final Map<String, Color> taskColors = {
   'White': Colors.white,
   'Orange': Colors.orange,
   'Red': Colors.red,

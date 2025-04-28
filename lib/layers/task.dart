@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'move_task.dart';
 import 'task_date.dart';
 import 'folder.dart';
-import '../template/functions.dart';
 import '../classes/structure.dart';
 import '../classes/database.dart';
 import '../template/layer.dart';
@@ -35,7 +34,7 @@ class TaskLayer extends Layer {
     trailing = [
       IconButton(
         icon: Icon(task.pinnedIcon),
-        onPressed: () => (task..pinned = !task.pinned).update(),
+        onPressed: task.unPin,
       )
     ];
     list = [
@@ -43,11 +42,9 @@ class TaskLayer extends Layer {
         '',
         Icons.colorize_rounded,
         task.color,
-        () async {
-          final layer = ColorLayer(task.color)..show();
-          task.color = await layer.completer.future;
-          task.update();
-        },
+        () => ColorLayer(task.color, onSelected: (c) {
+          (task..color = c).update();
+        }).show(),
         iconColor: taskColors[task.color],
       ),
       Tile('', Icons.calendar_today_rounded, task.date(true, true),

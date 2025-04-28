@@ -10,10 +10,7 @@ class TileCard extends StatelessWidget {
   const TileCard(
     this.tile, {
     super.key,
-    this.margin = const EdgeInsets.symmetric(
-      vertical: 16,
-      horizontal: 8,
-    ),
+    this.margin = const EdgeInsets.symmetric(vertical: 6),
     this.height = 50,
   });
 

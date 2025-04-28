@@ -128,4 +128,5 @@ class Task extends Crypt {
   }
 
   void unCheck() => (this..done = !done).update();
+  void unPin() => (this..pinned = !pinned).update();
 }

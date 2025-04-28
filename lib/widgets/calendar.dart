@@ -6,7 +6,6 @@ import '../classes/database.dart';
 import '../classes/month.dart';
 import '../layers/folder.dart';
 import '../template/data.dart';
-import '../layers/task.dart';
 import '../functions.dart';
 import '../data.dart';
 import '../template/prefs.dart';

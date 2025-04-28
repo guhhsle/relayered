@@ -7,8 +7,8 @@ import '../template/tile.dart';
 import '../data.dart';
 
 class Folder extends Crypt {
-  String name, prefix;
-  String? color, id;
+  String name, prefix, color;
+  String? id;
   bool pin, show;
   List<String> nodes;
   List<Task> items;
@@ -17,7 +17,7 @@ class Folder extends Crypt {
     required this.items,
     required this.nodes,
     required this.show,
-    this.color,
+    required this.color,
     this.id,
     this.prefix = '',
     this.pin = false,
@@ -27,7 +27,7 @@ class Folder extends Crypt {
     Folder folder = Folder(
       name: Crypt.decrypt(json['name']) ?? '/${json['name']}',
       id: json['id'] ?? '',
-      color: json['col'] == 'Adaptive' ? null : json['col'],
+      color: json['col'] ?? 'Adaptive',
       items: [],
       prefix: json['pre'] ?? '',
       show: json['show'] ?? true,
@@ -60,6 +60,7 @@ class Folder extends Crypt {
       name: name,
       items: [],
       nodes: node != null ? [node] : [],
+      color: 'Adaptive',
       show: true,
     );
   }

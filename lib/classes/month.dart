@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../data.dart';
 import 'folder.dart';
 import 'task.dart';
+import '../data.dart';
 
 const monthColors = {
   'January': Colors.white,
@@ -43,8 +43,10 @@ class MonthContainer {
     return true;
   }
 
-  static MonthContainer from(MapEntry<DateTime?, Task> entry,
-      {ColorScheme? cs}) {
+  static MonthContainer from(
+    MapEntry<DateTime?, Task> entry, {
+    ColorScheme? cs,
+  }) {
     if (entry.key != null) {
       return MonthContainer(
         name: monthColors.keys.elementAt(entry.key!.month - 1),
