@@ -8,7 +8,7 @@ import 'template/tile.dart';
 
 const locales = [
   ...['Serbian', 'English', 'Spanish', 'German', 'French', 'Italian'],
-  ...['Polish', 'Portuguese', 'Russian', 'Slovenian', 'Japanese']
+  ...['Polish', 'Portuguese', 'Russian', 'Slovenian', 'Japanese'],
 ];
 const tops = ['Primary', 'Black', 'Transparent'];
 const initTaskColors = [
@@ -32,11 +32,14 @@ enum Pref<T> {
   encryptKey('Encryption key', '0000000000000000', Icons.key_rounded),
   defaultColor('Default color', 'Adaptive', Icons.colorize_rounded),
   showPinned('Show pinned', true, Icons.push_pin_rounded, ui: true),
-  showDone('Show done', true, Icons.done_rounded, ui: true),
-  showCalendar('Calendar field', true, Icons.calendar_view_day_rounded,
-      ui: true),
-  showFolders('Folder field', true, Icons.folder_copy_rounded, ui: true),
-  ;
+  showDone('Show done', false, Icons.done_rounded, ui: true),
+  showCalendar(
+    'Calendar field',
+    true,
+    Icons.calendar_view_day_rounded,
+    ui: true,
+  ),
+  showFolders('Folder field', true, Icons.folder_copy_rounded, ui: true);
 
   final T initial;
   final List<T>? all;

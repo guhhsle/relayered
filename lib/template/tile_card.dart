@@ -10,7 +10,7 @@ class TileCard extends StatelessWidget {
   const TileCard(
     this.tile, {
     super.key,
-    this.margin = const EdgeInsets.symmetric(vertical: 6),
+    this.margin = const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
     this.height = 50,
   });
 
@@ -54,20 +54,21 @@ class TileCard extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 16),
-                    child: tile.trailing == ''
-                        ? Icon(
-                            tile.icon,
-                            color: Theme.of(context).colorScheme.surface,
-                          )
-                        : Text(
-                            t(tile.trailing),
-                            overflow: TextOverflow.clip,
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                              fontWeight: FontWeight.bold,
+                    child:
+                        tile.trailing == ''
+                            ? Icon(
+                              tile.icon,
+                              color: Theme.of(context).colorScheme.surface,
+                            )
+                            : Text(
+                              t(tile.trailing),
+                              overflow: TextOverflow.clip,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                  )
+                  ),
                 ],
               ),
             ),

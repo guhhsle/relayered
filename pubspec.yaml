@@ -14,11 +14,10 @@ dependencies:
   
   #Services
     #awesome_notifications: any
+    #flutter_inappwebview: ^6.1.5 #Some fix idk
   intl: any
   shared_preferences: any
   flashy_flushbar: any
-
-  flutter_inappwebview: ^6.1.5 #Some fix idk
 
 
   #Firebase
