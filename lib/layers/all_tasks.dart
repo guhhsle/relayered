@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'folder_other.dart';
-import 'task.dart';
 import '../classes/structure.dart';
 import '../classes/database.dart';
 import '../template/prefs.dart';

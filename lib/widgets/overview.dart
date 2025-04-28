@@ -48,9 +48,11 @@ class OverviewState extends State<Overview> {
                       () => FolderLayer(folder.id).show(),
                       onHold: () => FolderOptions(folder.id).show(),
                     ),
-                    background: folder.color == null
-                        ? null
-                        : mixColors(background, taskColors[folder.color]!, 0.4),
+                    background: mixColors(
+                      background,
+                      taskColors[folder.color],
+                      0.4,
+                    ),
                   );
                 },
               ),
@@ -71,7 +73,8 @@ class OverviewState extends State<Overview> {
   }
 }
 
-Color mixColors(Color color1, Color color2, double ratio) {
+Color? mixColors(Color? color1, Color? color2, double ratio) {
+  if (color1 == null || color2 == null) return null;
   ratio = ratio.clamp(0.0, 1.0);
   final argbDouble = [
     ((1 - ratio) * color1.a + ratio * color2.a),

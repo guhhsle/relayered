@@ -134,17 +134,19 @@ class ThemePref extends ChangeNotifier {
       appBarTheme: AppBarTheme(
         backgroundColor:
             {'Black': Colors.black, 'Transparent': b}[Pref.appbar.value] ?? p,
-        foregroundColor: {
+        foregroundColor:
+            {
               'Black': lighterColor(p, b),
-              'Transparent': p
+              'Transparent': p,
             }[Pref.appbar.value] ??
             b,
         shadowColor: Colors.transparent,
         titleTextStyle: TextStyle(
           fontWeight: FontWeight.w600,
-          color: {
+          color:
+              {
                 'Black': lighterColor(p, b),
-                'Transparent': p
+                'Transparent': p,
               }[Pref.appbar.value] ??
               b,
           fontFamily: Pref.font.value,
@@ -152,9 +154,10 @@ class ThemePref extends ChangeNotifier {
         ),
       ),
       textSelectionTheme: TextSelectionThemeData(
-        cursorColor: {
+        cursorColor:
+            {
               'Black': lighterColor(p, b),
-              'Transparent': p
+              'Transparent': p,
             }[Pref.appbar.value] ??
             b,
       ),
@@ -219,7 +222,7 @@ class ThemePref extends ChangeNotifier {
         style: ListTileStyle.drawer,
       ),
       iconTheme: IconThemeData(color: p),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 6,
         shadowColor: p,
         margin: const EdgeInsets.only(left: 16, right: 16, bottom: 16),

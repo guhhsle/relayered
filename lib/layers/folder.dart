@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'folder_options.dart';
-import 'task.dart';
 import '../template/functions.dart';
 import '../classes/structure.dart';
 import '../classes/database.dart';
@@ -19,16 +18,17 @@ class FolderLayer extends Layer {
     action = Tile(folder.name, Icons.folder_rounded, ' ', () {
       FolderOptions(folderID).show();
     });
-    final pendingTasks =
-        folder.items.where((t) => !t.done).map((t) => t.toTile());
-    final subfolders = Structure().folders.where((f) {
-      return folder.nodes.contains(f.id);
-    }).map((f) {
-      return f.toTile(() {
-        Navigator.of(context).pop();
-        FolderLayer(f.id).show();
-      });
-    });
+    final pendingTasks = folder.items
+        .where((t) => !t.done)
+        .map((t) => t.toTile());
+    final subfolders = Structure().folders
+        .where((f) => folder.nodes.contains(f.id))
+        .map(
+          (f) => f.toTile(() {
+            Navigator.of(context).pop();
+            FolderLayer(f.id).show();
+          }),
+        );
     final doneTasks = folder.items.where((t) => t.done).map((t) => t.toTile());
     list = [...pendingTasks, ...subfolders, ...doneTasks];
     trailing = [
